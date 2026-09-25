@@ -444,6 +444,23 @@
     ]
   },
   {
+    "id": "ss_http_flow",
+    "type": "http in",
+    "z": "ss_tab",
+    "name": "Glove Flowcharts Route",
+    "url": "/glove/flowcharts",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 130,
+    "y": 640,
+    "wires": [
+      [
+        "ss_serve"
+      ]
+    ]
+  },
+  {
     "id": "ss_http2",
     "type": "http in",
     "z": "ss_tab",
@@ -453,7 +470,7 @@
     "upload": false,
     "swaggerDoc": "",
     "x": 160,
-    "y": 660,
+    "y": 680,
     "wires": [
       [
         "ss_serve"
@@ -470,7 +487,7 @@
     "upload": false,
     "swaggerDoc": "",
     "x": 160,
-    "y": 700,
+    "y": 720,
     "wires": [
       [
         "ss_serve"
@@ -482,7 +499,7 @@
     "type": "function",
     "z": "ss_tab",
     "name": "Serve landing / dashboard / data",
-    "func": "// Serves the landing page, dashboard cockpit, and data/image downloads.\n//   GET /glove                    -> dashboard/landing.html (Landing page explaining STA x AIO & SignSpeaker)\n//   GET /glove/dashboard          -> dashboard/index.html (Live operational cockpit)\n//   GET /glove?view=dashboard     -> dashboard/index.html\n//   GET /glove/landing            -> dashboard/landing.html\n//   GET /glove/data/dataset.json  -> raw training recordings\n//   GET /glove/data/dataset.csv   -> same recordings, one row per gyro sample\n//   GET /glove/data/model.json    -> trained model\n//   GET /glove/images/:file       -> Images/:file (MIME detected via binary magic bytes)\n\nconst dir = env.get('GLOVE_DIR');\nconst file = msg.req.params && msg.req.params.file;\nmsg.headers = { 'Cache-Control': 'no-store' };\n\nfunction send(status, type, body) {\n    msg.statusCode = status;\n    msg.headers['Content-Type'] = type;\n    msg.payload = body;\n    return msg;\n}\n\ntry {\n    const reqUrl = (msg.req && (msg.req.path || msg.req.url)) || '';\n    const query = (msg.req && msg.req.query) || {};\n\n    // Route explicit requests for dashboard or landing\n    if (file === 'dashboard' || file === 'cockpit' || file === 'index.html') {\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', 'index.html'), 'utf8'));\n    }\n    if (file === 'landing' || file === 'about' || file === 'landing.html') {\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', 'landing.html'), 'utf8'));\n    }\n\n    if (!file) {\n        const isDashboard = query.view === 'dashboard' || query.app === 'cockpit' ||\n                            reqUrl.endsWith('/dashboard') || reqUrl.endsWith('/cockpit');\n        const targetHtml = isDashboard ? 'index.html' : 'landing.html';\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', targetHtml), 'utf8'));\n    }\n\n    if (file === 'dataset.json' || file === 'model.json') {\n        msg.headers['Content-Disposition'] = 'attachment; filename=\"' + file + '\"';\n        return send(200, 'application/json', fs.readFileSync(path.join(dir, 'data', file), 'utf8'));\n    }\n    if (file === 'dataset.csv') {\n        const ds = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'dataset.json'), 'utf8'));\n        const rows = ['sample_id,label,recorded_at,t_ms,gyro_x,gyro_y,gyro_z'];\n        for (const s of ds.samples) {\n            const at = new Date(s.at).toISOString();\n            for (const r of s.samples) rows.push([s.id, '\"' + s.label + '\"', at, r[0], r[1], r[2], r[3]].join(','));\n        }\n        msg.headers['Content-Disposition'] = 'attachment; filename=\"dataset.csv\"';\n        return send(200, 'text/csv', rows.join('\\n') + '\\n');\n    }\n\n    const decodedFile = decodeURIComponent(file);\n    const imgPath = path.join(dir, 'Images', decodedFile);\n    if (fs.existsSync(imgPath) && fs.statSync(imgPath).isFile()) {\n        const buf = fs.readFileSync(imgPath);\n        let mime = 'application/octet-stream';\n        if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47) {\n            mime = 'image/png';\n        } else if (buf.length >= 2 && buf[0] === 0xFF && buf[1] === 0xD8) {\n            mime = 'image/jpeg';\n        } else if (decodedFile.toLowerCase().endsWith('.svg')) {\n            mime = 'image/svg+xml';\n        }\n        msg.headers['Cache-Control'] = 'no-cache, must-revalidate';\n        return send(200, mime, buf);\n    }\n    return send(404, 'text/plain', 'Not found');\n} catch (e) {\n    return send(404, 'text/plain', 'Not available yet: ' + e.message);\n}\n",
+    "func": "// Serves the landing page, dashboard cockpit, and data/image downloads.\n//   GET /glove                    -> dashboard/landing.html (Landing page explaining STA x AIO & SignSpeaker)\n//   GET /glove/dashboard          -> dashboard/index.html (Live operational cockpit)\n//   GET /glove?view=dashboard     -> dashboard/index.html\n//   GET /glove/landing            -> dashboard/landing.html\n//   GET /glove/data/dataset.json  -> raw training recordings\n//   GET /glove/data/dataset.csv   -> same recordings, one row per gyro sample\n//   GET /glove/data/model.json    -> trained model\n//   GET /glove/images/:file       -> Images/:file (MIME detected via binary magic bytes)\n\nconst dir = env.get('GLOVE_DIR');\nconst file = msg.req.params && msg.req.params.file;\nmsg.headers = { 'Cache-Control': 'no-store' };\n\nfunction send(status, type, body) {\n    msg.statusCode = status;\n    msg.headers['Content-Type'] = type;\n    msg.payload = body;\n    return msg;\n}\n\ntry {\n    const reqUrl = (msg.req && (msg.req.path || msg.req.url)) || '';\n    const query = (msg.req && msg.req.query) || {};\n\n    // Route explicit requests for dashboard or landing\n    if (file === 'dashboard' || file === 'cockpit' || file === 'index.html') {\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', 'index.html'), 'utf8'));\n    }\n    if (file === 'landing' || file === 'about' || file === 'landing.html') {\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', 'landing.html'), 'utf8'));\n    }\n    if (file === 'flowcharts' || file === 'flowcharts.html' || file === 'flowchart' || reqUrl.includes('/flowchart')) {\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'flowcharts', 'index.html'), 'utf8'));\n    }\n\n    if (!file) {\n        const isDashboard = query.view === 'dashboard' || query.app === 'cockpit' ||\n                            reqUrl.endsWith('/dashboard') || reqUrl.endsWith('/cockpit');\n        const targetHtml = isDashboard ? 'index.html' : 'landing.html';\n        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', targetHtml), 'utf8'));\n    }\n\n    if (file === 'dataset.json' || file === 'model.json') {\n        msg.headers['Content-Disposition'] = 'attachment; filename=\"' + file + '\"';\n        return send(200, 'application/json', fs.readFileSync(path.join(dir, 'data', file), 'utf8'));\n    }\n    if (file === 'dataset.csv') {\n        const ds = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'dataset.json'), 'utf8'));\n        const rows = ['sample_id,label,recorded_at,t_ms,gyro_x,gyro_y,gyro_z'];\n        for (const s of ds.samples) {\n            const at = new Date(s.at).toISOString();\n            for (const r of s.samples) rows.push([s.id, '\"' + s.label + '\"', at, r[0], r[1], r[2], r[3]].join(','));\n        }\n        msg.headers['Content-Disposition'] = 'attachment; filename=\"dataset.csv\"';\n        return send(200, 'text/csv', rows.join('\\n') + '\\n');\n    }\n\n    const decodedFile = decodeURIComponent(file);\n    const imgPath = path.join(dir, 'Images', decodedFile);\n    if (fs.existsSync(imgPath) && fs.statSync(imgPath).isFile()) {\n        const buf = fs.readFileSync(imgPath);\n        let mime = 'application/octet-stream';\n        if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47) {\n            mime = 'image/png';\n        } else if (buf.length >= 2 && buf[0] === 0xFF && buf[1] === 0xD8) {\n            mime = 'image/jpeg';\n        } else if (decodedFile.toLowerCase().endsWith('.svg')) {\n            mime = 'image/svg+xml';\n        }\n        msg.headers['Cache-Control'] = 'no-cache, must-revalidate';\n        return send(200, mime, buf);\n    }\n    return send(404, 'text/plain', 'Not found');\n} catch (e) {\n    return send(404, 'text/plain', 'Not available yet: ' + e.message);\n}\n",
     "outputs": 1,
     "timeout": 0,
     "noerr": 0,

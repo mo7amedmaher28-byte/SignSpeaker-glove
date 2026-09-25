@@ -86,8 +86,9 @@ const nodes = [
     { id: 'ss_http', type: 'http in', z: TAB, name: 'Glove Landing', url: '/glove', method: 'get', upload: false, swaggerDoc: '', x: 130, y: 540, wires: [['ss_serve']] },
     { id: 'ss_http_dash', type: 'http in', z: TAB, name: 'Glove Dashboard', url: '/glove/dashboard', method: 'get', upload: false, swaggerDoc: '', x: 130, y: 580, wires: [['ss_serve']] },
     { id: 'ss_http_land', type: 'http in', z: TAB, name: 'Glove Landing Route', url: '/glove/landing', method: 'get', upload: false, swaggerDoc: '', x: 130, y: 620, wires: [['ss_serve']] },
-    { id: 'ss_http2', type: 'http in', z: TAB, name: 'Data', url: '/glove/data/:file', method: 'get', upload: false, swaggerDoc: '', x: 160, y: 660, wires: [['ss_serve']] },
-    { id: 'ss_http3', type: 'http in', z: TAB, name: 'Images', url: '/glove/images/:file', method: 'get', upload: false, swaggerDoc: '', x: 160, y: 700, wires: [['ss_serve']] },
+    { id: 'ss_http_flow', type: 'http in', z: TAB, name: 'Glove Flowcharts Route', url: '/glove/flowcharts', method: 'get', upload: false, swaggerDoc: '', x: 130, y: 640, wires: [['ss_serve']] },
+    { id: 'ss_http2', type: 'http in', z: TAB, name: 'Data', url: '/glove/data/:file', method: 'get', upload: false, swaggerDoc: '', x: 160, y: 680, wires: [['ss_serve']] },
+    { id: 'ss_http3', type: 'http in', z: TAB, name: 'Images', url: '/glove/images/:file', method: 'get', upload: false, swaggerDoc: '', x: 160, y: 720, wires: [['ss_serve']] },
     fn('ss_serve', 'Serve landing / dashboard / data', 'serve-dashboard', 1, ['fs', 'path'], 420, 580, [['ss_resp']]),
     { id: 'ss_resp', type: 'http response', z: TAB, name: '', statusCode: '', headers: {}, x: 650, y: 580, wires: [] }
 ];

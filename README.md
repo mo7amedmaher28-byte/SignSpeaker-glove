@@ -25,6 +25,8 @@
 >   Served directly by Node-RED from [dashboard/landing.html](file:///d:/DATA-1/Projects/SignSpeaker%20Project/dashboard/landing.html).
 > - **Operational Live Cockpit**: [http://127.0.0.1:1880/glove/dashboard](http://127.0.0.1:1880/glove/dashboard)  
 >   Served directly by Node-RED from [dashboard/index.html](file:///d:/DATA-1/Projects/SignSpeaker%20Project/dashboard/index.html).
+> - **Interactive Flowcharts Studio**: [http://localhost:3000](http://localhost:3000) or [http://127.0.0.1:1880/glove/flowcharts](http://127.0.0.1:1880/glove/flowcharts)  
+>   Served standalone via [flowcharts/server.js](file:///d:/DATA-1/Projects/SignSpeaker%20Project/flowcharts/server.js) and integrated into Node-RED.
 > - **Official GitHub Repository**: [mo7amedmaher28-byte/SignSpeaker-glove](https://github.com/mo7amedmaher28-byte/SignSpeaker-glove.git)
 
 ---
@@ -358,6 +360,11 @@ d:/DATA-1/Projects/SignSpeaker Project/
 ├── dashboard/                              # Web application
 │   ├── landing.html                        # Front-door landing page (STA × AIO story, specs, demo)
 │   └── index.html                          # Operational live cockpit (HTML5, Canvas, ES6)
+├── flowcharts/                             # Interactive Architecture Flowcharts Studio
+│   ├── index.html                          # Semantic HTML5 shell with 9 vector diagrams
+│   ├── style.css                           # STA × AIO Dark Navy & Cyan design system
+│   ├── app.js                              # Mermaid renderer, zoom/pan, search, filter, export
+│   └── server.js                           # Dedicated Node.js HTTP server (Port 3000)
 └── data/                                   # Persistent application state & models
     ├── dataset.json                        # Training recordings & sample arrays
     ├── model.json                          # Trained k-NN model vectors & stats
@@ -429,6 +436,11 @@ node build-flows.js
 
 # Step 3: Open the dashboard in any modern web browser
 Start-Process "http://127.0.0.1:1880/glove"
+
+# Step 4: (Optional) Launch the Interactive Flowcharts Studio on localhost:3000
+cd "flowcharts"
+node server.js
+Start-Process "http://localhost:3000"
 ```
 
 ### 3. Flashing ESP32 Firmware
@@ -461,6 +473,7 @@ Start-Process "http://127.0.0.1:1880/glove"
 | **10** | **Unified Connect / Disconnect** | Designed high-contrast SVG toggle button (Blue `#2563eb` Connect / Red `#dc2626` Disconnect) with live status pill. | `dashboard/index.html` |
 | **11** | **Header Dimension Stabilization** | Enforced strict 64px header height, uniform 36px control heights, 32px pills, bounded 135px COM dropdown, and `white-space: nowrap;` for zero layout jumping. | `dashboard/index.html` |
 | **12** | **Front-Door Landing Page & Dual-Route Dispatcher** | Engineered modern STA × AIO landing page (`landing.html`) with institutional partner profiles, photorealistic smart glove render (`signspeaker_hero.jpg`), interactive canvas demo, and dual-mode routing (`/glove` vs `/glove/dashboard`). | `landing.html`, `serve-dashboard.js`, `build-flows.js`, `index.html`, `Images/` |
+| **13** | **Interactive Flowchart Studio & Architecture Explorer** | Engineered standalone responsive HTML5/CSS/JS website featuring all 9 system flowcharts in dynamic Mermaid vector SVG, interactive zoom & pan, fullscreen modal inspection, live search & category filters, code copy, SVG export, and dedicated port 3000 server with Node-RED `/glove/flowcharts` routing. | `flowcharts/`, `serve-dashboard.js`, `build-flows.js`, `dashboard/index.html`, `dashboard/landing.html` |
 
 ---
 

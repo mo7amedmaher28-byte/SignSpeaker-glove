@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSpeaker — Complete System Flowcharts & Architecture Explorer</title>
+    <meta name="description" content="Interactive system flowcharts, telemetry state machines, feature extraction pipeline, and machine learning architectures for the SignSpeaker smart glove project by Elsewedy Technical Academy (STA) × Arab International Optronics (AIO).">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Mermaid.js for Vector Diagram Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+
+    <!-- Top Navigation Bar -->
+    <header class="app-header" id="mainHeader">
+        <div class="header-left">
+            <div class="brand-badges">
+                <div class="partner-badge" title="Elsewedy Technical Academy">
+                    <img src="/images/STA%20logo.jpg" alt="STA Logo" class="brand-logo sta-logo" onerror="this.style.display='none'">
+                    <span class="partner-text">STA</span>
+                </div>
+                <span class="brand-separator">×</span>
+                <div class="partner-badge" title="Arab International Optronics">
+                    <img src="/images/AIO.png" alt="AIO Logo" class="brand-logo aio-logo" onerror="this.style.display='none'">
+                    <span class="partner-text">AIO</span>
+                </div>
+            </div>
+            
+            <div class="title-group">
+                <div class="app-title-row">
+                    <span class="title-icon">🖐️</span>
+                    <h1 class="app-title">SignSpeaker</h1>
+                    <span class="version-tag">Flowchart Studio v2.4</span>
+                </div>
+                <p class="app-subtitle">Interactive System Architecture & Pipeline Explorer</p>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="service-pills">
+                <a href="http://127.0.0.1:1880/glove/dashboard" target="_blank" class="service-pill active" title="Open Live Cockpit">
+                    <span class="status-dot green"></span>
+                    <span class="pill-label">Live Cockpit</span>
+                    <span class="port-num">:1880</span>
+                </a>
+                <a href="http://127.0.0.1:1880/glove" target="_blank" class="service-pill" title="Open Project Overview">
+                    <span class="status-dot blue"></span>
+                    <span class="pill-label">Landing</span>
+                </a>
+                <div class="service-pill host-pill" id="hostStatusPill">
+                    <span class="status-dot cyan"></span>
+                    <span class="pill-label">Local Host</span>
+                    <span class="port-num" id="currentPort">:3000</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button id="themeToggleBtn" class="btn-icon" title="Toggle Theme" aria-label="Toggle Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+                <a href="https://github.com/mo7amedmaher28-byte/SignSpeaker-glove.git" target="_blank" class="btn-github" title="View Source Repository">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Layout Container -->
+    <div class="app-layout">
+        
+        <!-- Sticky Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Diagram Navigation</div>
+                <nav class="sidebar-nav">
+                    <a href="#chart-7" class="nav-item active" data-chart="7">
+                        <span class="nav-num">7</span>
+                        <span class="nav-text">Complete End-to-End System</span>
+                        <span class="nav-badge primary">Master</span>
+                    </a>
+                    <a href="#chart-1" class="nav-item" data-chart="1">
+                        <span class="nav-num">1</span>
+                        <span class="nav-text">Connection Layer (MQTT / Serial)</span>
+                    </a>
+                    <a href="#chart-2" class="nav-item" data-chart="2">
+                        <span class="nav-num">2</span>
+                        <span class="nav-text">Gesture Segmentation FSM</span>
+                    </a>
+                    <a href="#chart-3" class="nav-item" data-chart="3">
+                        <span class="nav-num">3</span>
+                        <span class="nav-text">66-D Features & k-NN Engine</span>
+                    </a>
+                    <a href="#chart-4" class="nav-item" data-chart="4">
+                        <span class="nav-num">4</span>
+                        <span class="nav-text">Output Dispatch (LCD & Speech)</span>
+                    </a>
+                    <a href="#chart-5" class="nav-item" data-chart="5">
+                        <span class="nav-num">5</span>
+                        <span class="nav-text">Dashboard & WebSocket Event Bus</span>
+                    </a>
+                    <a href="#chart-6" class="nav-item" data-chart="6">
+                        <span class="nav-num">6</span>
+                        <span class="nav-text">Raw CSV Data Logger</span>
+                    </a>
+                    <a href="#chart-8" class="nav-item" data-chart="8">
+                        <span class="nav-num">8</span>
+                        <span class="nav-text">Train vs. Recognize Decision Tree</span>
+                    </a>
+                    <a href="#chart-9" class="nav-item" data-chart="9">
+                        <span class="nav-num">9</span>
+                        <span class="nav-text">Persistent TTS Engine Daemon</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-section specs-summary">
+                <div class="sidebar-title">System Specs</div>
+                <div class="spec-stat-grid">
+                    <div class="spec-item">
+                        <span class="spec-val">25 Hz</span>
+                        <span class="spec-lbl">IMU Sampling</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-val">66-D</span>
+                        <span class="spec-lbl">Feature Vector</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-val">k = 3</span>
+                        <span class="spec-lbl">Weighted k-NN</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-val">&lt; 5 ms</span>
+                        <span class="spec-lbl">Radio Latency</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="partner-collab">
+                    <span class="collab-lead">Joint Initiative</span>
+                    <strong>STA × AIO Engineering</strong>
+                    <small>Egyptian Sign Language Translation</small>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main" id="mainContent">
+            
+            <!-- Hero Banner -->
+            <section class="explorer-hero">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="pulse-ring"></span>
+                        <span>Interactive Engineering Blueprint</span>
+                    </div>
+                    <h2 class="hero-heading">SignSpeaker Full Pipeline Flowcharts</h2>
+                    <p class="hero-desc">
+                        Explore every layer of the smart glove assistive technology system. From raw 25 Hz MPU6050 gyroscope sensing, dual wireless telemetry (MQTT & ESP-NOW), dynamic EWMA segmentation, and 66-dimensional feature extraction, to weighted k-NN classification, intelligent 16×2 LCD line-wrapping, and persistent zero-latency speech synthesis.
+                    </p>
+                </div>
+                <div class="hero-image-box">
+                    <img src="/images/signspeaker_hero.jpg" alt="SignSpeaker Wearable Smart Glove" class="hero-thumb" onerror="this.parentElement.style.display='none'">
+                </div>
+            </section>
+
+            <!-- Filter & Search Controls Bar -->
+            <div class="controls-toolbar" id="toolbar">
+                <div class="search-box">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" id="chartSearchInput" placeholder="Search diagrams by node, algorithm, protocol (e.g., k-NN, EWMA, MQTT, TTS, LCD)..." autocomplete="off">
+                    <button id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+                </div>
+
+                <div class="filter-pills" id="categoryFilters">
+                    <button class="filter-pill active" data-cat="all">All (9)</button>
+                    <button class="filter-pill" data-cat="architecture">Architecture</button>
+                    <button class="filter-pill" data-cat="telemetry">Ingestion</button>
+                    <button class="filter-pill" data-cat="ml">DSP & ML</button>
+                    <button class="filter-pill" data-cat="output">Output</button>
+                    <button class="filter-pill" data-cat="system">Infra</button>
+                </div>
+
+                <div class="view-actions">
+                    <button id="collapseAllBtn" class="btn-utility" title="Collapse / Expand All Technical Sheets">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4"/></svg>
+                        <span>Toggle Details</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flowchart Cards Grid -->
+            <div class="charts-container" id="chartsContainer">
+
+                <!-- ========================================== -->
+                <!-- CHART 7: Master End-to-End System Flow     -->
+                <!-- ========================================== -->
+                <article class="chart-card featured" id="chart-7" data-categories="architecture">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 07</span>
+                            <span class="category-tag architecture">Complete System Architecture</span>
+                        </div>
+                        <h3 class="card-title">🔁 Complete End-to-End System Flow</h3>
+                        <p class="card-summary">Holistic data path: Physical Glove MPU6050 → Dual Wireless Transport (ESP-NOW / MQTT) → Receiver Station → Node-RED Edge Pipeline → Multi-Modal Speech, LCD, and WebSocket Cockpit.</p>
+                        <div class="source-tag">Source: <code>Whole System Architecture</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-7" title="Zoom In">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-7" title="Zoom Out">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-7" title="Reset Zoom">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-7" title="Copy Mermaid Syntax">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-7" data-name="signspeaker-master-system-flow" title="Download SVG">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-7" data-title="Complete End-to-End System Flow" title="Fullscreen View">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-7">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-7">
+flowchart LR
+    subgraph HARDWARE["🧤 Wearable Glove Hardware"]
+        MPU["MPU6050 6-DoF IMU<br/>Gyroscope (X, Y, Z)<br/>25 Hz Sampling Rate"]
+        ESP_SEND["ESP32 Glove Unit<br/>Sender Firmware"]
+        MPU -->|"I2C Bus (SDA:23, SCL:22)"| ESP_SEND
+    end
+
+    subgraph TRANSPORT["📡 Wireless Transport Layer"]
+        ESPNOW["ESP-NOW Radio<br/>2.4 GHz Direct MAC Peering<br/>Channel 1 • &lt; 5ms Latency"]
+        WIFI["Wi-Fi 802.11 b/g/n<br/>MQTT Broker (Mosquitto/HiveMQ)<br/>TCP/IP Port 1883"]
+    end
+
+    subgraph RECEIVER["📺 Hardware Receiver Station"]
+        ESP_RECV["ESP32 Receiver Unit<br/>ESP-NOW to USB / LCD"]
+        LCD["16×2 Character LCD<br/>HD44780 + PCF8574 I2C<br/>(SDA:21, SCL:22)"]
+        ESP_RECV -->|"I2C (0x27)"| LCD
+    end
+
+    subgraph NODERED["💻 Host Station (Node-RED Edge Pipeline)"]
+        CONN["serial-manager.js<br/>Connection Manager"]
+        ENGINE["gesture-engine.js<br/>Segmentation FSM & Bias Filter"]
+        ML["dataset-model.js<br/>66-D Features & k-NN (k=3)"]
+        OUT["output.js<br/>Confidence Gating & LCD Wrapping"]
+        TTS["speaker.js<br/>Persistent PowerShell TTS"]
+        LOG["logger.js<br/>Daily CSV Audit Logger"]
+        TOUI["to-ui.js<br/>Fan-in Aggregator"]
+        ROUTER["ui-router.js<br/>WS Command Dispatcher"]
+        SERVE["serve-dashboard.js<br/>HTTP Server & MIME Dispatch"]
+    end
+
+    subgraph WEB["🌐 Interactive Web Applications"]
+        LAND["landing.html<br/>Front-Door Showcase"]
+        DASH["index.html<br/>Live Operational Cockpit"]
+    end
+
+    ESP_SEND -->|"ESP-NOW Broadcast"| ESPNOW
+    ESP_SEND -->|"MQTT Pub: signspeaker/glove/data"| WIFI
+    ESPNOW --> ESP_RECV
+    ESP_RECV -->|"USB Serial (115200 baud)"| CONN
+    WIFI -->|"MQTT Sub: signspeaker/glove/data"| CONN
+
+    CONN -->|"topic: sample"| ENGINE
+    CONN -->|"topic: sample"| LOG
+    ENGINE -->|"topic: gesture (buffered)"| ML
+    ML -->|"topic: prediction"| OUT
+    OUT -->|"topic: write (W,... / L,...)"| CONN
+    OUT -->|"topic: say (text)"| TTS
+    CONN -->|"LCD String (USB / MQTT)"| ESP_RECV
+
+    CONN & ENGINE & ML & OUT & TTS & LOG -->|"Telemetry Events"| TOUI
+    TOUI -->|"WebSocket /ws/glove"| DASH
+
+    DASH -->|"Inbound Commands"| ROUTER
+    ROUTER --> CONN & ENGINE & ML & OUT & TTS & LOG
+
+    SERVE -->|"HTTP GET /glove"| LAND
+    SERVE -->|"HTTP GET /glove/dashboard"| DASH
+    TTS -->|"System.Speech.Synthesis"| AUDIO[["🔊 Laptop Audio Output<br/>Clear Vocal Feedback"]]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Technical Specifications -->
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View Architectural Specifications & Protocol Data</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subsystem</th>
+                                            <th>Protocol / Bus</th>
+                                            <th>Payload / Baud</th>
+                                            <th>Latency / Frequency</th>
+                                            <th>Key Source File</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>MPU6050 IMU</strong></td>
+                                            <td>I2C (0x68)</td>
+                                            <td>Raw 16-bit Gyro (gx, gy, gz)</td>
+                                            <td>~25 Hz software polled</td>
+                                            <td><code>firmware/sender/sender.ino</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ESP-NOW Radio</strong></td>
+                                            <td>2.4 GHz Proprietary</td>
+                                            <td><code>D,timestamp,gx,gy,gz</code></td>
+                                            <td>&lt; 5 ms point-to-point</td>
+                                            <td><code>firmware/receiver/receiver.ino</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Wireless MQTT</strong></td>
+                                            <td>TCP/IP (Port 1883)</td>
+                                            <td><code>signspeaker/glove/data</code></td>
+                                            <td>QoS 0, 25 packets/sec</td>
+                                            <td><code>node-red/functions/serial-manager.js</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>USB Serial Port</strong></td>
+                                            <td>RS232 / UART</td>
+                                            <td>115200 Baud, 8-N-1</td>
+                                            <td>1 Hz Heartbeat 'H'</td>
+                                            <td><code>node-red/functions/serial-manager.js</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Web Dashboard</strong></td>
+                                            <td>WebSocket (<code>/ws/glove</code>)</td>
+                                            <td>JSON Event Stream</td>
+                                            <td>60 FPS Canvas rendering</td>
+                                            <td><code>dashboard/index.html</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 1: Connection Layer                 -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-1" data-categories="telemetry">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 01</span>
+                            <span class="category-tag telemetry">Ingestion & Telemetry</span>
+                        </div>
+                        <h3 class="card-title">🔌 Connection Layer & Multi-Mode Ingestion</h3>
+                        <p class="card-summary">Triple-redundancy connection manager supporting wireless MQTT over Wi-Fi, hardware USB Serial with auto-reconnect, and a synthetic sensor simulator with Gaussian noise injection.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/serial-manager.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-1">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-1">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-1">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-1">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-1" data-name="connection-layer-flowchart">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-1" data-title="Connection Layer & Multi-Mode Ingestion">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-1">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-1">
+flowchart TD
+    START([System Boot / Node-RED Starts]) --> LOAD_CONF[Load data/serial.json<br/>Restore last connection mode, broker & COM port]
+    LOAD_CONF --> CHECK_MODE{Last saved mode?}
+
+    CHECK_MODE -->|mqtt| INIT_MQTT[openMqtt<br/>Connect to broker.hivemq.com:1883<br/>or configured broker URL]
+    CHECK_MODE -->|serial| INIT_SERIAL_WAIT[Wait for tick: auto-retry<br/>serial port every 3 seconds]
+    CHECK_MODE -->|sim / disconnected| IDLE_WAIT[Stand by: wait for dashboard command]
+
+    INIT_MQTT --> MQTT_CONNECT{MQTT broker<br/>connection state}
+    MQTT_CONNECT -->|Connected| MQTT_SUB["Subscribe Topics:<br/>• signspeaker/glove/data<br/>• glove/data (fallback)"]
+    MQTT_CONNECT -->|Error / Offline| MQTT_RETRY[Auto-reconnect every 3 s]
+    MQTT_RETRY --> MQTT_CONNECT
+    MQTT_SUB --> MQTT_MSG["Incoming MQTT Packet<br/>Payload: D,ms,gx,gy,gz"]
+    MQTT_MSG --> PARSE_LINE
+
+    INIT_SERIAL_WAIT --> SERIAL_OPEN["SerialPort.open(path, 115200 baud)<br/>RTS/DTR = false (prevents ESP32 reset)"]
+    SERIAL_OPEN -->|Port Busy / Error| SERIAL_RETRY[Retry every 3 s]
+    SERIAL_RETRY --> SERIAL_OPEN
+    SERIAL_OPEN -->|Connected| SERIAL_LISTEN["ReadlineParser on newline '\n'<br/>Send 1 Hz keep-alive 'H' heartbeat"]
+    SERIAL_LISTEN --> PARSE_LINE
+
+    IDLE_WAIT -->|Dashboard Command| SIM_START["startSim()<br/>setInterval 40 ms (25 Hz synthetic stream)"]
+    SIM_START --> SIM_PATTERN{simAuto enabled?}
+    SIM_PATTERN -->|Yes| SIM_AUTO["Pick random gesture every 3.0-4.5s:<br/>Hello, I am, Reem, Thanks,<br/>Hello Reem, I am Reem, Thank you"]
+    SIM_PATTERN -->|No / Manual| SIM_MANUAL[Wait for dashboard simGesture trigger]
+    SIM_AUTO --> SIM_NOISE["Add Gaussian noise ±0.06 rad/s<br/>Format into string: D,ms,gx,gy,gz"]
+    SIM_MANUAL --> SIM_NOISE
+    SIM_NOISE --> PARSE_LINE
+
+    PARSE_LINE{{"handleLine(line)"}}
+    PARSE_LINE -->|JSON object '{gx,gy,gz}'| EMIT_SAMPLE
+    PARSE_LINE -->|'D,ms,gx,gy,gz' packet| EMIT_SAMPLE
+    PARSE_LINE -->|'X:...|Y:...|Z:...' legacy format| EMIT_SAMPLE
+    PARSE_LINE -->|'I,message' status message| EMIT_DEVICE["Emit topic: 'device'<br/>Restores LCD idle screen"]
+    PARSE_LINE -->|Malformed / Noise| DISCARD[Discard sample]
+
+    EMIT_SAMPLE["Emit topic: 'sample'<br/>{t, dev, gx, gy, gz}<br/>Sent to Gesture Engine & CSV Logger"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View Ingestion Protocols & Packet Formats</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Packet Prefix</th>
+                                            <th>Structure</th>
+                                            <th>Direction</th>
+                                            <th>Purpose</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>D,</code></td>
+                                            <td><code>D,&lt;ms&gt;,&lt;gx&gt;,&lt;gy&gt;,&lt;gz&gt;</code></td>
+                                            <td>Glove → Node-RED</td>
+                                            <td>Normalized 25 Hz gyroscope measurement</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>I,</code></td>
+                                            <td><code>I,&lt;info message string&gt;</code></td>
+                                            <td>Receiver → Node-RED</td>
+                                            <td>Hardware boot / status notification</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>H</code></td>
+                                            <td><code>H\n</code></td>
+                                            <td>Node-RED → Receiver</td>
+                                            <td>1 Hz keep-alive heartbeat</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>W,</code></td>
+                                            <td><code>W,&lt;word&gt;\n</code></td>
+                                            <td>Node-RED → LCD</td>
+                                            <td>Display single recognized word for 2.0 seconds</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>L,</code></td>
+                                            <td><code>L,&lt;line1&gt;|&lt;line2&gt;\n</code></td>
+                                            <td>Node-RED → LCD</td>
+                                            <td>Dual-line idle or multi-word sentence display</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 2: Gesture Segmentation FSM          -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-2" data-categories="ml">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 02</span>
+                            <span class="category-tag ml">DSP & Machine Learning</span>
+                        </div>
+                        <h3 class="card-title">⚙️ Gesture Segmentation State Machine</h3>
+                        <p class="card-summary">Continuous 25 Hz motion segmentation with Exponentially Weighted Moving Average (EWMA) resting bias cancellation, 3-sample pre-roll buffering, and dual-mode parameter adaptation.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/gesture-engine.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-2">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-2">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-2">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-2">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-2" data-name="gesture-segmentation-fsm">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-2" data-title="Gesture Segmentation State Machine">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-2">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-2">
+flowchart TD
+    SAMPLE_IN(["topic: 'sample' arrives<br/>{t, dev, gx, gy, gz}"])
+
+    SAMPLE_IN --> BIAS_CORRECT["Subtract EWMA Gyro Bias:<br/>gx -= bias.x<br/>gy -= bias.y<br/>gz -= bias.z<br/>(α = 0.03 updates only in WAITING state)"]
+    BIAS_CORRECT --> CALC_MAG["Calculate Angular Magnitude:<br/>mag = √(gx² + gy² + gz²)"]
+    CALC_MAG --> CHECK_PHASE{Current State Phase?}
+
+    %% COOLDOWN STATE
+    CHECK_PHASE -->|cooldown| COOLDOWN_CHECK{"now &gt;= cooldownUntil?<br/>(700ms Word / 800ms Sentence)"}
+    COOLDOWN_CHECK -->|No| DROP[Drop sample: in cooldown]
+    COOLDOWN_CHECK -->|Yes| SET_WAITING["phase = 'waiting'<br/>Notify UI via WebSocket"]
+    SET_WAITING --> WAIT_BLOCK
+
+    %% WAITING STATE
+    CHECK_PHASE -->|waiting| WAIT_BLOCK["Track EWMA bias (if mag &lt; start)<br/>Append sample to Pre-roll buffer<br/>(Maintains last 3 samples)"]
+    WAIT_BLOCK --> ONSET_CHECK{"mag &gt; start threshold?<br/>(0.20 rad/s Word / 0.18 rad/s Sentence)"}
+    ONSET_CHECK -->|No| DROP2[Await next sample]
+    ONSET_CHECK -->|Yes| ONSET["phase = 'active'<br/>buf = preRoll + current sample<br/>startT = now<br/>quietSince = 0"]
+
+    %% ACTIVE STATE
+    ONSET --> ACTIVE_BLOCK
+    CHECK_PHASE -->|active| ACTIVE_BLOCK["Append sample to trajectory buf"]
+    ACTIVE_BLOCK --> END_CHECK{"mag &lt; end threshold?<br/>(0.12 rad/s Word / 0.11 rad/s Sentence)"}
+    END_CHECK -->|No: Active movement| QUIET_RESET[quietSince = 0]
+    QUIET_RESET --> MAX_CHECK
+    END_CHECK -->|Yes: Hand slowing down| QUIET_TIMER["quietSince = timestamp (if not set)"]
+    QUIET_TIMER --> QUIET_DONE{"Quiet for &gt;= quiet duration?<br/>(250ms Word / 420ms Sentence)"}
+    QUIET_DONE -->|Still quiet, within window| MAX_CHECK
+    QUIET_DONE -->|Yes: Gesture completed!| FINISH_GESTURE
+
+    MAX_CHECK{"Duration &gt;= maxTime?<br/>(1500ms Word / 4500ms Sentence)"}
+    MAX_CHECK -->|No| DROP3[Await next sample]
+    MAX_CHECK -->|Yes: Maximum timeout reached| FINISH_GESTURE
+
+    %% FINISH & EMIT
+    FINISH_GESTURE["Compute duration = endT - startT<br/>Trim buffer to samples &lt;= endT"]
+    FINISH_GESTURE --> MIN_CHECK{"duration &gt;= minTime?<br/>(120ms Word / 300ms Sentence)<br/>AND sample count &gt;= 3?"}
+    MIN_CHECK -->|No: Accidental twitch/noise| DISCARD_GESTURE["Discard burst<br/>Emit 'discarded' event<br/>phase = 'waiting'"]
+    MIN_CHECK -->|Yes: Valid gesture!| EMIT_GESTURE["Emit topic: 'gesture'<br/>{at, duration, samples[ [dt,gx,gy,gz] ], mode, label}<br/>Forwarded to Dataset & Model"]
+
+    EMIT_GESTURE --> ENTER_COOLDOWN["phase = 'cooldown'<br/>cooldownUntil = now + cooldownDuration"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View State Machine Parameters (Word vs. Sentence Mode)</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Engine Parameter</th>
+                                            <th>Word Mode (Default)</th>
+                                            <th>Sentence Mode</th>
+                                            <th>Mathematical Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Start Threshold</strong></td>
+                                            <td><code>0.20 rad/s</code></td>
+                                            <td><code>0.18 rad/s</code></td>
+                                            <td>Motion energy $\sqrt{gx^2+gy^2+gz^2}$ required to trigger onset</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>End Threshold</strong></td>
+                                            <td><code>0.12 rad/s</code></td>
+                                            <td><code>0.11 rad/s</code></td>
+                                            <td>Upper bound marking quiet decelerating motion</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Quiet Duration</strong></td>
+                                            <td><code>250 ms</code></td>
+                                            <td><code>420 ms</code></td>
+                                            <td>Continuous stillness required before triggering gesture completion</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Minimum Duration</strong></td>
+                                            <td><code>120 ms</code></td>
+                                            <td><code>300 ms</code></td>
+                                            <td>Rejects accidental finger twitches and vibration artifacts</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Maximum Duration</strong></td>
+                                            <td><code>1500 ms</code></td>
+                                            <td><code>4500 ms</code></td>
+                                            <td>Forced timeout to finalize long multi-word expressions</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cooldown Duration</strong></td>
+                                            <td><code>700 ms</code></td>
+                                            <td><code>800 ms</code></td>
+                                            <td>Locks out onset while the user returns hand to resting position</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Pre-roll Buffer</strong></td>
+                                            <td><code>3 samples</code></td>
+                                            <td><code>3 samples</code></td>
+                                            <td>Prepends ~120ms of samples prior to threshold trigger</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 3: Feature Extraction & k-NN ML     -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-3" data-categories="ml">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 03</span>
+                            <span class="category-tag ml">DSP & Machine Learning</span>
+                        </div>
+                        <h3 class="card-title">🧠 66-D Feature Extraction & Weighted k-NN Classifier</h3>
+                        <p class="card-summary">Transforms raw variable-length trajectory bursts into a standardized 66-dimensional vector, evaluated by a distance-weighted k-NN ($k=3$) with statistical outlier rejection.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/dataset-model.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-3">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-3">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-3">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-3">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-3" data-name="feature-extraction-knn-pipeline">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-3" data-title="66-D Feature Extraction & Weighted k-NN Classifier">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-3">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-3">
+flowchart TD
+    GESTURE_IN(["topic: 'gesture' arrives<br/>{mode, recording, label, samples[ [dt,gx,gy,gz] ]}"])
+
+    GESTURE_IN --> CHECK_MODE{Engine Mode?}
+
+    %% TRAINING RECORDING
+    CHECK_MODE -->|train & recording=true| SAVE_SAMPLE["Append sample to dataset.json:<br/>{id, label, at, duration, samples}<br/>Atomic write via temp file + renameSync"]
+    SAVE_SAMPLE --> BUMP_REV["ds.rev++<br/>Update UI sample inventory counts"]
+    BUMP_REV --> EXTRACT_PIPELINE
+
+    %% RECOGNITION / INFERENCE
+    CHECK_MODE -->|recognize| EXTRACT_PIPELINE
+    CHECK_MODE -->|train & preview only| EXTRACT_PIPELINE
+
+    EXTRACT_PIPELINE["Extract 66-Dimensional Feature Vector:"]
+    EXTRACT_PIPELINE --> F_DUR["Feature [0]:<br/>Total Gesture Duration (seconds)"]
+    EXTRACT_PIPELINE --> F_AXIS["Features [1-15]: Per-Axis Statistics (X, Y, Z)<br/>Range, Mean, Standard Deviation, Mean Abs, Peak"]
+    EXTRACT_PIPELINE --> F_MAG["Features [16-17]: Magnitude Statistics<br/>Mean Magnitude & Peak Magnitude"]
+    EXTRACT_PIPELINE --> F_TRAJ["Features [18-65]: Resampled Trajectories<br/>16 Equidistant Linear-Interpolated Points × 3 Axes"]
+
+    F_DUR & F_AXIS & F_MAG & F_TRAJ --> ASSEMBLE_VEC["Assemble 66-D Feature Vector X"]
+
+    ASSEMBLE_VEC --> MODEL_CHECK{Trained k-NN Model Exists?}
+
+    %% RULE-BASED FALLBACK
+    MODEL_CHECK -->|No Model Trained| RULES["classifyRules()<br/>Compute Axis Ranges {x, y, z}:<br/>• Hello: x&gt;0.70 & y&gt;0.40 & z&gt;0.50<br/>• I am: y&gt;0.65 & y&gt;1.15*x & y&gt;1.15*z<br/>• Reem: x&lt;0.30 & y&lt;0.30 & z&lt;0.30<br/>• Thanks: z&gt;0.70 & x&gt;0.25 & z&gt;y<br/>• Else: Unknown"]
+    RULES --> PRED_ASSEMBLE
+
+    %% k-NN INFERENCE
+    MODEL_CHECK -->|Yes: Trained Model Ready| ZSCORE["Standardize Vector (Z-score):<br/>z_i = (x_i - mean_i) / std_i"]
+    ZSCORE --> KNN["Calculate Euclidean Distances to All Training Points<br/>Find top k = 3 nearest neighbors<br/>Weight votes: w = 1 / (distance + 0.001)"]
+    KNN --> REJECT_DIST{"Nearest neighbor distance &lt;=<br/>model.rejectDistance?<br/>(1.5 × 95th-pct same-class distance)"}
+    
+    REJECT_DIST -->|Exceeds: Novel / Outlier Gesture| OUTLIER["known = false<br/>Label = 'Unknown'"]
+    REJECT_DIST -->|Within Boundary| CONF_CHECK{"Confidence &gt;= minConfidence?<br/>(Default: 0.55)"}
+    
+    CONF_CHECK -->|Below Threshold| LOW_CONF["known = false<br/>Label = 'Unknown'"]
+    CONF_CHECK -->|Passes All Checks| WIN_PRED["known = true<br/>Label = Winning Neighbor Class"]
+
+    OUTLIER & LOW_CONF & WIN_PRED --> PRED_ASSEMBLE
+
+    PRED_ASSEMBLE["Assemble Final Prediction Object:<br/>{label, known, confidence, distance, votes, source}"]
+
+    PRED_ASSEMBLE --> DISPATCH_RESULTS["Out 1: 'gesture' telemetry → WebSocket Dashboard<br/>Out 2 (recognize only): 'prediction' → Output Dispatcher<br/>Out 3 (training only): 'write' LCD update → Serial"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View 66-Dimensional Vector Feature Mapping</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature Index</th>
+                                            <th>Group Name</th>
+                                            <th>Count</th>
+                                            <th>Mathematical Definition</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>0</strong></td>
+                                            <td>Gesture Duration</td>
+                                            <td>1</td>
+                                            <td>$T = (t_{\text{end}} - t_{\text{start}}) / 1000$ (seconds)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>1 – 5</strong></td>
+                                            <td>Gyro X Stats</td>
+                                            <td>5</td>
+                                            <td>Range ($\max - \min$), Mean ($\mu$), Std Dev ($\sigma$), Mean Abs, Peak</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>6 – 10</strong></td>
+                                            <td>Gyro Y Stats</td>
+                                            <td>5</td>
+                                            <td>Range ($\max - \min$), Mean ($\mu$), Std Dev ($\sigma$), Mean Abs, Peak</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>11 – 15</strong></td>
+                                            <td>Gyro Z Stats</td>
+                                            <td>5</td>
+                                            <td>Range ($\max - \min$), Mean ($\mu$), Std Dev ($\sigma$), Mean Abs, Peak</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>16 – 17</strong></td>
+                                            <td>Magnitude Stats</td>
+                                            <td>2</td>
+                                            <td>Mean and Peak of $\|G\| = \sqrt{gx^2 + gy^2 + gz^2}$</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>18 – 33</strong></td>
+                                            <td>Trajectory Gyro X</td>
+                                            <td>16</td>
+                                            <td>16 equidistant points linearly interpolated across gesture time</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>34 – 49</strong></td>
+                                            <td>Trajectory Gyro Y</td>
+                                            <td>16</td>
+                                            <td>16 equidistant points linearly interpolated across gesture time</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>50 – 65</strong></td>
+                                            <td>Trajectory Gyro Z</td>
+                                            <td>16</td>
+                                            <td>16 equidistant points linearly interpolated across gesture time</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td><strong>Full Feature Vector</strong></td>
+                                            <td><strong>66</strong></td>
+                                            <td>Standardized via dataset $z = (x - \mu) / \sigma$</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 4: Output Dispatch                   -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-4" data-categories="output">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 04</span>
+                            <span class="category-tag output">Output & Feedback</span>
+                        </div>
+                        <h3 class="card-title">🗣️ Multi-Modal Output Dispatch & Smart LCD Wrapping</h3>
+                        <p class="card-summary">Dual-channel output coordinator providing word-boundary intelligent wrapping for 16×2 LCD hardware and persistent speech synthesis with zero cold-start delay.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/output.js</code> & <code>speaker.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-4">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-4">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-4">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-4">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-4" data-name="output-dispatch-pipeline">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-4" data-title="Multi-Modal Output Dispatch & Smart LCD Wrapping">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-4">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-4">
+flowchart TD
+    PRED_IN(["topic: 'prediction' arrives<br/>{label, known, confidence, source}"])
+
+    PRED_IN --> GATE_CHECK{"known == true<br/>AND confidence &gt;= minConfidence?<br/>(Default: 0.55)"}
+    GATE_CHECK -->|Pass| ACCEPT_LABEL[text = p.label]
+    GATE_CHECK -->|Fail| REJECT_LABEL["text = 'Unknown'"]
+
+    %% LCD PATHWAY
+    ACCEPT_LABEL --> LCD_ACTIVE{lcd enabled?}
+    REJECT_LABEL --> LCD_ACTIVE
+
+    LCD_ACTIVE -->|Yes| FORMAT_LCD{"text === 'Unknown'?"}
+    FORMAT_LCD -->|Yes| LCD_UNK["Command: 'W,Unknown'<br/>Show on line 1 for 2s"]
+    FORMAT_LCD -->|No: Valid text| LENGTH_CHECK{"text.length &lt;= 16?"}
+    
+    LENGTH_CHECK -->|Short Word| SHORT_W["Command: 'W,' + text<br/>Displays on Line 1 with status on Line 2"]
+    LENGTH_CHECK -->|Long Sentence| SMART_WRAP["Smart Word Boundary Algorithm:<br/>Split text by spaces<br/>Pack Line 1 up to 16 chars<br/>Pack remainder onto Line 2<br/>Command: 'L,' + line1 + '|' + line2"]
+
+    LCD_ACTIVE -->|No| LCD_NULL[LCD Output Disabled]
+    LCD_UNK & SHORT_W & SMART_WRAP --> LCD_DISPATCH["Send to Serial Manager:<br/>• Writes to physical USB COM port<br/>• Publishes to MQTT signspeaker/glove/lcd"]
+
+    %% AUDIO SPEECH PATHWAY
+    ACCEPT_LABEL --> SPEAK_ACTIVE{speak enabled?}
+    REJECT_LABEL --> SPEAK_ACTIVE
+
+    SPEAK_ACTIVE -->|Yes| CHECK_UNKNOWN{"text === 'Unknown'?"}
+    CHECK_UNKNOWN -->|Yes & speakUnknown=false| SPEAK_SKIP[Skip speech for unknown]
+    CHECK_UNKNOWN -->|Yes & speakUnknown=true| SPEAK_UNKNOWN["Spoken phrase: 'Unknown gesture'"]
+    CHECK_UNKNOWN -->|No: Valid word| SPEAK_VALID["Spoken phrase = text"]
+
+    SPEAK_ACTIVE -->|No| SPEAK_DISABLED[Speech Output Disabled]
+
+    SPEAK_UNKNOWN & SPEAK_VALID --> TTS_SEND["Send topic: 'say'<br/>Forward to persistent speaker.js daemon"]
+
+    %% UI TELEMETRY
+    ACCEPT_LABEL --> UI_NOTIFY
+    REJECT_LABEL --> UI_NOTIFY
+    UI_NOTIFY["Emit topic: 'output'<br/>{text, confidence, spoken, lcdSent, at}<br/>Pushed to Dashboard WebSocket"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View Smart LCD Wrapping Logic & Sentence Parsing</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Input Recognized String</th>
+                                            <th>LCD Protocol Command</th>
+                                            <th>Physical 16×2 Display Rendering</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>Hello</code></td>
+                                            <td><code>W,Hello</code></td>
+                                            <td><code>[Line 1]: Hello           <br>[Line 2]: Detected!       </code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>Unknown</code></td>
+                                            <td><code>W,Unknown</code></td>
+                                            <td><code>[Line 1]: Unknown         <br>[Line 2]: Gesture         </code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>Hello Reem</code></td>
+                                            <td><code>W,Hello Reem</code></td>
+                                            <td><code>[Line 1]: Hello Reem      <br>[Line 2]: Detected!       </code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>I am Reem Mohamed</code> (20 chars)</td>
+                                            <td><code>L,I am Reem|Mohamed</code></td>
+                                            <td><code>[Line 1]: I am Reem       <br>[Line 2]: Mohamed         </code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>Thank you very much</code> (22 chars)</td>
+                                            <td><code>L,Thank you very|much</code></td>
+                                            <td><code>[Line 1]: Thank you very  <br>[Line 2]: much            </code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 5: Dashboard & WebSocket Layer       -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-5" data-categories="architecture">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 05</span>
+                            <span class="category-tag architecture">Architecture & Comms</span>
+                        </div>
+                        <h3 class="card-title">🌐 Dashboard & WebSocket Event Bus</h3>
+                        <p class="card-summary">Bidirectional reactive communication system connecting the browser front-end with backend function nodes over a multiplexed WebSocket channel (<code>/ws/glove</code>).</p>
+                        <div class="source-tag">Source: <code>node-red/functions/ui-router.js</code> & <code>to-ui.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-5">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-5">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-5">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-5">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-5" data-name="websocket-event-bus-flowchart">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-5" data-title="Dashboard & WebSocket Event Bus">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-5">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-5">
+flowchart TD
+    DASH["Single-Page Web Application<br/>(dashboard/index.html)"]
+
+    %% INBOUND FLOW
+    DASH -->|"Inbound WebSocket Frame<br/>JSON: {cmd, ...}"| WS_IN["WebSocket In Node<br/>(path: /ws/glove)"]
+    WS_IN --> ROUTER["Command Router<br/>(ui-router.js)"]
+
+    ROUTER -->|"cmd.target === 'serial' / connect / broker"| CONN["Connection Manager<br/>(serial-manager.js)"]
+    ROUTER -->|"cmd.target === 'engine' / mode / record / stop"| ENGINE["Gesture Engine<br/>(gesture-engine.js)"]
+    ROUTER -->|"cmd.target === 'dataset' / train / deleteWords"| DATASET["Dataset & Model<br/>(dataset-model.js)"]
+    ROUTER -->|"cmd.target === 'output' / outputSettings"| OUTPUT["Output Dispatcher<br/>(output.js)"]
+    ROUTER -->|"cmd.target === 'speaker' / voice / rate"| SPEAKER["Speaker TTS<br/>(speaker.js)"]
+    ROUTER -->|"cmd.target === 'logger' / log status"| LOGGER["CSV Logger<br/>(logger.js)"]
+
+    %% OUTBOUND FAN-IN
+    CONN -->|"topic: 'serial'"| TO_UI["Fan-In Aggregator<br/>(to-ui.js)"]
+    ENGINE -->|"topic: 'engine' / 'phase' / 'bias'"| TO_UI
+    DATASET -->|"topic: 'dataset' / 'model' / 'gesture'"| TO_UI
+    OUTPUT -->|"topic: 'output' / 'outputSettings'"| TO_UI
+    SPEAKER -->|"topic: 'speaker'"| TO_UI
+    LOGGER -->|"topic: 'logger'"| TO_UI
+
+    TO_UI -->|"Outbound JSON Packet<br/>{topic, payload}"| WS_OUT["WebSocket Out Node<br/>(path: /ws/glove)"]
+    WS_OUT -->|"Real-Time Push"| DASH
+
+    %% HTTP STATIC SERVING
+    HTTP_CLIENT["Web Browser HTTP Request"] --> HTTP_IN["HTTP In Nodes<br/>'/', '/glove', '/glove/dashboard'"]
+    HTTP_IN --> SERVE["serve-dashboard.js<br/>Dual-Route Dispatcher"]
+    SERVE -->|GET / or /glove| SEND_LAND["Serve dashboard/landing.html<br/>(Partner Showcase & Intro)"]
+    SERVE -->|GET /glove/dashboard| SEND_DASH["Serve dashboard/index.html<br/>(Live Operational Cockpit)"]
+    SERVE -->|GET /glove/images/:file| SEND_IMG["Binary Magic-Byte Inspection<br/>PNG / JPEG / SVG Header Detection"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View WebSocket Topic Catalog & Event Schemas</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Topic</th>
+                                            <th>Direction</th>
+                                            <th>Payload Schema</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>serial</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>{connected, mode, rate, ports, mqttConnected, broker, lcd}</code></td>
+                                            <td>Live telemetry connection state and 1 Hz sample rate</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>engine</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>{mode, recording, label, phase, settings, bias}</code></td>
+                                            <td>Segmentation state, active recording label & EWMA bias</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>phase</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>"waiting" | "active" | "cooldown"</code></td>
+                                            <td>High-frequency state change for UI waveform coloring</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>dataset</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>{labels, counts, total, saved, unsaved, samples[]}</code></td>
+                                            <td>Training sample inventory and snapshot status</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>model</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>{accuracy, k, confusion, rejectDistance, stale}</code></td>
+                                            <td>Trained k-NN model diagnostics & leave-one-out metrics</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>output</code></td>
+                                            <td>Backend → UI</td>
+                                            <td><code>{text, confidence, spoken, lcdSent, at}</code></td>
+                                            <td>Final recognized speech & LCD event notification</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 6: Raw CSV Logger                    -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-6" data-categories="system">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 06</span>
+                            <span class="category-tag system">System Infrastructure</span>
+                        </div>
+                        <h3 class="card-title">📦 Raw Sensor CSV Audit Logger</h3>
+                        <p class="card-summary">Continuous non-blocking daily rotation audit logger storing every 25 Hz gyroscope measurement for offline analytics and research validation.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/logger.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-6">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-6">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-6">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-6">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-6" data-name="raw-sensor-csv-logger">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-6" data-title="Raw Sensor CSV Audit Logger">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-6">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-6">
+flowchart TD
+    INPUT(["Incoming Message:<br/>topic: 'sample' OR topic: 'tick'"]) --> CHECK_INPUT{Message Topic?}
+
+    CHECK_INPUT -->|topic: 'sample'| RECEIVE_SAMPLE["Receive: {t, dev, gx, gy, gz}"]
+    RECEIVE_SAMPLE --> FORMAT_ROW["Format CSV Row:<br/>ISO_timestamp, device_ms, gx, gy, gz\n"]
+    FORMAT_ROW --> APPEND_BUFFER["Append to internal write buffer"]
+
+    CHECK_INPUT -->|topic: 'tick' (1 Hz)| FLUSH_CHECK{"Buffer has rows?"}
+    FLUSH_CHECK -->|No| LOG_STATUS
+    FLUSH_CHECK -->|Yes| CHECK_FILE{"Daily CSV file exists?<br/>(data/raw/gyro-YYYY-MM-DD.csv)"}
+
+    CHECK_FILE -->|No| CREATE_FILE["Create new daily CSV file<br/>Write Header: 'timestamp,device_ms,gx,gy,gz\n'"]
+    CHECK_FILE -->|Yes| WRITE_BATCH
+    CREATE_FILE --> WRITE_BATCH["Append buffered rows to file<br/>fs.appendFileSync()"]
+
+    WRITE_BATCH --> CLEAR_BUF["Clear write buffer<br/>Update file stats (row count, size in KB)"]
+    CLEAR_BUF --> LOG_STATUS
+
+    LOG_STATUS["Emit topic: 'logger'<br/>{file, rows, sizeBytes, activeToday}<br/>Forward to Dashboard WebSocket"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View CSV Logging Specifications</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Column Header</th>
+                                            <th>Data Type</th>
+                                            <th>Example Value</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>timestamp</code></td>
+                                            <td>ISO-8601 String</td>
+                                            <td><code>2026-09-25T20:25:00.123Z</code></td>
+                                            <td>Host Edge Station reception clock</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>device_ms</code></td>
+                                            <td>Integer</td>
+                                            <td><code>142580</code></td>
+                                            <td>ESP32 internal microsecond/millisecond uptime</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>gx</code></td>
+                                            <td>Float (rad/s)</td>
+                                            <td><code>0.4521</code></td>
+                                            <td>Gyroscope X angular velocity</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>gy</code></td>
+                                            <td>Float (rad/s)</td>
+                                            <td><code>-1.1205</code></td>
+                                            <td>Gyroscope Y angular velocity</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>gz</code></td>
+                                            <td>Float (rad/s)</td>
+                                            <td><code>0.0892</code></td>
+                                            <td>Gyroscope Z angular velocity</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 8: Train vs Recognize Decision Tree  -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-8" data-categories="ml">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 08</span>
+                            <span class="category-tag ml">DSP & Machine Learning</span>
+                        </div>
+                        <h3 class="card-title">🏋️ Training Studio vs. Live Recognition Decision Tree</h3>
+                        <p class="card-summary">Dual-operational pipeline isolating studio dataset recording and leave-one-out model cross-validation from real-time live inferencing.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/dataset-model.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-8">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-8">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-8">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-8">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-8" data-name="training-vs-recognition-tree">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-8" data-title="Training Studio vs. Live Recognition Decision Tree">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-8">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-8">
+flowchart TD
+    GESTURE_BURST(["Gesture Segment Emitted from Engine"])
+    GESTURE_BURST --> CHECK_OP_MODE{System Operation Mode?}
+
+    %% TRAINING STUDIO PATHWAY
+    CHECK_OP_MODE -->|Training Mode| CHECK_REC{Active Recording Session?}
+    CHECK_REC -->|recording == false| PREVIEW_ONLY["Extract 66-D Features<br/>Run classify() for live preview<br/>Display waveform in UI<br/>(Sample NOT saved to dataset)"]
+    
+    CHECK_REC -->|recording == true| SAVE_DATASET["Store sample in data/dataset.json<br/>Record target label e.g., 'Hello'<br/>Increment dataset revision rev++<br/>Update UI sample count badge"]
+    SAVE_DATASET --> LCD_REC_FEEDBACK["Update LCD Line: 'Rec: &lt;word&gt; | Samples: N'"]
+    LCD_REC_FEEDBACK --> PREVIEW_ONLY
+
+    PREVIEW_ONLY --> USER_TRAIN_TRIGGER{"User clicks 'Train Model'<br/>in Dashboard?"}
+    USER_TRAIN_TRIGGER -->|No| AWAIT_MORE[Continue collecting samples]
+    USER_TRAIN_TRIGGER -->|Yes| CHECK_SAMPLE_COUNT{"At least 3 samples per label?"}
+    CHECK_SAMPLE_COUNT -->|No| REJECT_TRAIN["Show error toast:<br/>'Need &gt;= 3 samples per word (10+ recommended)'"]
+    CHECK_SAMPLE_COUNT -->|Yes| RUN_TRAIN["Calculate dataset feature means μ and stddev σ<br/>Compute Leave-One-Out Cross-Validation Matrix<br/>Compute 95th-percentile same-class nearest distance<br/>Save trained model to data/model.json"]
+
+    %% RECOGNITION PATHWAY
+    CHECK_OP_MODE -->|Recognition Mode| RUN_INFERENCE["Extract 66-D Features<br/>Z-Score Standardize Vector<br/>Execute Weighted k-NN (k = 3)"]
+    RUN_INFERENCE --> EVAL_CONF{"Nearest Distance &lt;= rejectDistance<br/>AND confidence &gt;= minConfidence (0.55)?"}
+
+    EVAL_CONF -->|Valid Prediction| ACCEPT_GESTURE["Output Recognized Gesture:<br/>1. Send vocal speech to speaker.js<br/>2. Send formatted text to 16x2 LCD<br/>3. Emit big word banner to Dashboard"]
+    EVAL_CONF -->|Outlier / Uncertain| REJECT_GESTURE["Output 'Unknown Gesture':<br/>1. Voice feedback (if enabled)<br/>2. LCD: 'Unknown Gesture'<br/>3. Dashboard: 'Unknown' with distance gauge"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View k-NN Model Training Mathematics</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Step</th>
+                                            <th>Mathematical Formula</th>
+                                            <th>Implementation Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>1. Standardization</strong></td>
+                                            <td>$z_{i} = \frac{x_{i} - \mu_{i}}{\sigma_{i}}$</td>
+                                            <td>Features normalized to zero-mean, unit-variance using training set $\mu$ and $\sigma$.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>2. Distance Metric</strong></td>
+                                            <td>$d(u, v) = \sqrt{\frac{1}{66} \sum_{i=1}^{66} (u_i - v_i)^2}$</td>
+                                            <td>Normalized Euclidean distance across all 66 standardized dimensions.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>3. Weighted Voting</strong></td>
+                                            <td>$w_j = \frac{1}{d_j + 0.001}$</td>
+                                            <td>Closer training examples contribute exponentially higher voting weight.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>4. Outlier Threshold</strong></td>
+                                            <td>$\text{RejectDist} = 1.5 \times P_{95}(\text{LOO Distances})$</td>
+                                            <td>Adaptive rejection radius: 1.5 times the 95th-percentile leave-one-out nearest distance.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- ========================================== -->
+                <!-- CHART 9: Persistent PowerShell TTS Daemon  -->
+                <!-- ========================================== -->
+                <article class="chart-card" id="chart-9" data-categories="output">
+                    <div class="card-header">
+                        <div class="header-meta">
+                            <span class="chart-index">Diagram 09</span>
+                            <span class="category-tag output">Output & Feedback</span>
+                        </div>
+                        <h3 class="card-title">⚡ Persistent Speech Synthesis Daemon</h3>
+                        <p class="card-summary">Zero-latency background PowerShell process keeping the Windows .NET <code>System.Speech.Synthesis</code> assembly in resident memory, eliminating typical 1.5s cold-start delays.</p>
+                        <div class="source-tag">Source: <code>node-red/functions/speaker.js</code></div>
+                    </div>
+
+                    <div class="card-toolbar">
+                        <div class="zoom-controls">
+                            <button class="btn-tool zoom-in" data-target="svg-9">+</button>
+                            <button class="btn-tool zoom-out" data-target="svg-9">−</button>
+                            <button class="btn-tool zoom-reset" data-target="svg-9">Reset</button>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-tool copy-code" data-code="code-9">📋 Copy Code</button>
+                            <button class="btn-tool export-svg" data-target="svg-9" data-name="persistent-powershell-tts-daemon">💾 Export SVG</button>
+                            <button class="btn-tool fullscreen-btn" data-target="svg-9" data-title="Persistent Speech Synthesis Daemon">⛶ Expand</button>
+                        </div>
+                    </div>
+
+                    <div class="diagram-viewport" id="svg-9">
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="code-9">
+flowchart TD
+    BOOT(["Node-RED Flow Boots<br/>(Boot inject trigger after 1.0s)"]) --> CHECK_PROC{"PowerShell process<br/>already resident?"}
+
+    %% INITIALIZATION
+    CHECK_PROC -->|No: First Boot| SPAWN["cp.spawn('powershell.exe', args)<br/>-EncodedCommand (Base64 UTF-16LE)<br/>windowsHide: true"]
+    SPAWN --> LOAD_NET["In-Memory Script Execution:<br/>Add-Type -AssemblyName System.Speech<br/>$s = New-Object SpeechSynthesizer<br/>$s.SetOutputToDefaultAudioDevice()"]
+    LOAD_NET --> PROBE_VOICES["Query System Voices:<br/>Emit 'VOICES:David|Zira|...'<br/>Emit default 'VOICE:David'"]
+    PROBE_VOICES --> STDIN_LOOP["Enter Blocking Infinite Loop:<br/>while ($true) {<br/>  $line = [Console]::In.ReadLine()<br/>  ...<br/>}"]
+
+    CHECK_PROC -->|Yes: Already Running| STDIN_LOOP
+
+    %% ASYNC RUNTIME TRIGGER
+    SPEAK_REQ(["topic: 'say' arrives<br/>Payload: 'Hello Reem'"]) --> SANITIZE["Sanitize text string<br/>Strip newlines and carriage returns"]
+    SANITIZE --> WRITE_STDIN["Write to PowerShell stdin stream:<br/>proc.stdin.write(text + '\n')"]
+
+    WRITE_STDIN --> STDIN_LOOP
+    STDIN_LOOP --> EXEC_SPEAK["In-Process Speech Execution:<br/>$s.SpeakAsyncCancelAll()<br/>[void]$s.SpeakAsync($line)"]
+    EXEC_SPEAK --> AUDIO_OUT[["🔊 Instant Audio Vocal Output<br/>(Zero Process Startup Delay)"]]
+
+    %% SETTINGS CONTROL
+    SETTINGS_REQ(["Dashboard Command:<br/>cmd: 'voice' OR cmd: 'rate'"]) --> WRITE_CMD["Write to stdin:<br/>'VOICE:David' OR 'RATE:2'"]
+    WRITE_CMD --> STDIN_LOOP
+    STDIN_LOOP --> APPLY_CMD["$s.SelectVoice($name)<br/>$s.Rate = [int]$rate"]
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-sheet">
+                        <button class="sheet-toggle">
+                            <span class="sheet-toggle-icon">▶</span>
+                            <span>View PowerShell Background Script Architecture</span>
+                        </button>
+                        <div class="sheet-content">
+                            <div class="spec-table-wrap">
+                                <table class="spec-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Feature</th>
+                                            <th>Traditional CLI Approach</th>
+                                            <th>SignSpeaker Persistent Daemon</th>
+                                            <th>Engineering Advantage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Process Lifecycle</strong></td>
+                                            <td>Spawn & terminate per spoken word</td>
+                                            <td>Single background worker spawned at boot</td>
+                                            <td>Eliminates 1.2 – 2.0s PowerShell initialization overhead</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Audio Latency</strong></td>
+                                            <td>1,500 – 2,200 ms</td>
+                                            <td><strong>&lt; 15 ms</strong></td>
+                                            <td>Real-time voice synthesis synchronized with gesture end</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Audio Cancellation</strong></td>
+                                            <td>Overlaps or requires process kill</td>
+                                            <td><code>SpeakAsyncCancelAll()</code></td>
+                                            <td>Cancels prior phrase if new gesture completes immediately</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>IPC Mechanism</strong></td>
+                                            <td>CLI command-line arguments</td>
+                                            <td>Standard I/O stream (<code>stdin/stdout</code>)</td>
+                                            <td>Non-blocking Node.js stream pipe</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Fullscreen Modal Viewer -->
+    <div class="modal-overlay" id="fullscreenModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-badge">Full Screen Diagram</span>
+                    <h3 id="modalTitle" class="modal-title">Diagram Title</h3>
+                </div>
+                <div class="modal-actions">
+                    <button id="modalZoomIn" class="btn-tool" title="Zoom In">+</button>
+                    <button id="modalZoomOut" class="btn-tool" title="Zoom Out">−</button>
+                    <button id="modalZoomReset" class="btn-tool" title="Reset Zoom">Reset</button>
+                    <button id="modalCloseBtn" class="btn-close" title="Close Fullscreen (Esc)">✕</button>
+                </div>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- SVG cloned here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <span class="modal-hint">💡 Tip: Use your mouse wheel or trackpad pinch to zoom. Click and drag anywhere to pan.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>

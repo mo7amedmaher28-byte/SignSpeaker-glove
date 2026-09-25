@@ -30,6 +30,9 @@ try {
     if (file === 'landing' || file === 'about' || file === 'landing.html') {
         return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'dashboard', 'landing.html'), 'utf8'));
     }
+    if (file === 'flowcharts' || file === 'flowcharts.html' || file === 'flowchart' || reqUrl.includes('/flowchart')) {
+        return send(200, 'text/html; charset=utf-8', fs.readFileSync(path.join(dir, 'flowcharts', 'index.html'), 'utf8'));
+    }
 
     if (!file) {
         const isDashboard = query.view === 'dashboard' || query.app === 'cockpit' ||
