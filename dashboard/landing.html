@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignSpeaker — Smart Glove Gesture Recognition &amp; Speech System | STA × AIO</title>
+<meta name="description" content="SignSpeaker is an assistive wearable smart glove system by Elsewedy Technical Academy (STA) and Arab International Optronics (AIO) that translates Egyptian Sign Language into real-time speech and LCD text.">
+<link rel="icon" type="image/jpeg" href="/glove/images/STA%20logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-deep: #050a18;
+  --bg-dark: #0a1128;
+  --bg-card: rgba(16, 26, 56, 0.72);
+  --bg-card-hover: rgba(22, 36, 76, 0.85);
+  --border-glass: rgba(56, 189, 248, 0.16);
+  --border-glass-hover: rgba(56, 189, 248, 0.38);
+  
+  --primary: #2563eb;
+  --primary-glow: rgba(37, 99, 235, 0.45);
+  --cyan: #06b6d4;
+  --cyan-bright: #38bdf8;
+  --cyan-glow: rgba(56, 189, 248, 0.35);
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --shadow-glow: 0 0 35px rgba(37, 99, 235, 0.25);
+  --shadow-cyan: 0 0 30px rgba(6, 182, 212, 0.28);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 18% 12%, rgba(37, 99, 235, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 82% 25%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+}
+
+h1, h2, h3, h4, .brand-title {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+code, pre, .mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(7, 13, 30, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.partner-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.logo-badge {
+  background: #ffffff;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logo-badge img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+
+.partner-x {
+  color: var(--cyan-bright);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.project-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  font-size: 19px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+}
+
+.project-title svg {
+  color: var(--cyan-bright);
+}
+
+.project-sub {
+  font-size: 11px;
+  color: var(--cyan-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.18s ease;
+}
+
+.nav-links a:hover {
+  color: var(--cyan-bright);
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+  box-shadow: 0 4px 18px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.6);
+  background: linear-gradient(135deg, #1d4ed8, #0284c7);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--cyan-bright);
+  transform: translateY(-2px);
+}
+
+.btn-glow {
+  background: linear-gradient(135deg, #0284c7, #2563eb 50%, #4f46e5);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(14, 165, 233, 0.45);
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: rotate(25deg);
+  animation: shine 4s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  35%, 100% { transform: translateX(100%) rotate(25deg); }
+}
+
+/* HERO SECTION */
+.hero-section {
+  padding-top: 155px;
+  padding-bottom: 90px;
+  position: relative;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan-bright);
+  margin-bottom: 22px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 10px var(--emerald);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+.hero-heading {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.12;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 30%, var(--cyan-bright) 70%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-lead {
+  font-size: 17px;
+  color: var(--text-muted);
+  margin-bottom: 34px;
+  line-height: 1.65;
+}
+
+.hero-lead strong {
+  color: #ffffff;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cyan-bright);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* HERO VISUAL CARD */
+.hero-visual {
+  position: relative;
+}
+
+.visual-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-glass-hover);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-glow), 0 20px 40px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s ease;
+}
+
+.visual-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+.visual-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.visual-overlay-badge {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
+  background: rgba(10, 17, 40, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 12px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.overlay-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.overlay-wave {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan-bright);
+}
+
+.overlay-text-top {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.overlay-text-sub {
+  font-size: 11px;
+  color: var(--emerald);
+  font-weight: 600;
+}
+
+.floating-tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(7, 13, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* SECTION TITLES */
+.section {
+  padding: 90px 0;
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 56px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cyan-bright);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+/* PARTNERS SHOWCASE SECTION */
+.partners-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.partner-profile-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-profile-card:hover {
+  border-color: var(--border-glass-hover);
+  transform: translateY(-4px);
+  background: var(--bg-card-hover);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.partner-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.partner-logo-box {
+  background: #ffffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.partner-logo-box img {
+  height: 44px;
+  width: auto;
+  max-width: 170px;
+  object-fit: contain;
+}
+
+.partner-type-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--cyan-bright);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.partner-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.partner-sub {
+  font-size: 14px;
+  color: var(--cyan-bright);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.partner-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.partner-highlights {
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 18px;
+}
+
+.partner-highlights li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.partner-highlights svg {
+  color: var(--emerald);
+  flex-shrink: 0;
+}
+
+.partnership-banner {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(6, 182, 212, 0.12));
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.partnership-banner-text h4 {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.partnership-banner-text p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* WHAT WE PROVIDE / FEATURES GRID */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 18px;
+  padding: 30px;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glass-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan-bright);
+  margin-bottom: 20px;
+}
+
+.feature-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.feature-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+
+.feature-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan-bright);
+  background: rgba(56, 189, 248, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+/* INTERACTIVE DEMO COMPONENT */
+.demo-section {
+  background: rgba(10, 17, 40, 0.6);
+  border-top: 1px solid var(--border-glass);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 80px 0;
+}
+
+.demo-card {
+  background: #081024;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 20px;
+  padding: 36px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(37, 99, 235, 0.2);
+}
+
+.demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.demo-title-group h3 {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.demo-title-group p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.demo-screen-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 28px;
+}
+
+.virtual-lcd-box {
+  background: #0f1d3a;
+  border: 2px solid #1e3a6a;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lcd-glass-screen {
+  background: #0c4a6e;
+  border: 2px solid #0284c7;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+  font-family: 'JetBrains Mono', monospace;
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  letter-spacing: 0.1em;
+}
+
+.lcd-line-1 {
+  font-size: 20px;
+  font-weight: 700;
+  min-height: 28px;
+}
+
+.lcd-line-2 {
+  font-size: 15px;
+  opacity: 0.85;
+  min-height: 22px;
+}
+
+.demo-word-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.demo-word-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.demo-word-btn:hover, .demo-word-btn.active {
+  background: var(--primary);
+  border-color: var(--cyan-bright);
+  box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.waveform-canvas-box {
+  background: rgba(7, 13, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.waveform-title {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+canvas#previewCanvas {
+  width: 100%;
+  height: 120px;
+  background: #030712;
+  border-radius: 6px;
+}
+
+/* PIPELINE ARCHITECTURE */
+.pipeline-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+  margin-top: 40px;
+}
+
+.pipeline-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+}
+
+.step-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: rgba(56, 189, 248, 0.3);
+  margin-bottom: 8px;
+}
+
+.step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* HARDWARE SPECS TABLE */
+.specs-table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.specs-table th, .specs-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.specs-table th {
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cyan-bright);
+}
+
+.specs-table td {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.specs-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* CTA BANNER */
+.cta-banner {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(6, 182, 212, 0.25) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 24px;
+  padding: 60px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(37, 99, 235, 0.35);
+}
+
+.cta-banner h2 {
+  font-size: 38px;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.cta-banner p {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto 32px;
+}
+
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border-glass);
+  padding: 50px 0 30px;
+  background: #040814;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .partners-card-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .pipeline-track { grid-template-columns: 1fr 1fr; }
+  .demo-screen-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hero-heading { font-size: 40px; }
+}
+
+@media (max-width: 640px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .pipeline-track { grid-template-columns: 1fr; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .cta-banner { padding: 40px 24px; }
+  .cta-banner h2 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="navbar" id="topNav">
+  <div class="container nav-inner">
+    <div class="brand-wrapper">
+      <div class="partner-badges" title="Joint Applied Engineering Initiative: STA × AIO">
+        <div class="logo-badge" title="Elsewedy Technical Academy (STA)">
+          <img src="/glove/images/STA%20logo.jpg" alt="STA Logo">
+        </div>
+        <span class="partner-x">×</span>
+        <div class="logo-badge" title="Arab International Optronics (AIO)">
+          <img src="/glove/images/AIO.png" alt="AIO Logo">
+        </div>
+      </div>
+      <div class="project-brand">
+        <div class="project-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6v-5a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"></path></svg>
+          SignSpeaker
+        </div>
+        <div class="project-sub">STA × AIO Smart Glove</div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#about">Who We Are</a></li>
+      <li><a href="#features">What We Provide</a></li>
+      <li><a href="#demo">Live Demo</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#specs">Specifications</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="/glove/dashboard" class="btn btn-primary btn-glow" id="launchCockpitNav">
+        <span>Launch Dashboard</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<header class="hero-section">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <div class="eyebrow-pill">
+        <span class="pulse-dot"></span>
+        <span>STA × AIO Joint Applied Engineering Project</span>
+      </div>
+
+      <h1 class="hero-heading">
+        Translating Silent Gestures <br>
+        <span class="gradient-text">Into Spoken Voice &amp; Text</span>
+      </h1>
+
+      <p class="hero-lead">
+        <strong>SignSpeaker</strong> is an assistive wearable smart glove system engineered through a high-impact collaboration between <strong>Elsewedy Technical Academy (STA)</strong> and <strong>Arab International Optronics (AIO)</strong>. It translates dynamic Egyptian Sign Language motions into real-time spoken audio, dual-line LCD text, and interactive web telemetry.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/glove/dashboard" class="btn btn-primary btn-glow" id="heroLaunchBtn" style="padding: 13px 28px; font-size: 15px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Launch Operational Cockpit</span>
+        </a>
+        <a href="#demo" class="btn btn-secondary" style="padding: 13px 24px; font-size: 15px;">
+          <span>Explore Live Demo</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">25 Hz</span>
+          <span class="stat-label">Inertial Gyro Sampling</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">66-D</span>
+          <span class="stat-label">Trajectory Feature Vector</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">&lt; 15 ms</span>
+          <span class="stat-label">Audio Speech Latency</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO VISUAL -->
+    <div class="hero-visual">
+      <div class="visual-card">
+        <img src="/glove/images/signspeaker_hero.jpg" alt="SignSpeaker Smart Glove AI Wearable">
+        <div class="floating-tag">
+          <span class="pulse-dot"></span>
+          <span>Active Edge Recognition</span>
+        </div>
+        <div class="visual-overlay-badge">
+          <div class="overlay-left">
+            <div class="overlay-wave">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5v14M7 8v8M22 10v4M2 10v4"/></svg>
+            </div>
+            <div>
+              <div class="overlay-text-top">Instant Voice Synthesis</div>
+              <div class="overlay-text-sub">Continuous Egyptian Sign Language</div>
+            </div>
+          </div>
+          <a href="/glove/dashboard" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">Open ➔</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SECTION: WHO WE ARE (PARTNERS) -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Partnership &amp; Mission</span>
+      <h2 class="section-title">Who Is Behind SignSpeaker?</h2>
+      <p class="section-desc">
+        A strategic applied engineering alliance between Egypt's leading technical education academy and premier national optronics industrial institution.
+      </p>
+    </div>
+
+    <div class="partners-card-grid">
+      <!-- STA CARD -->
+      <div class="partner-profile-card">
+        <div class="partner-card-header">
+          <div class="partner-logo-box">
+            <img src="/glove/images/STA%20logo.jpg" alt="Elsewedy Technical Academy Logo">
+          </div>
+          <span class="partner-type-tag">Technical Education</span>
+        </div>
+        <h3 class="partner-name">Elsewedy Technical Academy (STA)</h3>
+        <div class="partner-sub">Excellence in Applied Technology &amp; Technical Talent</div>
+        <p class="partner-desc">
+          Established by the Elsewedy Electric Foundation, STA pioneers international standard technical education in Egypt. Empowering brilliant young engineering minds with hands-on mastery over embedded systems, industrial automation, and social assistive technologies.
+        </p>
+        <ul class="partner-highlights">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Hands-on applied research &amp; hardware prototyping
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Real-world assistive engineering community projects
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Industry 4.0 embedded IoT &amp; mechatronic integration
+          </li>
+        </ul>
+      </div>
+
+      <!-- AIO CARD -->
+      <div class="partner-profile-card">
+        <div class="partner-card-header">
+          <div class="partner-logo-box">
+            <img src="/glove/images/AIO.png" alt="Arab International Optronics Logo">
+          </div>
+          <span class="partner-type-tag">High-Tech Industrial</span>
+        </div>
+        <h3 class="partner-name">Arab International Optronics (AIO)</h3>
+        <div class="partner-sub">National Leader in Advanced Optronics &amp; Smart Electronics</div>
+        <p class="partner-desc">
+          A flagship Egyptian enterprise renowned for world-class optoelectronic manufacturing, sensory instrumentation, and state-of-the-art embedded electronics. AIO contributes rigorous precision engineering standards, defense-grade sensor conditioning, and telemetry expertise.
+        </p>
+        <ul class="partner-highlights">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            High-precision inertial measurement &amp; sensor calibration
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Ultra-low latency wireless radio &amp; RF telemetry protocols
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Robust embedded architectures for mission-critical reliability
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PARTNERSHIP BANNER -->
+    <div class="partnership-banner">
+      <div class="partnership-banner-text">
+        <h4>🤝 Purpose-Driven Applied Engineering</h4>
+        <p>Combining STA's academic ingenuity and AIO's industrial manufacturing excellence to deliver an accessible Egyptian Sign Language communication bridge.</p>
+      </div>
+      <a href="/glove/dashboard" class="btn btn-primary" style="white-space: nowrap;">
+        Launch Cockpit ➔
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: WHAT WE PROVIDE -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Core Capabilities</span>
+      <h2 class="section-title">What SignSpeaker Provides</h2>
+      <p class="section-desc">
+        A complete end-to-end wearable stack spanning kinetic sensing, machine learning, telemetry, and multimodal feedback.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+        </div>
+        <h3 class="feature-title">6-DoF Kinetic IMU Sensing</h3>
+        <p class="feature-desc">
+          High-frequency polling of 3-axis angular velocity (&omega;x, &omega;y, &omega;z) from an MPU6050 sensor at 25 Hz (~40ms). Captures subtle hand dynamics without restricting fingers.
+        </p>
+        <span class="feature-meta">MPU6050 • I2C @ 25 Hz</span>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        </div>
+        <h3 class="feature-title">Dual Untethered Telemetry</h3>
+        <p class="feature-desc">
+          Works 100% untethered. Choose between Wi-Fi MQTT broker integration (cross-network / Mosquitto) or direct low-latency ESP-NOW 2.4 GHz radio (<5ms transmission).
+        </p>
+        <span class="feature-meta">Wi-Fi MQTT &bull; ESP-NOW Radio</span>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 class="feature-title">Dynamic Segmentation Engine</h3>
+        <p class="feature-desc">
+          Continuous EWMA resting bias estimation (&alpha;=0.03) actively compensates for sensor drift, while a precision state machine isolates deliberate signs from involuntary resting tremors.
+        </p>
+        <span class="feature-meta">EWMA Bias &bull; Rolling Pre-Roll</span>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h3 class="feature-title">66-D Trajectory Machine Learning</h3>
+        <p class="feature-desc">
+          Extracts 16 equidistant resampled 3D points, temporal duration, and per-axis statistics. Standardized Z-scores are classified via weighted k-NN (k=3) with outlier rejection.
+        </p>
+        <span class="feature-meta">Resampled Trajectory &bull; k-NN</span>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </div>
+        <h3 class="feature-title">Persistent Zero-Latency TTS</h3>
+        <p class="feature-desc">
+          Keeps Windows SpeechSynthesizer permanently warm via a background daemon. Eliminates the 1.5s cold-start CLI penalty, delivering crystal-clear instant vocal feedback.
+        </p>
+        <span class="feature-meta">System.Speech &bull; Near-Zero Latency</span>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="feature-title">Smart 16×2 LCD Word Wrapping</h3>
+        <p class="feature-desc">
+          Autonomous text layout engine formats output onto physical and virtual dual-line displays, dynamically wrapping sentences along whitespace boundaries without breaking words.
+        </p>
+        <span class="feature-meta">HD44780 LCD &bull; Auto-Wrap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: INTERACTIVE DEMO -->
+<section class="section demo-section" id="demo">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Interactive Preview</span>
+      <h2 class="section-title">Experience Sign Translation Live</h2>
+      <p class="section-desc">
+        Click a sign button below to preview how SignSpeaker captures gestures, drives the LCD screen, and vocalizes speech.
+      </p>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-header">
+        <div class="demo-title-group">
+          <h3>Interactive Simulation Console</h3>
+          <p>Real-time gesture trajectory reproduction with instant speech synthesis</p>
+        </div>
+        <a href="/glove/dashboard" class="btn btn-primary btn-glow" style="padding: 8px 18px; font-size: 13px;">
+          Open Full Cockpit ➔
+        </a>
+      </div>
+
+      <div class="demo-screen-grid">
+        <!-- VIRTUAL LCD & CONTROLS -->
+        <div class="virtual-lcd-box">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;">
+            Hardware LCD Preview (16×2 Character Display)
+          </div>
+
+          <div class="lcd-glass-screen" id="demoLcd">
+            <div class="lcd-line-1" id="lcdL1">SignSpeaker</div>
+            <div class="lcd-line-2" id="lcdL2">STA x AIO Ready</div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
+              Select a Sign Language Gesture to Trigger:
+            </div>
+            <div class="demo-word-buttons">
+              <button class="demo-word-btn" onclick="triggerDemo('Hello')">👋 Hello</button>
+              <button class="demo-word-btn" onclick="triggerDemo('I am')">🙋 I am</button>
+              <button class="demo-word-btn" onclick="triggerDemo('Reem')">👩 Reem</button>
+              <button class="demo-word-btn" onclick="triggerDemo('Thanks')">🙏 Thanks</button>
+              <button class="demo-word-btn" onclick="triggerDemo('Hello Reem')">✨ Hello Reem (Sentence)</button>
+              <button class="demo-word-btn" onclick="triggerDemo('Thank you')">💙 Thank you</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE WAVEFORM CANVAS -->
+        <div class="waveform-canvas-box">
+          <div class="waveform-title">
+            <span>Gesture Inertial Trace (X, Y, Z)</span>
+            <span id="demoConfidence" style="color: var(--emerald);">Confidence: 98%</span>
+          </div>
+          <canvas id="previewCanvas"></canvas>
+          <div style="display: flex; gap: 14px; margin-top: 10px; font-size: 11px;">
+            <span style="color: #38bdf8;">● Gyro X</span>
+            <span style="color: #10b981;">● Gyro Y</span>
+            <span style="color: #f59e0b;">● Gyro Z</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: PIPELINE ARCHITECTURE -->
+<section class="section" id="architecture">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">System Pipeline</span>
+      <h2 class="section-title">How SignSpeaker Works</h2>
+      <p class="section-desc">
+        From subtle inertial finger-wrist movements to spoken words in four seamless stages.
+      </p>
+    </div>
+
+    <div class="pipeline-track">
+      <div class="pipeline-step">
+        <div class="step-num">01</div>
+        <h4 class="step-title">Inertial Capture</h4>
+        <p class="step-desc">
+          MPU6050 IMU samples 3D angular velocities at 25 Hz. Packets are streamed via Wi-Fi MQTT or ESP-NOW radio directly to the edge host.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num">02</div>
+        <h4 class="step-title">Event Segmentation</h4>
+        <p class="step-desc">
+          Continuous EWMA filters out stationary bias. When motion exceeds 0.20 rad/s, trajectory buffers active samples until quietude is sustained.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num">03</div>
+        <h4 class="step-title">Feature Extraction &amp; k-NN</h4>
+        <p class="step-desc">
+          66 normalized features are extracted across 16 resampled points. Weighted k-NN (k=3) computes closest neighbors with statistical outlier rejection.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="step-num">04</div>
+        <h4 class="step-title">Multimodal Output</h4>
+        <p class="step-desc">
+          Recognized text is vocalized simultaneously via persistent TTS audio, wrapped onto the 16×2 LCD screen, and broadcasted to the web dashboard.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: HARDWARE SPECIFICATIONS -->
+<section class="section" id="specs">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Engineering Specifications</span>
+      <h2 class="section-title">Hardware &amp; System Pinouts</h2>
+      <p class="section-desc">
+        Industrial wiring specifications and communication parameters for reliable operation.
+      </p>
+    </div>
+
+    <div class="specs-table-wrapper">
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Subsystem</th>
+            <th>Component</th>
+            <th>Interface &amp; Wiring</th>
+            <th>Operating Specs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Glove Unit</strong></td>
+            <td>ESP32 Dev Module</td>
+            <td>GPIO 23 (SDA), GPIO 22 (SCL), 3.3V, GND</td>
+            <td>240 MHz Dual Core &bull; Wi-Fi 802.11 b/g/n + ESP-NOW</td>
+          </tr>
+          <tr>
+            <td><strong>Inertial Sensor</strong></td>
+            <td>MPU6050 6-DoF IMU</td>
+            <td>I2C Slave Address 0x68 (AD0 -> GND)</td>
+            <td>&plusmn;500 deg/s range &bull; 21 Hz DLPF &bull; 25 Hz poll rate</td>
+          </tr>
+          <tr>
+            <td><strong>Hardware LCD</strong></td>
+            <td>16×2 Character Display</td>
+            <td>PCF8574 Backpack I2C (GPIO 21 SDA, 22 SCL)</td>
+            <td>Address 0x27 &bull; 5V VCC &bull; Word Boundary Wrapping</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Machine Learning</strong></td>
+            <td>Node-RED Edge Runtime</td>
+            <td>Z-Score Normalized Euclidean Distance</td>
+            <td>66 Dimensions &bull; k=3 Weighted k-NN &bull; Outlier Gating</td>
+          </tr>
+          <tr>
+            <td><strong>Speech Synthesis</strong></td>
+            <td>Persistent Audio Daemon</td>
+            <td>Windows System.Speech.Synthesis</td>
+            <td>Zero-cold-start background daemon &bull; Custom pitch/rate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CALL TO ACTION BANNER -->
+<section class="section" style="padding-top: 20px;">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Ready to Explore the Live Cockpit?</h2>
+      <p>
+        Step inside the live operational dashboard to monitor 60 FPS real-time gyroscope feeds, train customized gesture models, manage dataset snapshots, and test hardware connections.
+      </p>
+      <div class="cta-buttons">
+        <a href="/glove/dashboard" class="btn btn-primary btn-glow" style="padding: 14px 34px; font-size: 16px;">
+          <span>Launch SignSpeaker Dashboard</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#about" class="btn btn-secondary" style="padding: 14px 28px; font-size: 16px;">
+          <span>Review STA × AIO Partnership</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="brand-wrapper">
+        <div class="partner-badges">
+          <div class="logo-badge">
+            <img src="/glove/images/STA%20logo.jpg" alt="STA Logo">
+          </div>
+          <span class="partner-x">×</span>
+          <div class="logo-badge">
+            <img src="/glove/images/AIO.png" alt="AIO Logo">
+          </div>
+        </div>
+        <div class="project-brand">
+          <div class="project-title" style="font-size: 16px;">SignSpeaker</div>
+          <div class="project-sub">Joint Applied Engineering Project</div>
+        </div>
+      </div>
+
+      <div class="footer-copy">
+        Developed with pride by <strong>Elsewedy Technical Academy (STA)</strong> &amp; <strong>Arab International Optronics (AIO)</strong>.
+      </div>
+
+      <div>
+        <a href="/glove/dashboard" class="btn btn-secondary" style="padding: 7px 16px; font-size: 13px;">
+          Open Dashboard ➔
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPT: INTERACTIVE DEMO PREVIEW -->
+<script>
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas.getContext('2d');
+const lcdL1 = document.getElementById('lcdL1');
+const lcdL2 = document.getElementById('lcdL2');
+const demoConfidence = document.getElementById('demoConfidence');
+
+function resizeCanvas() {
+  canvas.width = canvas.parentElement.clientWidth - 32;
+  canvas.height = 120;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let animationId = null;
+let currentPoints = [];
+
+function generatePoints(seed) {
+  const pts = [];
+  const count = 40;
+  for (let i = 0; i < count; i++) {
+    const t = i / count;
+    const x = Math.sin(t * Math.PI * 2 * seed + 0.5) * Math.exp(-t * 2) * 40;
+    const y = Math.cos(t * Math.PI * 3 * seed) * Math.sin(t * Math.PI) * 35;
+    const z = Math.sin(t * Math.PI * 4 * seed + 1.2) * 30;
+    pts.push({ x, y, z });
+  }
+  return pts;
+}
+
+function drawWaveform(progress) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const midY = canvas.height / 2;
+  const maxIdx = Math.floor(currentPoints.length * progress);
+
+  // Grid line
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, midY);
+  ctx.lineTo(canvas.width, midY);
+  ctx.stroke();
+
+  if (maxIdx < 2) return;
+
+  const dx = canvas.width / currentPoints.length;
+
+  // Draw X (Blue)
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  for (let i = 0; i < maxIdx; i++) {
+    const px = i * dx;
+    const py = midY - currentPoints[i].x;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Draw Y (Green)
+  ctx.strokeStyle = '#10b981';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  for (let i = 0; i < maxIdx; i++) {
+    const px = i * dx;
+    const py = midY - currentPoints[i].y;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Draw Z (Amber)
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  for (let i = 0; i < maxIdx; i++) {
+    const px = i * dx;
+    const py = midY - currentPoints[i].z;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+}
+
+function triggerDemo(word) {
+  // Update buttons
+  document.querySelectorAll('.demo-word-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(word));
+  });
+
+  // LCD text wrapping
+  if (word.length <= 16) {
+    lcdL1.textContent = word;
+    lcdL2.textContent = 'Confidence: 98%';
+  } else {
+    const words = word.split(' ');
+    lcdL1.textContent = words[0] || '';
+    lcdL2.textContent = words.slice(1).join(' ') || '';
+  }
+
+  demoConfidence.textContent = 'Confidence: ' + (94 + Math.floor(Math.random() * 5)) + '%';
+
+  // Speak word using Web Speech API if supported
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Animate Waveform
+  let seed = 1;
+  if (word === 'I am') seed = 2.2;
+  if (word === 'Reem') seed = 1.6;
+  if (word === 'Thanks') seed = 3.1;
+  if (word === 'Hello Reem') seed = 2.7;
+  if (word === 'Thank you') seed = 3.4;
+
+  currentPoints = generatePoints(seed);
+  let start = performance.now();
+  const duration = 700;
+
+  if (animationId) cancelAnimationFrame(animationId);
+
+  function animate(now) {
+    const elapsed = now - start;
+    const progress = Math.min(1, elapsed / duration);
+    drawWaveform(progress);
+    if (progress < 1) {
+      animationId = requestAnimationFrame(animate);
+    }
+  }
+  animationId = requestAnimationFrame(animate);
+}
+
+// Initial draw
+currentPoints = generatePoints(1);
+drawWaveform(1);
+</script>
+</body>
+</html>

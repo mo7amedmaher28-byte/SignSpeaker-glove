@@ -1,0 +1,8 @@
+{
+  "mode": "disconnected",
+  "broker": "test.mosquitto.org",
+  "brokerPort": 1883,
+  "topic": "signspeaker/glove/data",
+  "lcdTopic": "signspeaker/glove/lcd",
+  "path": null
+}

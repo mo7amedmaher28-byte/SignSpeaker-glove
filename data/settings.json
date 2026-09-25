@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "start": 0.18,
+    "end": 0.11,
+    "quiet": 420,
+    "minTime": 300,
+    "maxTime": 4500,
+    "cooldown": 800,
+    "preRoll": 3
+  },
+  "mode": "train",
+  "label": "Mohamed",
+  "bias": {
+    "x": 0.0036951367635805464,
+    "y": 0.001437358965094218,
+    "z": 0.0036175031550319016
+  }
+}

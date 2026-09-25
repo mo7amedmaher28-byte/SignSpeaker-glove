@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignSpeaker | STA × AIO Smart Glove</title>
+<link rel="icon" type="image/jpeg" href="/glove/images/STA%20logo.jpg">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #070707;
+  --card: #121212;
+  --text: #f2f2f2;
+  --muted: #a3a3a3;
+  --border: #2b1414;
+  --accent: #e50914;
+  --accent-hover: #ff2a33;
+  --accent-soft: #3a0a0d;
+  --ok: #f2f2f2;
+  --ok-soft: #262626;
+  --warn: #ffb020;
+  --warn-soft: #33260a;
+  --bad: #ff3b3b;
+  --bad-soft: #3d0d0d;
+  --x: #ff3b3b;
+  --y: #f2f2f2;
+  --z: #ff9a3c;
+  --mag: #6b6b6b;
+  --grid: #1f1f1f;
+  --lcd-bg: #1a0003;
+  --lcd-text: #ff3340;
+  --shadow: 0 0 0 1px rgba(229, 9, 20, .06), 0 8px 24px rgba(0, 0, 0, .5);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+button, input, select { font: inherit; color: inherit; }
+button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); color: var(--accent-hover); }
+button:disabled { opacity: .5; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
+button.danger { color: var(--bad); border-color: var(--bad-soft); background: transparent; }
+button.danger:hover { background: var(--bad-soft); color: #fff; }
+button.small { padding: 3px 8px; font-size: 12px; }
+input[type=text], input[type=number], select {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 6px 9px;
+  min-width: 0;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 24px 10px;
+  background: var(--card);
+  border-bottom: 2px solid var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.conn-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.conn-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.conn-bar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.conn-hint strong {
+  color: #fff;
+}
+
+/* Brand & Partner Identity */
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.partner-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-badge {
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.4);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.brand-badge:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.45), 0 0 0 1.5px rgba(229, 9, 20, 0.7);
+}
+.brand-badge.sta {
+  padding: 5px 14px;
+  height: 50px;
+}
+.brand-logo.sta-img {
+  height: 40px;
+  width: auto;
+  max-width: 140px;
+  display: block;
+  object-fit: contain;
+}
+.brand-badge.aio {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.brand-logo.aio-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.partner-x {
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 800;
+  opacity: 0.9;
+  user-select: none;
+}
+.brand-divider {
+  width: 1.5px;
+  height: 42px;
+  background: var(--border);
+  opacity: 0.9;
+}
+.brand-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.brand-title {
+  font-weight: 850;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.2;
+}
+.badge-tag {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+.brand-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.brand-sub .partner-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+.brand-sub .dot {
+  opacity: 0.5;
+  font-size: 9px;
+  color: var(--accent);
+}
+.brand-tagline {
+  color: #a3a3a3;
+}
+
+@media (max-width: 900px) {
+  .brand-divider { display: none; }
+  .brand-sub .brand-tagline { display: none; }
+}
+/* Footer Styling */
+.app-footer {
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  padding: 16px 20px;
+  margin-top: 24px;
+}
+.footer-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-badge {
+  background: #ffffff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.35);
+}
+.footer-badge.sta {
+  padding: 3px 8px;
+  height: 32px;
+}
+.footer-badge.sta img {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+.footer-badge.aio {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 2px;
+  overflow: hidden;
+}
+.footer-badge.aio img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.footer-x {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 11px;
+}
+.footer-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+}
+.footer-desc {
+  font-size: 11px;
+  color: var(--muted);
+}
+.footer-desc strong {
+  color: var(--text);
+}
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.footer-pill {
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+@media (max-width: 850px) {
+  .brand-container {
+    flex-wrap: wrap;
+  }
+  .brand-sub {
+    font-size: 10px;
+  }
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; padding: 7px 16px; }
+.seg button.on { background: var(--accent); color: #fff; }
+.serial { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: var(--bad-soft); color: var(--bad);
+}
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.muted { background: var(--grid); color: var(--muted); }
+.pill.accent { background: var(--accent-soft); color: var(--accent); }
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 20px 40px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+@media (max-width: 1000px) { main { grid-template-columns: minmax(0, 1fr); padding: 12px 16px 32px; } header { padding: 10px 16px; } }
+.col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.card h2 {
+  margin: 0 0 10px;
+  padding-left: 9px;
+  border-left: 3px solid var(--accent);
+  font-size: 13px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.card h2 .right { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.muted { color: var(--muted); }
+.small-text { font-size: 12px; }
+.mono { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
+canvas { width: 100%; display: block; }
+#live { height: 260px; }
+#gestureChart { height: 170px; }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+.legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+.values { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.value { background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+.value b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+.value span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 6px 8px 6px 14px; cursor: pointer; background: var(--card);
+}
+.chip .count { background: var(--grid); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 600; min-width: 26px; text-align: center; }
+.chip.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.chip.on .count { background: var(--accent); color: #fff; }
+.chip .key { font-size: 11px; color: var(--muted); }
+
+.record {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 650;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+.record.rec { background: var(--bad); border-color: var(--bad); color: #fff; animation: pulse 1.4s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px var(--bad-soft); } }
+.hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+.phase { font-size: 12px; font-weight: 600; }
+.flash-ok { animation: flashok .8s; }
+@keyframes flashok { from { background: var(--ok-soft); } }
+
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+th, td { padding: 5px 6px; text-align: center; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 600; }
+td.lbl, th.lbl { text-align: left; }
+.samples { max-height: 240px; overflow: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 8px; }
+.samples table td { text-align: left; }
+.samples tr:hover td { background: var(--bg); }
+
+.big-word {
+  font-size: clamp(24px, 5.5vw, 54px); word-break: break-word; text-wrap: balance;
+  font-weight: 750;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  text-align: center;
+  padding: 18px 0 6px;
+  min-height: 90px;
+}
+.big-word.unknown { color: var(--muted); }
+.bar { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.bar > div { height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+.history { list-style: none; padding: 0; margin: 10px 0 0; max-height: 220px; overflow: auto; }
+.history li { display: flex; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.history li .t { color: var(--muted); font-variant-numeric: tabular-nums; }
+.history li .w { font-weight: 600; flex: 1; }
+
+.lcd {
+  background: var(--lcd-bg);
+  color: var(--lcd-text);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 22px;
+  line-height: 1.25;
+  white-space: pre;
+  box-shadow: inset 0 0 0 4px rgba(229, 9, 20, .18);
+  text-shadow: 0 0 6px rgba(255, 51, 64, .6);
+  overflow: hidden;
+}
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 520px) { .grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .values { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+label.field { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+label.field input, label.field select { color: var(--text); width: 100%; }
+label.check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+details summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+details[open] summary { margin-bottom: 12px; }
+.acc { font-size: 28px; font-weight: 700; }
+.hidden { display: none !important; }
+#toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 20; max-width: calc(100vw - 32px); }
+.toast { background: #1d1d1d; color: var(--text); border: 1px solid var(--accent); padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 380px; box-shadow: 0 6px 20px rgba(0, 0, 0, .2); }
+.toast.error { background: var(--bad); color: #fff; }
+.toast.ok { background: var(--accent); color: #fff; }
+a { color: var(--accent); }
+
+/* Multi-word Sentence & Phrase Styling */
+.chip .chip-badge {
+  background: rgba(229, 9, 20, 0.22);
+  color: #ff525d;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  margin-left: 2px;
+}
+.chip.on .chip-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+.seg-sm button {
+  padding: 4px 11px;
+  font-size: 12px;
+}
+.sentence-builder {
+  margin-top: 14px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.sentence-stream {
+  min-height: 38px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stream-word {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: #fff;
+  border-left: 3px solid var(--accent);
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+/* MQTT & Connection UI */
+.connection-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.conn-ctrls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-card {
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalIn 0.2s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.modal-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modal-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.esp-snippet-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 6px;
+}
+.esp-snippet-box pre {
+  margin: 0;
+  color: #ff9a3c;
+  overflow-x: auto;
+}
+
+
+/* Delete Words Modal Styling */
+.delete-words-list {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.delete-word-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--card);
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.delete-word-item:hover {
+  background: #1c1c1c;
+}
+.delete-word-item.selected {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.delete-word-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.delete-word-item input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--bad);
+}
+.delete-word-name {
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.delete-word-meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Top Tier: Partner Identity & Mode Switcher -->
+  <div class="header-top">
+    <div class="brand-container">
+      <div class="partner-badges">
+        <div class="brand-badge sta" title="Elsewedy Technical Academy (STA)">
+          <img src="/glove/images/STA%20logo.jpg" alt="STA Logo" class="brand-logo sta-img">
+        </div>
+        <span class="partner-x">×</span>
+        <div class="brand-badge aio" title="Arab International Optronics (AIO)">
+          <img src="/glove/images/AIO.png" alt="AIO Logo" class="brand-logo aio-img">
+        </div>
+      </div>
+      <div class="brand-divider"></div>
+      <div class="brand-info">
+        <div class="brand-title">SignSpeaker <span class="badge-tag">Smart Glove AI</span></div>
+        <div class="brand-sub">
+          <span class="partner-name">Elsewedy Technical Academy (STA)</span>
+          <span class="dot">×</span>
+          <span class="partner-name">Arab International Optronics (AIO)</span>
+          <span class="dot">•</span>
+          <span class="brand-tagline">Innovation &amp; Technology Initiative</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-top-right">
+      <div class="seg" id="modeSeg">
+        <button data-mode="train" class="on">Train Mode</button>
+        <button data-mode="recognize">Recognize Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Tier: Connectivity & Hardware Bar -->
+  <div class="header-bottom">
+    <div class="conn-bar-left">
+      <span class="conn-label">Connection:</span>
+      <div class="seg seg-sm" id="connTypeSeg">
+        <button data-type="mqtt" class="on" id="btnTypeMqtt" title="Wireless MQTT over Wi-Fi (Eclipse Mosquitto)">📶 Wireless MQTT</button>
+        <button data-type="serial" id="btnTypeSerial" title="USB Serial COM Port">🔌 USB Serial</button>
+        <button data-type="sim" id="btnTypeSim" title="Synthetic Simulator">💻 Simulator</button>
+      </div>
+    </div>
+
+    <!-- MQTT Controls (Default) -->
+    <div class="conn-ctrls" id="mqttControls">
+      <span class="conn-hint muted small-text">Broker: <strong>Eclipse Mosquitto</strong> (test.mosquitto.org:1883)</span>
+      <button id="mqttConfigBtn" class="small" title="Configure MQTT Broker &amp; Topics">⚙️ Broker Config</button>
+      <button id="mqttConnectBtn" class="primary small">Connect</button>
+      <span class="pill" id="mqttPill">MQTT disconnected</span>
+    </div>
+
+    <!-- Serial Controls (Hidden unless USB Serial selected) -->
+    <div class="conn-ctrls hidden" id="serialControls">
+      <select id="portSelect" aria-label="Serial port" class="small"></select>
+      <button id="connectBtn" class="small">Connect</button>
+      <span class="pill" id="serialPill">not connected</span>
+    </div>
+
+    <div class="conn-bar-right">
+      <span class="pill muted" id="wsPill">dashboard offline</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="col">
+    <section class="card">
+      <h2>Live sensor
+        <span class="phase pill muted" id="phaseBadge">waiting</span>
+        <span class="right legend">
+          <span><i style="background:var(--x)"></i>Gyro X</span>
+          <span><i style="background:var(--y)"></i>Gyro Y</span>
+          <span><i style="background:var(--z)"></i>Gyro Z</span>
+          <span><i style="background:var(--mag)"></i>|movement|</span>
+        </span>
+      </h2>
+      <canvas id="live"></canvas>
+      <div class="values">
+        <div class="value"><span>X rad/s</span><b id="vx">–</b></div>
+        <div class="value"><span>Y rad/s</span><b id="vy">–</b></div>
+        <div class="value"><span>Z rad/s</span><b id="vz">–</b></div>
+        <div class="value"><span>Movement</span><b id="vm">–</b></div>
+      </div>
+    </section>
+
+    <section class="card" id="gestureCard">
+      <h2><span id="gestureTitle">Last gesture</span><span class="right muted small-text" id="gestureMeta">no gesture yet</span></h2>
+      <canvas id="gestureChart"></canvas>
+      <div class="row small-text" style="margin-top:8px" id="gestureInfo"></div>
+    </section>
+
+    <section class="card">
+      <details id="settingsDetails">
+        <summary>Detection settings &amp; storage</summary>
+        <div class="grid3" id="settingsForm">
+          <label class="field">Start threshold (rad/s)<input type="number" step="0.01" name="start"></label>
+          <label class="field">End threshold (rad/s)<input type="number" step="0.01" name="end"></label>
+          <label class="field">Quiet time (ms)<input type="number" step="10" name="quiet"></label>
+          <label class="field">Min gesture (ms)<input type="number" step="10" name="minTime"></label>
+          <label class="field">Max gesture (ms)<input type="number" step="50" name="maxTime"></label>
+          <label class="field">Cooldown (ms)<input type="number" step="50" name="cooldown"></label>
+        </div>
+        <div class="small-text muted mono" id="biasInfo" style="margin-top:10px"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="primary" id="saveSettings">Save settings</button>
+          <button id="resetSettings">Reset to defaults</button>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--border);margin:14px 0">
+        <label class="check"><input type="checkbox" id="logToggle"> Continuously store all sensor readings (CSV)</label>
+        <div class="small-text muted mono" id="logInfo" style="margin-top:6px"></div>
+        <div class="row small-text" style="margin-top:10px">
+          Download:
+          <a href="/glove/data/dataset.csv">dataset.csv</a>
+          <a href="/glove/data/dataset.json">dataset.json</a>
+          <a href="/glove/data/model.json">model.json</a>
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <div class="col">
+    <!-- TRAIN -->
+    <section class="card" id="trainPanel">
+      <h2>Record training samples<span class="right muted small-text" id="sessionInfo"></span></h2>
+      <div class="chips" id="labelChips"></div>
+      <div class="row" style="margin-top:10px">
+        <input type="text" id="newLabel" placeholder="New word…" maxlength="16" style="flex:1">
+        <button id="addLabel">Add word</button>
+      </div>
+      <button class="record primary" id="recordBtn">Start recording</button>
+      <div class="hint">Perform the gesture, then hold still briefly. Each gesture is saved automatically as one sample. Aim for 10–20 samples per word. <b>Space</b> starts/stops, <b>1–9</b> picks a word.</div>
+    </section>
+
+    <section class="card" id="modelPanel">
+      <h2>Model<span class="right" id="modelBadge"></span></h2>
+      <div id="modelSummary" class="muted">No model trained yet. The built-in threshold rules are used until you train one.</div>
+      <div class="row" style="margin-top:10px">
+        <button class="primary" id="trainBtn">Train model</button>
+        <button class="danger" id="deleteModelBtn">Delete model</button>
+      </div>
+      <div id="confusion" style="margin-top:12px; overflow-x:auto"></div>
+    </section>
+
+    <section class="card" id="savePanel">
+      <h2>Words &amp; model<span class="right" id="saveBadge"></span></h2>
+      <div class="small-text muted" id="saveInfo"></div>
+      <div class="grid2" style="margin-top:10px">
+        <button class="primary" id="saveTrainingBtn">Save words &amp; model</button>
+        <button class="danger" id="manageWordsBtn">🗑️ Delete / Manage Words</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <select id="savedSelect" aria-label="Saved training" style="flex:1"></select>
+        <button id="restoreBtn">Restore</button>
+      </div>
+    </section>
+
+    <section class="card" id="samplesPanel">
+      <h2>Samples: <span id="samplesLabel"></span><span class="right"><button class="small danger" id="clearLabelBtn">Delete all</button> <button class="small danger" id="removeLabelBtn">Remove word</button></span></h2>
+      <div class="samples"><table><tbody id="sampleRows"></tbody></table></div>
+    </section>
+
+    <!-- RECOGNIZE -->
+    <section class="card hidden" id="recognizePanel">
+      <h2>Detected word<span class="right muted small-text" id="predSource"></span></h2>
+      <div class="big-word unknown" id="bigWord">—</div>
+      <div class="bar"><div id="confBar"></div></div>
+      <div class="row small-text muted" style="margin-top:6px;justify-content:space-between">
+        <span id="confText">confidence –</span><span id="predDetail"></span>
+      </div>
+      <ul class="history" id="history"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Receiver LCD<span class="right muted small-text">mirror of what was sent</span></h2>
+      <div class="lcd" id="lcd">SignSpeaker
+Waiting...      </div>
+    </section>
+
+    <section class="card">
+      <h2>Output (LCD + speaker)<span class="right" id="speakerBadge"></span></h2>
+      <div class="grid2">
+        <label class="check"><input type="checkbox" id="optSpeak"> Speak on laptop</label>
+        <label class="check"><input type="checkbox" id="optLcd"> Show on LCD</label>
+        <label class="check"><input type="checkbox" id="optUnknown"> Speak "Unknown gesture"</label>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <label class="field">Minimum confidence: <b id="minConfText"></b><input type="range" min="0" max="1" step="0.05" id="optMinConf"></label>
+        <label class="field">Speech rate: <b id="rateText"></b><input type="range" min="-5" max="5" step="1" id="optRate"></label>
+        <label class="field">Voice<select id="voiceSelect"></select></label>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <input type="text" id="testText" value="Hello" maxlength="16" style="flex:1">
+        <button id="testBtn">Test LCD + speaker</button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="simPanel">
+      <h2>Simulator<span class="right muted small-text">synthetic glove data</span></h2>
+      <label class="check"><input type="checkbox" id="simAuto"> Generate a random gesture every few seconds</label>
+      <div class="row" style="margin-top:10px" id="simButtons"></div>
+    </section>
+  </div>
+</main>
+<footer class="app-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logos">
+        <div class="footer-badge sta" title="Elsewedy Technical Academy (STA)">
+          <img src="/glove/images/STA%20logo.jpg" alt="STA Logo">
+        </div>
+        <span class="footer-x">×</span>
+        <div class="footer-badge aio" title="Arab International Optronics (AIO)">
+          <img src="/glove/images/AIO.png" alt="AIO Logo">
+        </div>
+      </div>
+      <div class="footer-text">
+        <div class="footer-title">SignSpeaker — Smart Glove Gesture Recognition &amp; Speech System</div>
+        <div class="footer-desc">
+          Joint Engineering &amp; Technology Project: <strong>Elsewedy Technical Academy (STA)</strong> &amp; <strong>Arab International Optronics (AIO)</strong>.
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span class="footer-pill">ESP-NOW Wireless</span>
+      <span class="footer-pill">MPU6050 Gyro</span>
+      <span class="footer-pill">k-NN Gesture Engine</span>
+      <span class="footer-pill">TTS Voice Output</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MQTT Configuration Modal -->
+<div class="modal-backdrop hidden" id="mqttModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>📶 Wireless MQTT Configuration</h3>
+      <button class="small" id="closeMqttModalBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="small-text muted" style="margin:0 0 6px;">Connect the smart glove wirelessly over Wi-Fi using MQTT. No USB cable is needed between the glove/receiver and your laptop!</p>
+      
+      <label class="field">Broker Preset
+        <select id="brokerPresetSelect">
+          <option value="mosquitto_public">Eclipse Mosquitto Public (test.mosquitto.org:1883) - Recommended</option>
+          <option value="mosquitto_local">Local Mosquitto Broker (127.0.0.1:1883)</option>
+          <option value="hivemq">HiveMQ Public Cloud (broker.hivemq.com:1883)</option>
+          <option value="emqx">EMQX Public Cloud (broker.emqx.io:1883)</option>
+          <option value="custom">Custom Broker</option>
+        </select>
+      </label>
+
+      <div class="grid2">
+        <label class="field">Broker Host / IP
+          <input type="text" id="mqttBrokerInput" value="test.mosquitto.org">
+        </label>
+        <label class="field">Port
+          <input type="number" id="mqttPortInput" value="1883">
+        </label>
+      </div>
+
+      <div class="grid2">
+        <label class="field">Glove Sensor Topic (ESP32 Publishes)
+          <input type="text" id="mqttTopicInput" value="signspeaker/glove/data">
+        </label>
+        <label class="field">LCD Display Topic (ESP32 Subscribes)
+          <input type="text" id="mqttLcdTopicInput" value="signspeaker/glove/lcd">
+        </label>
+      </div>
+
+      <div class="esp-snippet-box">
+        <div class="row" style="justify-content:space-between; margin-bottom:4px;">
+          <span class="small-text muted"><b>ESP32 Firmware Code Snippet:</b></span>
+          <button class="small" id="copyEspConfigBtn" type="button">📋 Copy Snippet</button>
+        </div>
+        <pre class="mono small-text" id="espConfigSnippet">const char* mqtt_broker = "test.mosquitto.org";
+const int   mqtt_port   = 1883;
+const char* topic_data  = "signspeaker/glove/data";
+const char* topic_lcd   = "signspeaker/glove/lcd";</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="primary" id="saveMqttConfigBtn">Save &amp; Connect</button>
+      <button id="cancelMqttModalBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Words Management Modal -->
+<div class="modal-backdrop hidden" id="deleteWordsModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 style="color:var(--bad);">🗑️ Choose Words to Delete</h3>
+      <button class="small" id="closeDeleteModalBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="small-text muted" style="margin:0 0 4px;">Select the specific trained words or sentences you want to delete:</p>
+      
+      <div class="row" style="justify-content:space-between; align-items:center;">
+        <label class="check" style="font-weight:600;">
+          <input type="checkbox" id="selectAllDeleteCheck"> Select All (<span id="deleteTotalCount">0</span> words)
+        </label>
+        <span class="pill muted" id="selectedDeleteCountPill">0 selected</span>
+      </div>
+
+      <div class="delete-words-list" id="deleteWordsListContainer">
+        <div class="small-text muted" style="text-align:center; padding:12px;">Loading words...</div>
+      </div>
+
+      <label class="check small-text muted" style="margin-top:4px;">
+        <input type="checkbox" id="optKeepWordLabels"> Keep word names in training list (only delete recorded samples)
+      </label>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button class="small danger" id="deleteAllModalBtn" type="button">⚠️ Delete All &amp; Model</button>
+      <div class="row" style="gap:8px;">
+        <button id="cancelDeleteModalBtn" type="button">Cancel</button>
+        <button class="primary danger" id="confirmDeleteSelectedBtn" type="button" disabled>Delete Selected (0)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const fmtTime = ts => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+  const S = {
+    serial: null, engine: null, dataset: null, model: null, output: null,
+    speaker: null, logger: null, selected: null, session: 0, history: []
+  };
+
+  // ---------- websocket ----------
+
+  let ws = null;
+  function connectWs() {
+    ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws/glove');
+    ws.onopen = () => { setPill($('wsPill'), 'ok', 'dashboard live'); send({ cmd: 'hello' }); };
+    ws.onclose = () => { setPill($('wsPill'), '', 'Node-RED offline'); setTimeout(connectWs, 1500); };
+    ws.onmessage = ev => {
+      let m;
+      try { m = JSON.parse(ev.data); } catch (e) { return; }
+      const h = handlers[m.topic];
+      if (h) h(m.payload);
+    };
+  }
+  function send(obj) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(obj)); }
+
+  function setPill(el, cls, text) { el.className = 'pill ' + cls; el.textContent = text; }
+
+  function toast(text, level) {
+    const t = document.createElement('div');
+    t.className = 'toast ' + (level || '');
+    t.textContent = text;
+    $('toasts').appendChild(t);
+    setTimeout(() => t.remove(), level === 'error' ? 6000 : 3500);
+  }
+
+  // ---------- charts ----------
+
+  const live = { data: [], windowMs: 6000, dirty: true, yMax: 1.5 };
+
+  function sizeCanvas(c) {
+    const r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (c.width !== Math.round(r.width * dpr) || c.height !== Math.round(r.height * dpr)) {
+      c.width = Math.round(r.width * dpr);
+      c.height = Math.round(r.height * dpr);
+    }
+    const ctx = c.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w: r.width, h: r.height };
+  }
+
+  // rows: [{t, x, y, z}] ; opts: {t0, t1, yMax, lines:[{v,label}], showMag, highlight:[a,b]}
+  function drawChart(canvas, rows, opts) {
+    const { ctx, w, h } = sizeCanvas(canvas);
+    const padL = 34, padR = 8, padT = 8, padB = 18;
+    const pw = w - padL - padR, ph = h - padT - padB;
+    const yMax = opts.yMax;
+    const X = t => padL + (t - opts.t0) / Math.max(1, opts.t1 - opts.t0) * pw;
+    const Y = v => padT + ph / 2 - v / yMax * (ph / 2);
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillStyle = css('--muted');
+    ctx.strokeStyle = css('--grid');
+    ctx.lineWidth = 1;
+
+    const step = yMax > 3 ? 1 : yMax > 1.5 ? 0.5 : 0.25;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let v = -Math.floor(yMax / step) * step; v <= yMax + 1e-9; v += step) {
+      const y = Math.round(Y(v)) + .5;
+      ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+      ctx.fillText(v.toFixed(step < 0.5 ? 2 : 1), padL - 5, y);
+    }
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    if (opts.axisLabel) ctx.fillText(opts.axisLabel, padL, h - 4);
+
+    if (opts.highlight) {
+      ctx.fillStyle = css('--accent-soft');
+      const a = Math.max(padL, X(opts.highlight[0])), b = Math.min(w - padR, X(opts.highlight[1]));
+      if (b > a) ctx.fillRect(a, padT, b - a, ph);
+    }
+
+    for (const l of opts.lines || []) {
+      ctx.strokeStyle = css('--mag');
+      ctx.setLineDash([4, 4]);
+      const y = Math.round(Y(l.v)) + .5;
+      ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = css('--muted');
+      ctx.textAlign = 'right';
+      ctx.fillText(l.label, w - padR - 2, y - 4);
+      ctx.textAlign = 'left';
+    }
+
+    const series = [['x', '--x'], ['y', '--y'], ['z', '--z']];
+    if (opts.showMag) series.unshift(['m', '--mag']);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(padL, padT, pw, ph); ctx.clip();
+    for (const [k, color] of series) {
+      ctx.strokeStyle = css(color);
+      ctx.lineWidth = k === 'm' ? 1.25 : 2;
+      ctx.beginPath();
+      let started = false;
+      for (const r of rows) {
+        const px = X(r.t), py = Y(r[k]);
+        if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawLive() {
+    if (live.dirty) {
+      live.dirty = false;
+      const d = live.data;
+      const t1 = d.length ? d[d.length - 1].t : 0;
+      const t0 = t1 - live.windowMs;
+      let maxAbs = 1;
+      for (const r of d) maxAbs = Math.max(maxAbs, Math.abs(r.x), Math.abs(r.y), Math.abs(r.z), r.m);
+      // Grow quickly, shrink slowly so the scale doesn't jump around.
+      const target = Math.ceil(maxAbs * 1.15 * 2) / 2;
+      live.yMax = target > live.yMax ? target : Math.max(target, live.yMax - 0.01);
+      const st = S.engine && S.engine.settings;
+      drawChart($('live'), d, {
+        t0, t1, yMax: live.yMax, showMag: true,
+        lines: st ? [{ v: st.start, label: 'start ' + st.start }, { v: st.end, label: 'end ' + st.end }] : [],
+        highlight: live.activeFrom ? [live.activeFrom, live.activeTo || t1] : null,
+        axisLabel: 'last ' + live.windowMs / 1000 + ' s'
+      });
+    }
+    requestAnimationFrame(drawLive);
+  }
+
+  let lastGesture = null;
+  function drawGesture(g) {
+    lastGesture = g;
+    if (!g) return;
+    const rows = g.samples.map(r => ({ t: r[0], x: r[1], y: r[2], z: r[3], m: Math.hypot(r[1], r[2], r[3]) }));
+    let maxAbs = 1;
+    for (const r of rows) maxAbs = Math.max(maxAbs, Math.abs(r.x), Math.abs(r.y), Math.abs(r.z));
+    drawChart($('gestureChart'), rows, {
+      t0: 0, t1: Math.max(rows[rows.length - 1].t, 100),
+      yMax: Math.ceil(maxAbs * 1.15 * 2) / 2,
+      axisLabel: Math.round(g.duration) + ' ms'
+    });
+  }
+
+  window.addEventListener('resize', () => { live.dirty = true; drawGesture(lastGesture); });
+
+  // ---------- rendering ----------
+
+  function labels() { return (S.dataset && S.dataset.labels) || []; }
+
+  function renderMode() {
+    const e = S.engine;
+    if (!e) return;
+    document.querySelectorAll('#modeSeg button').forEach(b => b.classList.toggle('on', b.dataset.mode === e.mode));
+    const train = e.mode === 'train';
+    ['trainPanel', 'modelPanel', 'savePanel', 'samplesPanel'].forEach(id => $(id).classList.toggle('hidden', !train));
+    $('recognizePanel').classList.toggle('hidden', train);
+
+    if (!S.selected || !labels().includes(S.selected)) S.selected = e.label && labels().includes(e.label) ? e.label : labels()[0] || null;
+    const btn = $('recordBtn');
+    btn.classList.toggle('rec', !!e.recording);
+    btn.textContent = e.recording ? '■  Stop recording "' + e.label + '"' : '●  Start recording "' + (S.selected || '…') + '"';
+    btn.disabled = !S.selected;
+    $('sessionInfo').textContent = e.recording ? S.session + ' saved this session' : '';
+  }
+
+  function renderPhase(p) {
+    const b = $('phaseBadge');
+    const map = { waiting: ['muted', 'waiting for movement'], active: ['accent', 'gesture in progress'], cooldown: ['warn', 'cooldown'] };
+    const [cls, text] = map[p] || ['muted', p];
+    setPill(b, cls, text);
+  }
+
+  function renderSettings() {
+    const st = S.engine && S.engine.settings;
+    if (!st) return;
+    document.querySelectorAll('#settingsForm input').forEach(i => {
+      if (document.activeElement !== i) i.value = st[i.name];
+    });
+    live.dirty = true;
+  }
+
+  function renderDataset() {
+    const d = S.dataset;
+    if (!d) return;
+    if (!S.selected || !d.labels.includes(S.selected)) S.selected = (S.engine && d.labels.includes(S.engine.label)) ? S.engine.label : d.labels[0] || null;
+    $('labelChips').innerHTML = d.labels.map((l, i) =>
+      '<span class="chip' + (l === S.selected ? ' on' : '') + '" data-label="' + esc(l) + '">' +
+      (i < 9 ? '<span class="key">' + (i + 1) + '</span>' : '') + esc(l) +
+      '<span class="count">' + (d.counts[l] || 0) + '</span></span>').join('');
+    $('samplesLabel').textContent = S.selected || '';
+    const rows = d.samples.filter(s => s.label === S.selected);
+    $('sampleRows').innerHTML = rows.length ? rows.map(s =>
+      '<tr><td class="mono">' + fmtTime(s.at) + '</td><td>' + Math.round(s.duration) + ' ms</td>' +
+      '<td style="text-align:right"><button class="small" data-view="' + s.id + '">View</button> ' +
+      '<button class="small danger" data-del="' + s.id + '">Delete</button></td></tr>').join('')
+      : '<tr><td class="muted">No samples yet for this word.</td></tr>';
+    renderMode();
+    renderSimButtons();
+    renderSaved();
+  }
+
+  function renderSaved() {
+    const d = S.dataset;
+    $('saveBadge').innerHTML = d.unsaved
+      ? '<span class="pill warn">unsaved changes</span>'
+      : '<span class="pill ok">saved</span>';
+    $('saveInfo').textContent = (d.saved
+      ? 'Last saved ' + new Date(d.saved.at).toLocaleString() + ' as "' + d.saved.name + '". '
+      : 'Nothing saved yet. ') + d.total + ' samples in ' + d.labels.length + ' words.';
+    const sel = $('savedSelect');
+    const list = d.savedList || [];
+    const key = list.join('|');
+    if (sel.dataset.key !== key) {
+      sel.innerHTML = list.length
+        ? list.map(n => '<option value="' + esc(n) + '">' + esc(n) + '</option>').join('')
+        : '<option value="">No saved training yet</option>';
+      sel.dataset.key = key;
+    }
+    $('restoreBtn').disabled = !list.length;
+  }
+
+  function renderModel() {
+    const m = S.model;
+    const badge = $('modelBadge');
+    if (!m) {
+      badge.innerHTML = '<span class="pill muted">rules</span>';
+      $('modelSummary').innerHTML = 'No model trained yet. The built-in threshold rules are used until you train one.';
+      $('confusion').innerHTML = '';
+      $('deleteModelBtn').disabled = true;
+      return;
+    }
+    $('deleteModelBtn').disabled = false;
+    badge.innerHTML = m.stale ? '<span class="pill warn">new samples – retrain</span>' : '<span class="pill ok">up to date</span>';
+    $('modelSummary').innerHTML =
+      '<div class="row" style="gap:18px"><div><div class="acc">' + Math.round(m.accuracy * 100) + '%</div><div class="small-text muted">leave-one-out accuracy</div></div>' +
+      '<div class="small-text muted">' + m.n + ' samples · ' + m.labels.length + ' words · k = ' + m.k + '<br>trained ' + new Date(m.trainedAt).toLocaleString() + '</div></div>';
+    const L = m.confusion.labels, M = m.confusion.matrix;
+    let html = '<table><thead><tr><th class="lbl">actual ↓ / predicted →</th>' + L.map(l => '<th>' + esc(l) + '</th>').join('') + '<th>acc.</th></tr></thead><tbody>';
+    M.forEach((row, i) => {
+      const total = row.reduce((a, b) => a + b, 0) || 1;
+      html += '<tr><td class="lbl"><b>' + esc(L[i]) + '</b></td>' + row.map((v, j) => {
+        const a = v / total;
+        const bg = v ? (i === j ? 'rgba(229,9,20,' + (0.2 + a * 0.55) + ')' : 'rgba(255,176,32,' + (0.15 + a * 0.45) + ')') : 'transparent';
+        return '<td style="background:' + bg + '">' + v + '</td>';
+      }).join('') + '<td>' + Math.round(row[i] / total * 100) + '%</td></tr>';
+    });
+    $('confusion').innerHTML = html + '</tbody></table>';
+  }
+
+  function renderOutputSettings() {
+    const o = S.output;
+    if (!o) return;
+    $('optSpeak').checked = o.speak;
+    $('optLcd').checked = o.lcd;
+    $('optUnknown').checked = o.speakUnknown;
+    $('optMinConf').value = o.minConfidence;
+    $('minConfText').textContent = Math.round(o.minConfidence * 100) + '%';
+  }
+
+  function renderSpeaker() {
+    const sp = S.speaker;
+    if (!sp) return;
+    $('speakerBadge').innerHTML = sp.ready ? '<span class="pill ok">speech ready</span>' : '<span class="pill">speech offline</span>';
+    const sel = $('voiceSelect');
+    if (sel.options.length !== sp.voices.length) sel.innerHTML = sp.voices.map(v => '<option>' + esc(v) + '</option>').join('');
+    if (document.activeElement !== sel) sel.value = sp.voice;
+    $('optRate').value = sp.rate || 0;
+    $('rateText').textContent = sp.rate || 0;
+  }
+
+  function updateSnippet() {
+    const b = $('mqttBrokerInput') ? $('mqttBrokerInput').value.trim() : 'test.mosquitto.org';
+    const p = $('mqttPortInput') ? $('mqttPortInput').value.trim() : '1883';
+    const td = $('mqttTopicInput') ? $('mqttTopicInput').value.trim() : 'signspeaker/glove/data';
+    const tl = $('mqttLcdTopicInput') ? $('mqttLcdTopicInput').value.trim() : 'signspeaker/glove/lcd';
+    if ($('espConfigSnippet')) {
+      $('espConfigSnippet').textContent =
+        'const char* mqtt_broker = "' + b + '";\n' +
+        'const int   mqtt_port   = ' + p + ';\n' +
+        'const char* topic_data  = "' + td + '";\n' +
+        'const char* topic_lcd   = "' + tl + '";';
+    }
+  }
+
+  function renderSerial() {
+    const s = S.serial;
+    if (!s) return;
+
+    // 1. MQTT status
+    if ($('mqttPill') && $('mqttConnectBtn')) {
+      if (s.mqttConnected) {
+        const stale = s.lastDataAge === null || s.lastDataAge > 2500;
+        setPill($('mqttPill'), stale ? 'warn' : 'ok', '📶 ' + (s.broker || 'Mosquitto') + (stale ? ' · waiting for glove' : ' · ' + s.rate + ' Hz'));
+        $('mqttConnectBtn').textContent = 'Disconnect';
+        $('mqttConnectBtn').classList.remove('primary');
+        $('mqttConnectBtn').classList.add('danger');
+      } else {
+        setPill($('mqttPill'), '', 'MQTT disconnected');
+        $('mqttConnectBtn').textContent = 'Connect';
+        $('mqttConnectBtn').classList.add('primary');
+        $('mqttConnectBtn').classList.remove('danger');
+      }
+    }
+
+    if (s.broker && $('mqttBrokerInput') && document.activeElement !== $('mqttBrokerInput')) $('mqttBrokerInput').value = s.broker;
+    if (s.brokerPort && $('mqttPortInput') && document.activeElement !== $('mqttPortInput')) $('mqttPortInput').value = s.brokerPort;
+    if (s.topic && $('mqttTopicInput') && document.activeElement !== $('mqttTopicInput')) $('mqttTopicInput').value = s.topic;
+    if (s.lcdTopic && $('mqttLcdTopicInput') && document.activeElement !== $('mqttLcdTopicInput')) $('mqttLcdTopicInput').value = s.lcdTopic;
+    updateSnippet();
+
+    // 2. Serial status
+    const sel = $('portSelect');
+    if (sel) {
+      const ports = s.ports || [];
+      const key = ports.map(p => p.path).join('|');
+      if (sel.dataset.key !== key) {
+        const cur = sel.value;
+        sel.innerHTML = ports.map(p => '<option value="' + esc(p.path) + '">' + esc(p.path === 'SIMULATOR' ? p.name : p.path + ' – ' + p.name) + '</option>').join('');
+        sel.dataset.key = key;
+        sel.value = s.path || s.want || cur || (ports.find(p => !/bluetooth/i.test(p.name)) || {}).path || '';
+      }
+    }
+    if ($('serialPill') && $('connectBtn')) {
+      if (s.mode === 'serial' && s.connected) {
+        const stale = s.lastDataAge === null || s.lastDataAge > 2000;
+        setPill($('serialPill'), stale ? 'warn' : 'ok', s.path + (stale ? ' · no data from glove' : ' · ' + s.rate + ' Hz'));
+        $('connectBtn').textContent = 'Disconnect';
+      } else {
+        setPill($('serialPill'), '', s.want ? 'waiting for ' + s.want : 'not connected');
+        $('connectBtn').textContent = 'Connect';
+      }
+    }
+
+    const lcd = s.lcd || ['', ''];
+    if ($('lcd')) $('lcd').textContent = lcd.map(l => String(l).substring(0, 16).padEnd(16)).join('\n');
+    if ($('simPanel')) $('simPanel').classList.toggle('hidden', s.path !== 'SIMULATOR');
+    if ($('simAuto')) $('simAuto').checked = !!s.simAuto;
+  }
+
+  function renderSimButtons() {
+    $('simButtons').innerHTML = ['Hello', 'I am', 'Reem', 'Thanks'].map(l => '<button class="small" data-sim="' + esc(l) + '">' + esc(l) + '</button>').join('');
+  }
+
+  function renderOutput(o) {
+    const w = $('bigWord');
+    w.textContent = o.text;
+    w.classList.toggle('unknown', o.text === 'Unknown');
+    const conf = o.confidence;
+    $('confBar').style.width = conf === null || conf === undefined ? (o.known ? '100%' : '0') : Math.round(conf * 100) + '%';
+    $('confText').textContent = conf === null || conf === undefined ? 'confidence n/a (' + o.source + ')' : 'confidence ' + Math.round(conf * 100) + '%';
+    $('predSource').textContent = o.source === 'model' ? 'trained model' : o.source === 'rules' ? 'built-in rules' : o.source;
+    $('predDetail').textContent = (o.spoken ? '🔊 spoken  ' : '') + (o.lcdSent ? '▤ LCD' : '');
+    S.history.unshift(o);
+    S.history = S.history.slice(0, 30);
+    $('history').innerHTML = S.history.map(h =>
+      '<li><span class="t">' + fmtTime(h.at) + '</span><span class="w">' + esc(h.text) + '</span>' +
+      '<span class="muted">' + (h.confidence === null || h.confidence === undefined ? h.source : Math.round(h.confidence * 100) + '%') + '</span></li>').join('');
+  }
+
+  function renderGestureInfo(g, title) {
+    $('gestureTitle').textContent = title;
+    $('gestureMeta').textContent = Math.round(g.duration) + ' ms · ' + g.samples.length + ' samples · ' + fmtTime(g.at);
+    const p = g.prediction;
+    let html = '';
+    if (g.recorded) html += '<span class="pill ok">saved as "' + esc(g.label) + '"</span>';
+    if (p) {
+      const conf = p.confidence === null || p.confidence === undefined ? '' : ' ' + Math.round(p.confidence * 100) + '%';
+      html += '<span class="pill ' + (p.known ? 'accent' : 'muted') + '">' + (p.source === 'model' ? 'model' : 'rules') + ' says: ' + esc(p.known ? p.label : 'Unknown') + conf + '</span>';
+      if (p.ranges) html += '<span class="muted mono">range X ' + p.ranges.x.toFixed(2) + ' · Y ' + p.ranges.y.toFixed(2) + ' · Z ' + p.ranges.z.toFixed(2) + '</span>';
+    }
+    $('gestureInfo').innerHTML = html;
+  }
+
+  // ---------- incoming events ----------
+
+  let valuesAt = 0;
+  const handlers = {
+    sample(p) {
+      const t = isNaN(p.dev) || p.dev === null ? p.t : p.dev;
+      const b = S.bias || { x: 0, y: 0, z: 0 };
+      p = { gx: p.gx - b.x, gy: p.gy - b.y, gz: p.gz - b.z };
+      const d = live.data;
+      if (d.length && t < d[d.length - 1].t) d.length = 0; // device rebooted
+      d.push({ t, x: p.gx, y: p.gy, z: p.gz, m: Math.hypot(p.gx, p.gy, p.gz) });
+      while (d.length && d[0].t < t - live.windowMs - 500) d.shift();
+      if (S.engine && S.engine.phase === 'active' && live.activeFrom) live.activeTo = t;
+      live.dirty = true;
+      const now = performance.now();
+      if (now - valuesAt > 100) {
+        valuesAt = now;
+        $('vx').textContent = p.gx.toFixed(2);
+        $('vy').textContent = p.gy.toFixed(2);
+        $('vz').textContent = p.gz.toFixed(2);
+        $('vm').textContent = Math.hypot(p.gx, p.gy, p.gz).toFixed(2);
+      }
+    },
+    phase(p) {
+      if (S.engine) S.engine.phase = p;
+      const d = live.data;
+      if (p === 'active') { live.activeFrom = d.length ? d[Math.max(0, d.length - 4)].t : 0; live.activeTo = null; }
+      renderPhase(p);
+    },
+    discarded() { },
+    bias(b) {
+      S.bias = b;
+      $('biasInfo').textContent = 'Gyro rest offset (learned automatically, subtracted from all readings): X ' + b.x.toFixed(3) + '  Y ' + b.y.toFixed(3) + '  Z ' + b.z.toFixed(3) + ' rad/s';
+    },
+    engine(e) {
+      const wasRecording = S.engine && S.engine.recording;
+      S.engine = e;
+      if (e.bias) handlers.bias(e.bias);
+      if (e.recording && !wasRecording) S.session = 0;
+      if (e.label && labels().includes(e.label)) S.selected = e.label;
+      renderMode(); renderPhase(e.phase); renderSettings(); renderDataset();
+    },
+    gesture(g) {
+      if (g.recorded) {
+        S.session++;
+        $('gestureCard').classList.remove('flash-ok'); void $('gestureCard').offsetWidth; $('gestureCard').classList.add('flash-ok');
+        renderMode();
+      }
+      drawGesture(g);
+      renderGestureInfo(g, g.recorded ? 'Just recorded' : 'Last gesture');
+    },
+    sampleData(s) {
+      drawGesture(s);
+      renderGestureInfo(s, 'Sample of "' + s.label + '"');
+    },
+    dataset(d) { S.dataset = d; renderDataset(); },
+    model(m) { S.model = m; renderModel(); },
+    output(o) { renderOutput(o); },
+    outputSettings(o) { S.output = o; renderOutputSettings(); },
+    speaker(sp) { S.speaker = sp; renderSpeaker(); },
+    logger(l) {
+      S.logger = l;
+      $('logToggle').checked = l.enabled;
+      $('logInfo').textContent = (l.enabled ? 'Saving to ' : 'Paused · ') + l.file + ' · ' + l.written.toLocaleString() + ' rows written since start';
+    },
+    serial(s) { S.serial = s; renderSerial(); },
+    device(text) { toast('Receiver: ' + text); },
+    toast(t) { toast(t.text, t.level); }
+  };
+
+  // ---------- controls ----------
+
+  $('modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (b) send({ cmd: 'mode', mode: b.dataset.mode });
+  });
+
+  // Connection Type Switcher
+  if ($('connTypeSeg')) {
+    $('connTypeSeg').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const type = b.dataset.type;
+      $('btnTypeMqtt').classList.toggle('on', type === 'mqtt');
+      $('btnTypeSerial').classList.toggle('on', type === 'serial');
+      $('btnTypeSim').classList.toggle('on', type === 'sim');
+
+      $('mqttControls').classList.toggle('hidden', type !== 'mqtt');
+      $('serialControls').classList.toggle('hidden', type !== 'serial');
+
+      if (type === 'sim') {
+        send({ cmd: 'connect', path: 'SIMULATOR' });
+        toast('Switched to Simulator (Synthetic glove data)', 'ok');
+      }
+    });
+  }
+
+  // MQTT Modal Controls
+  if ($('mqttConfigBtn')) {
+    $('mqttConfigBtn').addEventListener('click', () => {
+      $('mqttModal').classList.remove('hidden');
+      updateSnippet();
+    });
+  }
+  if ($('closeMqttModalBtn')) $('closeMqttModalBtn').addEventListener('click', () => $('mqttModal').classList.add('hidden'));
+  if ($('cancelMqttModalBtn')) $('cancelMqttModalBtn').addEventListener('click', () => $('mqttModal').classList.add('hidden'));
+
+  if ($('brokerPresetSelect')) {
+    $('brokerPresetSelect').addEventListener('change', e => {
+      const val = e.target.value;
+      if (val === 'mosquitto_public') {
+        $('mqttBrokerInput').value = 'test.mosquitto.org';
+        $('mqttPortInput').value = '1883';
+      } else if (val === 'mosquitto_local') {
+        $('mqttBrokerInput').value = '127.0.0.1';
+        $('mqttPortInput').value = '1883';
+      } else if (val === 'hivemq') {
+        $('mqttBrokerInput').value = 'broker.hivemq.com';
+        $('mqttPortInput').value = '1883';
+      } else if (val === 'emqx') {
+        $('mqttBrokerInput').value = 'broker.emqx.io';
+        $('mqttPortInput').value = '1883';
+      }
+      updateSnippet();
+    });
+  }
+
+  ['mqttBrokerInput', 'mqttPortInput', 'mqttTopicInput', 'mqttLcdTopicInput'].forEach(id => {
+    if ($(id)) $(id).addEventListener('input', updateSnippet);
+  });
+
+  if ($('copyEspConfigBtn')) {
+    $('copyEspConfigBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText($('espConfigSnippet').textContent).then(() => {
+        toast('Copied ESP32 MQTT config snippet to clipboard!', 'ok');
+      }).catch(() => toast('Please select and copy manually.'));
+    });
+  }
+
+  if ($('saveMqttConfigBtn')) {
+    $('saveMqttConfigBtn').addEventListener('click', () => {
+      const broker = $('mqttBrokerInput').value.trim();
+      const port = parseInt($('mqttPortInput').value.trim(), 10) || 1883;
+      const topic = $('mqttTopicInput').value.trim();
+      const lcdTopic = $('mqttLcdTopicInput').value.trim();
+      send({ cmd: 'connectMqtt', broker, port, topic, lcdTopic });
+      $('mqttModal').classList.add('hidden');
+      toast('Connecting MQTT to ' + broker + ':' + port + '...', 'ok');
+    });
+  }
+
+  if ($('mqttConnectBtn')) {
+    $('mqttConnectBtn').addEventListener('click', () => {
+      if (S.serial && S.serial.mqttConnected) {
+        send({ cmd: 'disconnectMqtt' });
+        toast('Disconnected from MQTT');
+      } else {
+        const broker = $('mqttBrokerInput').value.trim();
+        const port = parseInt($('mqttPortInput').value.trim(), 10) || 1883;
+        const topic = $('mqttTopicInput').value.trim();
+        const lcdTopic = $('mqttLcdTopicInput').value.trim();
+        send({ cmd: 'connectMqtt', broker, port, topic, lcdTopic });
+        toast('Connecting MQTT to ' + broker + '...', 'ok');
+      }
+    });
+  }
+
+  if ($('connectBtn')) {
+    $('connectBtn').addEventListener('click', () => {
+      if (S.serial && (S.serial.connected || S.serial.want)) send({ cmd: 'disconnect' });
+      else send({ cmd: 'connect', path: $('portSelect').value });
+    });
+  }
+  $('portSelect').addEventListener('change', () => {
+    if (S.serial && S.serial.connected) send({ cmd: 'connect', path: $('portSelect').value });
+  });
+
+  function selectLabel(l) {
+    S.selected = l;
+    if (S.engine && S.engine.recording) send({ cmd: 'record', label: l });
+    else send({ cmd: 'label', label: l });
+    renderDataset();
+  }
+  function toggleRecord() {
+    if (!S.engine) return;
+    if (S.engine.recording) send({ cmd: 'stop' });
+    else if (S.selected) send({ cmd: 'record', label: S.selected });
+  }
+
+  $('labelChips').addEventListener('click', e => {
+    const c = e.target.closest('.chip');
+    if (c) selectLabel(c.dataset.label);
+  });
+  $('recordBtn').addEventListener('click', toggleRecord);
+  $('addLabel').addEventListener('click', () => {
+    const l = $('newLabel').value.trim();
+    if (!l) return;
+    send({ cmd: 'addLabel', label: l });
+    S.selected = l;
+    $('newLabel').value = '';
+  });
+  $('newLabel').addEventListener('keydown', e => { if (e.key === 'Enter') $('addLabel').click(); });
+
+  $('sampleRows').addEventListener('click', e => {
+    const v = e.target.closest('[data-view]'), d = e.target.closest('[data-del]');
+    if (v) send({ cmd: 'sampleData', id: v.dataset.view });
+    if (d) send({ cmd: 'deleteSample', id: d.dataset.del });
+  });
+  $('clearLabelBtn').addEventListener('click', () => {
+    if (S.selected && confirmInline($('clearLabelBtn'))) send({ cmd: 'clearLabel', label: S.selected });
+  });
+  $('removeLabelBtn').addEventListener('click', () => {
+    if (S.selected && confirmInline($('removeLabelBtn'))) send({ cmd: 'removeLabel', label: S.selected });
+  });
+  $('trainBtn').addEventListener('click', () => send({ cmd: 'train' }));
+  $('saveTrainingBtn').addEventListener('click', () => send({ cmd: 'saveTraining' }));
+  if ($('deleteAllBtn')) $('deleteAllBtn').addEventListener('click', () => {
+    if (confirmInline($('deleteAllBtn'))) send({ cmd: 'deleteAll' });
+  });
+  $('restoreBtn').addEventListener('click', () => {
+    const name = $('savedSelect').value;
+    if (name && confirmInline($('restoreBtn'))) send({ cmd: 'restoreSaved', name });
+  });
+  $('deleteModelBtn').addEventListener('click', () => {
+    if (confirmInline($('deleteModelBtn'))) send({ cmd: 'deleteModel' });
+  });
+
+  
+  // ---------- Delete Words Modal Logic ----------
+  let selectedDeleteWords = new Set();
+
+  function openDeleteModal() {
+    const d = S.dataset;
+    if (!d || !d.labels || !d.labels.length) {
+      toast('No words to delete');
+      return;
+    }
+    selectedDeleteWords.clear();
+    $('selectAllDeleteCheck').checked = false;
+    $('deleteTotalCount').textContent = d.labels.length;
+    renderDeleteList();
+    $('deleteWordsModal').classList.remove('hidden');
+  }
+
+  function closeDeleteModal() {
+    $('deleteWordsModal').classList.add('hidden');
+  }
+
+  function renderDeleteList() {
+    const d = S.dataset;
+    if (!d) return;
+    const container = $('deleteWordsListContainer');
+    if (!d.labels.length) {
+      container.innerHTML = '<div class="small-text muted" style="text-align:center; padding:12px;">No words in dataset</div>';
+      return;
+    }
+    container.innerHTML = d.labels.map(l => {
+      const isSel = selectedDeleteWords.has(l);
+      const cnt = d.counts[l] || 0;
+      return '<label class="delete-word-item' + (isSel ? ' selected' : '') + '">' +
+        '<div class="delete-word-left">' +
+          '<input type="checkbox" class="del-word-cb" data-word="' + esc(l) + '"' + (isSel ? ' checked' : '') + '>' +
+          '<span class="delete-word-name">' + esc(l) + (l.includes(' ') ? ' <span class="chip-badge">sentence</span>' : '') + '</span>' +
+        '</div>' +
+        '<span class="delete-word-meta">' + cnt + ' sample' + (cnt === 1 ? '' : 's') + '</span>' +
+      '</label>';
+    }).join('');
+    updateDeleteCount();
+  }
+
+  function updateDeleteCount() {
+    const count = selectedDeleteWords.size;
+    const total = S.dataset ? S.dataset.labels.length : 0;
+    $('deleteTotalCount').textContent = total;
+    $('selectedDeleteCountPill').textContent = count + ' selected';
+    $('selectedDeleteCountPill').className = 'pill ' + (count > 0 ? 'bad' : 'muted');
+    $('confirmDeleteSelectedBtn').disabled = count === 0;
+    $('confirmDeleteSelectedBtn').textContent = 'Delete Selected (' + count + ')';
+    $('selectAllDeleteCheck').checked = total > 0 && count === total;
+  }
+
+  if ($('manageWordsBtn')) $('manageWordsBtn').addEventListener('click', openDeleteModal);
+  if ($('closeDeleteModalBtn')) $('closeDeleteModalBtn').addEventListener('click', closeDeleteModal);
+  if ($('cancelDeleteModalBtn')) $('cancelDeleteModalBtn').addEventListener('click', closeDeleteModal);
+
+  $('selectAllDeleteCheck').addEventListener('change', e => {
+    const d = S.dataset;
+    if (!d) return;
+    if (e.target.checked) {
+      d.labels.forEach(l => selectedDeleteWords.add(l));
+    } else {
+      selectedDeleteWords.clear();
+    }
+    renderDeleteList();
+  });
+
+  $('deleteWordsListContainer').addEventListener('change', e => {
+    const cb = e.target.closest('.del-word-cb');
+    if (!cb) return;
+    const word = cb.dataset.word;
+    if (cb.checked) selectedDeleteWords.add(word);
+    else selectedDeleteWords.delete(word);
+    const row = cb.closest('.delete-word-item');
+    if (row) row.classList.toggle('selected', cb.checked);
+    updateDeleteCount();
+  });
+
+  $('confirmDeleteSelectedBtn').addEventListener('click', () => {
+    if (!selectedDeleteWords.size) return;
+    const labels = Array.from(selectedDeleteWords);
+    const keepLabels = $('optKeepWordLabels').checked;
+    send({ cmd: 'deleteWords', labels, keepLabels });
+    closeDeleteModal();
+    toast('Deleted ' + labels.length + ' word(s)' + (keepLabels ? ' samples' : ''), 'ok');
+  });
+
+  $('deleteAllModalBtn').addEventListener('click', () => {
+    if (confirmInline($('deleteAllModalBtn'))) {
+      send({ cmd: 'deleteAll' });
+      closeDeleteModal();
+    }
+  });
+
+  // Two-click confirmation without blocking browser dialogs.
+  function confirmInline(btn) {
+    if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.orig; return true; }
+    btn.dataset.orig = btn.textContent;
+    btn.dataset.armed = '1';
+    btn.textContent = 'Click again to confirm';
+    setTimeout(() => { if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.orig; } }, 3000);
+    return false;
+  }
+
+  $('saveSettings').addEventListener('click', () => {
+    const settings = {};
+    document.querySelectorAll('#settingsForm input').forEach(i => { settings[i.name] = parseFloat(i.value); });
+    send({ cmd: 'settings', settings });
+    toast('Detection settings saved', 'ok');
+  });
+  $('resetSettings').addEventListener('click', () => send({ cmd: 'resetSettings' }));
+  $('logToggle').addEventListener('change', e => send({ cmd: 'logging', enabled: e.target.checked }));
+
+  const outSet = s => send({ cmd: 'outputSettings', settings: s });
+  $('optSpeak').addEventListener('change', e => outSet({ speak: e.target.checked }));
+  $('optLcd').addEventListener('change', e => outSet({ lcd: e.target.checked }));
+  $('optUnknown').addEventListener('change', e => outSet({ speakUnknown: e.target.checked }));
+  $('optMinConf').addEventListener('input', e => { $('minConfText').textContent = Math.round(e.target.value * 100) + '%'; });
+  $('optMinConf').addEventListener('change', e => outSet({ minConfidence: parseFloat(e.target.value) }));
+  $('optRate').addEventListener('input', e => { $('rateText').textContent = e.target.value; });
+  $('optRate').addEventListener('change', e => send({ cmd: 'rate', rate: parseInt(e.target.value, 10) }));
+  $('voiceSelect').addEventListener('change', e => send({ cmd: 'voice', voice: e.target.value }));
+  $('testBtn').addEventListener('click', () => send({ cmd: 'testOutput', text: $('testText').value }));
+
+  if ($('presetSeg')) {
+    $('presetSeg').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const preset = b.dataset.preset;
+      send({ cmd: 'preset', preset });
+      $('presetWordBtn').classList.toggle('on', preset === 'word');
+      $('presetSentenceBtn').classList.toggle('on', preset === 'sentence');
+      toast('Switched to ' + (preset === 'sentence' ? 'Sentence Mode (up to 4.5s)' : 'Single Word Mode (up to 1.5s)'), 'ok');
+    });
+  }
+
+  document.querySelectorAll('[data-quick]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const phrase = btn.dataset.quick;
+      send({ cmd: 'addLabel', label: phrase });
+      send({ cmd: 'preset', preset: 'sentence' });
+      S.selected = phrase;
+      toast('Added "' + phrase + '" & activated Sentence Mode', 'ok');
+    });
+  });
+
+  if ($('speakSentenceBtn')) {
+    $('speakSentenceBtn').addEventListener('click', () => {
+      if (!S.sentenceWords || !S.sentenceWords.length) {
+        toast('No sentence accumulated yet');
+        return;
+      }
+      const full = S.sentenceWords.join(' ');
+      send({ cmd: 'testOutput', text: full });
+      toast('Speaking: "' + full + '"', 'ok');
+    });
+  }
+
+  if ($('clearSentenceBtn')) {
+    $('clearSentenceBtn').addEventListener('click', () => {
+      S.sentenceWords = [];
+      renderSentenceStream();
+      toast('Sentence cleared');
+    });
+  }
+
+  $('simAuto').addEventListener('change', e => send({ cmd: 'simAuto', enabled: e.target.checked }));
+  $('simButtons').addEventListener('click', e => {
+    const b = e.target.closest('[data-sim]');
+    if (b) send({ cmd: 'simGesture', label: b.dataset.sim });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if (!S.engine || S.engine.mode !== 'train') return;
+    if (e.code === 'Space') { e.preventDefault(); toggleRecord(); }
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 9 && labels()[n - 1]) selectLabel(labels()[n - 1]);
+  });
+
+  renderSimButtons();
+  connectWs();
+  requestAnimationFrame(drawLive);
+})();
+</script>
+</body>
+</html>

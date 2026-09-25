@@ -1,0 +1,14 @@
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary & Log files
+*.tmp
+*.log
+scratch/temp/
+
+# Node-RED flow backups
+.flows.json.backup

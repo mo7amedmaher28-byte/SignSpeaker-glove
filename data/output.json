@@ -1,0 +1,6 @@
+{
+  "speak": true,
+  "lcd": true,
+  "minConfidence": 1,
+  "speakUnknown": false
+}
