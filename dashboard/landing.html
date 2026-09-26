@@ -8,7 +8,7 @@
 <link rel="icon" type="image/jpeg" href="/glove/images/STA%20logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -964,6 +964,339 @@ canvas#previewCanvas {
   .hero-stats { grid-template-columns: 1fr; }
   .cta-banner { padding: 40px 24px; }
   .cta-banner h2 { font-size: 28px; }
+/* ==========================================================================
+   THEME: LIGHT MODE
+   ========================================================================== */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-deep: #f8fafc;
+  --bg-dark: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: #ffffff;
+  --border-glass: rgba(148, 163, 184, 0.28);
+  --border-glass-hover: rgba(37, 99, 235, 0.45);
+  
+  --primary: #2563eb;
+  --primary-glow: rgba(37, 99, 235, 0.28);
+  --cyan: #0284c7;
+  --cyan-bright: #0284c7;
+  --cyan-glow: rgba(2, 132, 199, 0.25);
+  --emerald: #059669;
+  --amber: #d97706;
+  
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+  
+  --shadow-glow: 0 10px 30px rgba(37, 99, 235, 0.12);
+  --shadow-cyan: 0 10px 30px rgba(2, 132, 199, 0.14);
+}
+
+[data-theme="light"] body {
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  background-image: 
+    radial-gradient(circle at 18% 12%, rgba(37, 99, 235, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 82% 25%, rgba(6, 182, 212, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom-color: rgba(203, 213, 225, 0.7);
+}
+
+[data-theme="light"] .project-title,
+[data-theme="light"] .demo-title-group h3,
+[data-theme="light"] .feature-title,
+[data-theme="light"] .section-title,
+[data-theme="light"] .partner-name,
+[data-theme="light"] .step-title,
+[data-theme="light"] .specs-table th {
+  color: #0f172a;
+}
+
+[data-theme="light"] .partner-badges {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .partner-profile-card,
+[data-theme="light"] .feature-card,
+[data-theme="light"] .demo-card,
+[data-theme="light"] .pipeline-step,
+[data-theme="light"] .specs-table-wrapper {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .partnership-banner,
+[data-theme="light"] .cta-banner {
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.95), rgba(240, 249, 255, 0.95));
+  border-color: #bfdbfe;
+}
+
+[data-theme="light"] .cta-banner h2 {
+  color: #0f172a;
+}
+
+[data-theme="light"] .cta-banner p {
+  color: #475569;
+}
+
+[data-theme="light"] .btn-secondary {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: #e2e8f0;
+  border-color: var(--primary);
+}
+
+[data-theme="light"] .specs-table th {
+  background: #f8fafc;
+  color: #334155;
+  border-bottom-color: #cbd5e1;
+}
+
+[data-theme="light"] .specs-table td {
+  border-bottom-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .footer {
+  background: #f1f5f9;
+  border-top-color: #e2e8f0;
+}
+
+[data-theme="light"] .nav-pill-btn {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.15);
+  color: #0f172a;
+}
+
+[data-theme="light"] .demo-word-btn {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .demo-word-btn:hover,
+[data-theme="light"] .demo-word-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+[data-theme="light"] .demo-word-btn.btn-sentence {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  color: #6b21a8;
+}
+
+[data-theme="light"] .demo-word-btn.btn-sentence:hover,
+[data-theme="light"] .demo-word-btn.btn-sentence.active {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   ARABIC & RTL STYLING
+   ========================================================================== */
+html[dir="rtl"] {
+  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+}
+
+html[dir="rtl"] h1, 
+html[dir="rtl"] h2, 
+html[dir="rtl"] h3, 
+html[dir="rtl"] h4, 
+html[dir="rtl"] .brand-title,
+html[dir="rtl"] .hero-heading,
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .partner-name,
+html[dir="rtl"] .feature-title,
+html[dir="rtl"] .step-title {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: normal;
+}
+
+html[dir="rtl"] .hero-heading {
+  line-height: 1.4;
+}
+
+html[dir="rtl"] .pipeline-step {
+  text-align: right;
+}
+
+html[dir="rtl"] .partner-highlights li svg {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+html[dir="rtl"] .hero-actions {
+  justify-content: flex-start;
+}
+
+html[dir="rtl"] .specs-table th,
+html[dir="rtl"] .specs-table td {
+  text-align: right;
+}
+
+/* ==========================================================================
+   3D SCROLL & 3D HOVER EFFECTS
+   ========================================================================== */
+.section {
+  perspective: 1400px;
+}
+
+.scroll-3d {
+  opacity: 0;
+  transform: perspective(1200px) rotateX(12deg) translateY(45px) scale(0.96);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.scroll-3d.revealed {
+  opacity: 1;
+  transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1);
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+
+.card-3d:hover {
+  transform: translateY(-8px) rotateX(4deg) scale(1.02);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.45), 0 0 28px var(--cyan-glow);
+  border-color: var(--cyan-bright);
+}
+
+[data-theme="light"] .card-3d:hover {
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12), 0 0 22px rgba(2, 132, 199, 0.25);
+}
+
+/* ==========================================================================
+   NAV CONTROLS: THEME & LANGUAGE PILLS
+   ========================================================================== */
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-pill-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-main);
+  height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.nav-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--cyan-bright);
+  box-shadow: 0 0 14px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+
+.nav-icon-btn {
+  width: 38px;
+  padding: 0;
+}
+
+/* Theme Icon Switch */
+:root:not([data-theme="light"]) .theme-icon-moon {
+  display: none;
+}
+:root:not([data-theme="light"]) .theme-icon-sun {
+  display: inline-block;
+  color: #f59e0b;
+}
+
+[data-theme="light"] .theme-icon-sun {
+  display: none;
+}
+[data-theme="light"] .theme-icon-moon {
+  display: inline-block;
+  color: #2563eb;
+}
+
+/* ==========================================================================
+   FLOATING SCROLL-UP BUTTON
+   ========================================================================== */
+.scroll-up-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(11, 19, 41, 0.9);
+  border: 1.5px solid var(--cyan-bright);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 15px var(--cyan-glow);
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.scroll-up-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-up-btn:hover {
+  transform: translateY(-4px) scale(1.1);
+  background: var(--primary);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.6), 0 0 25px var(--cyan-bright);
+}
+
+[data-theme="light"] .scroll-up-btn {
+  background: #ffffff;
+  border-color: #2563eb;
+  color: #2563eb;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 0 12px rgba(37, 99, 235, 0.2);
+}
+
+[data-theme="light"] .scroll-up-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+html[dir="rtl"] .scroll-up-btn {
+  right: auto;
+  left: 30px;
 }
 </style>
 </head>
@@ -992,74 +1325,99 @@ canvas#previewCanvas {
     </div>
 
     <ul class="nav-links">
-      <li><a href="#about">Who We Are</a></li>
-      <li><a href="#features">What We Provide</a></li>
-      <li><a href="#demo">Live Demo</a></li>
-      <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#specs">Specifications</a></li>
+      <li><a href="#about" data-i18n="nav_who">Who We Are</a></li>
+      <li><a href="#features" data-i18n="nav_features">What We Provide</a></li>
+      <li><a href="#demo" data-i18n="nav_demo">Live Demo</a></li>
+      <li><a href="#architecture" data-i18n="nav_arch">Architecture</a></li>
+      <li><a href="#specs" data-i18n="nav_specs">Specifications</a></li>
     </ul>
 
     <div class="nav-cta">
+      <!-- Language Toggle -->
+      <button class="nav-pill-btn" id="langToggleBtn" aria-label="Switch Language" title="Translate English / العربية">
+        <span class="lang-icon">🌐</span>
+        <span id="langBtnText">العربية</span>
+      </button>
+
+      <!-- Theme Toggle (Light / Dark) -->
+      <button class="nav-pill-btn nav-icon-btn" id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <!-- Cockpit Launch Button -->
       <a href="/glove/dashboard" class="btn btn-primary btn-glow" id="launchCockpitNav">
-        <span>Launch Dashboard</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <span data-i18n="nav_launch">Launch Dashboard</span>
+        <svg class="nav-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
   </div>
 </nav>
 
 <!-- HERO SECTION -->
-<header class="hero-section">
+<header class="hero-section scroll-3d revealed">
   <div class="container hero-grid">
     <div class="hero-content">
       <div class="eyebrow-pill">
         <span class="pulse-dot"></span>
-        <span>STA × AIO Joint Applied Engineering Project</span>
+        <span data-i18n="hero_eyebrow">STA × AIO Joint Applied Engineering Project</span>
       </div>
 
-      <h1 class="hero-heading">
+      <h1 class="hero-heading" data-i18n="hero_title">
         Translating Silent Gestures <br>
         <span class="gradient-text">Into Spoken Voice &amp; Text</span>
       </h1>
 
-      <p class="hero-lead">
+      <p class="hero-lead" data-i18n="hero_lead">
         <strong>SignSpeaker</strong> is an assistive wearable smart glove system engineered through a high-impact collaboration between <strong>Elsewedy Technical Academy (STA)</strong> and <strong>Arab International Optronics (AIO)</strong>. It translates dynamic Egyptian Sign Language motions into real-time spoken audio, dual-line LCD text, and interactive web telemetry.
       </p>
 
       <div class="hero-actions">
         <a href="/glove/dashboard" class="btn btn-primary btn-glow" id="heroLaunchBtn" style="padding: 13px 28px; font-size: 15px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span>Launch Operational Cockpit</span>
+          <span data-i18n="hero_launch_cockpit">Launch Operational Cockpit</span>
         </a>
         <a href="#demo" class="btn btn-secondary" style="padding: 13px 24px; font-size: 15px;">
-          <span>Explore Live Demo</span>
+          <span data-i18n="hero_explore_demo">Explore Live Demo</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
         </a>
       </div>
 
       <div class="hero-stats">
-        <div class="stat-item">
+        <div class="stat-item card-3d">
           <span class="stat-number">25 Hz</span>
-          <span class="stat-label">Inertial Gyro Sampling</span>
+          <span class="stat-label" data-i18n="hero_stat_sample_label">Inertial Gyro Sampling</span>
         </div>
-        <div class="stat-item">
+        <div class="stat-item card-3d">
           <span class="stat-number">66-D</span>
-          <span class="stat-label">Trajectory Feature Vector</span>
+          <span class="stat-label" data-i18n="hero_stat_feature_label">Trajectory Feature Vector</span>
         </div>
-        <div class="stat-item">
+        <div class="stat-item card-3d">
           <span class="stat-number">&lt; 15 ms</span>
-          <span class="stat-label">Audio Speech Latency</span>
+          <span class="stat-label" data-i18n="hero_stat_latency_label">Audio Speech Latency</span>
         </div>
       </div>
     </div>
 
     <!-- HERO VISUAL -->
     <div class="hero-visual">
-      <div class="visual-card">
+      <div class="visual-card card-3d">
         <img src="/glove/images/signspeaker_hero.jpg" alt="SignSpeaker Smart Glove AI Wearable">
         <div class="floating-tag">
           <span class="pulse-dot"></span>
-          <span>Active Edge Recognition</span>
+          <span data-i18n="hero_active_edge">Active Edge Recognition</span>
         </div>
         <div class="visual-overlay-badge">
           <div class="overlay-left">
@@ -1067,11 +1425,11 @@ canvas#previewCanvas {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5v14M7 8v8M22 10v4M2 10v4"/></svg>
             </div>
             <div>
-              <div class="overlay-text-top">Instant Voice Synthesis</div>
-              <div class="overlay-text-sub">Continuous Egyptian Sign Language</div>
+              <div class="overlay-text-top" data-i18n="hero_voice_synth">Instant Voice Synthesis</div>
+              <div class="overlay-text-sub" data-i18n="hero_csl_label">Continuous Egyptian Sign Language</div>
             </div>
           </div>
-          <a href="/glove/dashboard" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">Open ➔</a>
+          <a href="/glove/dashboard" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;" data-i18n="hero_open_btn">Open ➔</a>
         </div>
       </div>
     </div>
@@ -1079,168 +1437,168 @@ canvas#previewCanvas {
 </header>
 
 <!-- SECTION: WHO WE ARE (PARTNERS) -->
-<section class="section" id="about">
+<section class="section scroll-3d" id="about">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Partnership &amp; Mission</span>
-      <h2 class="section-title">Who Is Behind SignSpeaker?</h2>
-      <p class="section-desc">
+      <span class="section-tag" data-i18n="about_tag">Partnership &amp; Mission</span>
+      <h2 class="section-title" data-i18n="about_title">Who Is Behind SignSpeaker?</h2>
+      <p class="section-desc" data-i18n="about_desc">
         A strategic applied engineering alliance between Egypt's leading technical education academy and premier national optronics industrial institution.
       </p>
     </div>
 
     <div class="partners-card-grid">
       <!-- STA CARD -->
-      <div class="partner-profile-card">
+      <div class="partner-profile-card card-3d">
         <div class="partner-card-header">
           <div class="partner-logo-box">
             <img src="/glove/images/STA%20logo.jpg" alt="Elsewedy Technical Academy Logo">
           </div>
-          <span class="partner-type-tag">Technical Education</span>
+          <span class="partner-type-tag" data-i18n="sta_type">Technical Education</span>
         </div>
-        <h3 class="partner-name">Elsewedy Technical Academy (STA)</h3>
-        <div class="partner-sub">Excellence in Applied Technology &amp; Technical Talent</div>
-        <p class="partner-desc">
+        <h3 class="partner-name" data-i18n="sta_name">Elsewedy Technical Academy (STA)</h3>
+        <div class="partner-sub" data-i18n="sta_sub">Excellence in Applied Technology &amp; Technical Talent</div>
+        <p class="partner-desc" data-i18n="sta_desc">
           Established by the Elsewedy Electric Foundation, STA pioneers international standard technical education in Egypt. Empowering brilliant young engineering minds with hands-on mastery over embedded systems, industrial automation, and social assistive technologies.
         </p>
         <ul class="partner-highlights">
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Hands-on applied research &amp; hardware prototyping
+            <span data-i18n="sta_h1">Hands-on applied research &amp; hardware prototyping</span>
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Real-world assistive engineering community projects
+            <span data-i18n="sta_h2">Real-world assistive engineering community projects</span>
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Industry 4.0 embedded IoT &amp; mechatronic integration
+            <span data-i18n="sta_h3">Industry 4.0 embedded IoT &amp; mechatronic integration</span>
           </li>
         </ul>
       </div>
 
       <!-- AIO CARD -->
-      <div class="partner-profile-card">
+      <div class="partner-profile-card card-3d">
         <div class="partner-card-header">
           <div class="partner-logo-box">
             <img src="/glove/images/AIO.png" alt="Arab International Optronics Logo">
           </div>
-          <span class="partner-type-tag">High-Tech Industrial</span>
+          <span class="partner-type-tag" data-i18n="aio_type">High-Tech Industrial</span>
         </div>
-        <h3 class="partner-name">Arab International Optronics (AIO)</h3>
-        <div class="partner-sub">National Leader in Advanced Optronics &amp; Smart Electronics</div>
-        <p class="partner-desc">
+        <h3 class="partner-name" data-i18n="aio_name">Arab International Optronics (AIO)</h3>
+        <div class="partner-sub" data-i18n="aio_sub">National Leader in Advanced Optronics &amp; Smart Electronics</div>
+        <p class="partner-desc" data-i18n="aio_desc">
           A flagship Egyptian enterprise renowned for world-class optoelectronic manufacturing, sensory instrumentation, and state-of-the-art embedded electronics. AIO contributes rigorous precision engineering standards, defense-grade sensor conditioning, and telemetry expertise.
         </p>
         <ul class="partner-highlights">
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            High-precision inertial measurement &amp; sensor calibration
+            <span data-i18n="aio_h1">High-precision inertial measurement &amp; sensor calibration</span>
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Ultra-low latency wireless radio &amp; RF telemetry protocols
+            <span data-i18n="aio_h2">Ultra-low latency wireless radio &amp; RF telemetry protocols</span>
           </li>
           <li>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Robust embedded architectures for mission-critical reliability
+            <span data-i18n="aio_h3">Robust embedded architectures for mission-critical reliability</span>
           </li>
         </ul>
       </div>
     </div>
 
     <!-- PARTNERSHIP BANNER -->
-    <div class="partnership-banner">
+    <div class="partnership-banner card-3d">
       <div class="partnership-banner-text">
-        <h4>🤝 Purpose-Driven Applied Engineering</h4>
-        <p>Combining STA's academic ingenuity and AIO's industrial manufacturing excellence to deliver an accessible Egyptian Sign Language communication bridge.</p>
+        <h4 data-i18n="banner_title">🤝 Purpose-Driven Applied Engineering</h4>
+        <p data-i18n="banner_desc">Combining STA's academic ingenuity and AIO's industrial manufacturing excellence to deliver an accessible Egyptian Sign Language communication bridge.</p>
       </div>
       <a href="/glove/dashboard" class="btn btn-primary" style="white-space: nowrap;">
-        Launch Cockpit ➔
+        <span data-i18n="banner_btn">Launch Cockpit ➔</span>
       </a>
     </div>
   </div>
 </section>
 
 <!-- SECTION: WHAT WE PROVIDE -->
-<section class="section" id="features">
+<section class="section scroll-3d" id="features">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Core Capabilities</span>
-      <h2 class="section-title">What SignSpeaker Provides</h2>
-      <p class="section-desc">
+      <span class="section-tag" data-i18n="features_tag">Core Capabilities</span>
+      <h2 class="section-title" data-i18n="features_title">What SignSpeaker Provides</h2>
+      <p class="section-desc" data-i18n="features_desc">
         A complete end-to-end wearable stack spanning kinetic sensing, machine learning, telemetry, and multimodal feedback.
       </p>
     </div>
 
     <div class="features-grid">
       <!-- Feature 1 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
         </div>
-        <h3 class="feature-title">6-DoF Kinetic IMU Sensing</h3>
-        <p class="feature-desc">
+        <h3 class="feature-title" data-i18n="f1_title">6-DoF Kinetic IMU Sensing</h3>
+        <p class="feature-desc" data-i18n="f1_desc">
           High-frequency polling of 3-axis angular velocity (&omega;x, &omega;y, &omega;z) from an MPU6050 sensor at 25 Hz (~40ms). Captures subtle hand dynamics without restricting fingers.
         </p>
         <span class="feature-meta">MPU6050 • I2C @ 25 Hz</span>
       </div>
 
       <!-- Feature 2 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
         </div>
-        <h3 class="feature-title">Dual Untethered Telemetry</h3>
-        <p class="feature-desc">
-          Works 100% untethered. Choose between Wi-Fi MQTT broker integration (cross-network / Mosquitto) or direct low-latency ESP-NOW 2.4 GHz radio (<5ms transmission).
+        <h3 class="feature-title" data-i18n="f2_title">Dual Untethered Telemetry</h3>
+        <p class="feature-desc" data-i18n="f2_desc">
+          Works 100% untethered. Choose between Wi-Fi MQTT broker integration (cross-network / Mosquitto) or direct low-latency ESP-NOW 2.4 GHz radio (&lt;5ms transmission).
         </p>
         <span class="feature-meta">Wi-Fi MQTT &bull; ESP-NOW Radio</span>
       </div>
 
       <!-- Feature 3 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </div>
-        <h3 class="feature-title">Dynamic Segmentation Engine</h3>
-        <p class="feature-desc">
+        <h3 class="feature-title" data-i18n="f3_title">Dynamic Segmentation Engine</h3>
+        <p class="feature-desc" data-i18n="f3_desc">
           Continuous EWMA resting bias estimation (&alpha;=0.03) actively compensates for sensor drift, while a precision state machine isolates deliberate signs from involuntary resting tremors.
         </p>
         <span class="feature-meta">EWMA Bias &bull; Rolling Pre-Roll</span>
       </div>
 
       <!-- Feature 4 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
         </div>
-        <h3 class="feature-title">66-D Trajectory Machine Learning</h3>
-        <p class="feature-desc">
+        <h3 class="feature-title" data-i18n="f4_title">66-D Trajectory Machine Learning</h3>
+        <p class="feature-desc" data-i18n="f4_desc">
           Extracts 16 equidistant resampled 3D points, temporal duration, and per-axis statistics. Standardized Z-scores are classified via weighted k-NN (k=3) with outlier rejection.
         </p>
         <span class="feature-meta">Resampled Trajectory &bull; k-NN</span>
       </div>
 
       <!-- Feature 5 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         </div>
-        <h3 class="feature-title">Persistent Zero-Latency TTS</h3>
-        <p class="feature-desc">
+        <h3 class="feature-title" data-i18n="f5_title">Persistent Zero-Latency TTS</h3>
+        <p class="feature-desc" data-i18n="f5_desc">
           Keeps Windows SpeechSynthesizer permanently warm via a background daemon. Eliminates the 1.5s cold-start CLI penalty, delivering crystal-clear instant vocal feedback.
         </p>
         <span class="feature-meta">System.Speech &bull; Near-Zero Latency</span>
       </div>
 
       <!-- Feature 6 -->
-      <div class="feature-card">
+      <div class="feature-card card-3d">
         <div class="feature-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
-        <h3 class="feature-title">Smart 16×2 LCD Word Wrapping</h3>
-        <p class="feature-desc">
+        <h3 class="feature-title" data-i18n="f6_title">Smart 16×2 LCD Word Wrapping</h3>
+        <p class="feature-desc" data-i18n="f6_desc">
           Autonomous text layout engine formats output onto physical and virtual dual-line displays, dynamically wrapping sentences along whitespace boundaries without breaking words.
         </p>
         <span class="feature-meta">HD44780 LCD &bull; Auto-Wrap</span>
@@ -1250,31 +1608,31 @@ canvas#previewCanvas {
 </section>
 
 <!-- SECTION: INTERACTIVE DEMO -->
-<section class="section demo-section" id="demo">
+<section class="section demo-section scroll-3d" id="demo">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Interactive Preview</span>
-      <h2 class="section-title">Experience Sign Translation Live</h2>
-      <p class="section-desc">
+      <span class="section-tag" data-i18n="demo_tag">Interactive Preview</span>
+      <h2 class="section-title" data-i18n="demo_title">Experience Sign Translation Live</h2>
+      <p class="section-desc" data-i18n="demo_desc">
         Click a sign button below to preview how SignSpeaker captures gestures, drives the LCD screen, and vocalizes speech.
       </p>
     </div>
 
-    <div class="demo-card">
+    <div class="demo-card card-3d">
       <div class="demo-header">
         <div class="demo-title-group">
-          <h3>Interactive Simulation Console</h3>
-          <p>Real-time gesture trajectory reproduction with instant speech synthesis</p>
+          <h3 data-i18n="demo_console_title">Interactive Simulation Console</h3>
+          <p data-i18n="demo_console_desc">Real-time gesture trajectory reproduction with instant speech synthesis</p>
         </div>
         <a href="/glove/dashboard" class="btn btn-primary btn-glow" style="padding: 8px 18px; font-size: 13px;">
-          Open Full Cockpit ➔
+          <span data-i18n="demo_cockpit_btn">Open Full Cockpit ➔</span>
         </a>
       </div>
 
       <div class="demo-screen-grid">
         <!-- VIRTUAL LCD & CONTROLS -->
         <div class="virtual-lcd-box">
-          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.05em;" data-i18n="demo_lcd_title">
             Hardware LCD Preview (16×2 Character Display)
           </div>
 
@@ -1285,10 +1643,10 @@ canvas#previewCanvas {
 
           <div style="margin-top: 10px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 11.5px; color: var(--cyan-bright); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+              <span style="font-size: 11.5px; color: var(--cyan-bright); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="demo_single_words">
                 🔤 Single Words (Inertial Gestures):
               </span>
-              <span style="font-size: 11px; color: var(--text-dim);">10 Core Gestures</span>
+              <span style="font-size: 11px; color: var(--text-dim);" data-i18n="demo_single_count">10 Core Gestures</span>
             </div>
             <div class="demo-word-buttons" style="margin-bottom: 14px;">
               <button class="demo-word-btn" data-word="Hello" onclick="triggerDemo('Hello')">👋 Hello</button>
@@ -1304,10 +1662,10 @@ canvas#previewCanvas {
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 11.5px; color: #c084fc; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+              <span style="font-size: 11.5px; color: #c084fc; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="demo_sentences">
                 💬 Multi-Word Sentences (Continuous Mode):
               </span>
-              <span style="font-size: 11px; color: var(--text-dim);">Smart Word Wrapping</span>
+              <span style="font-size: 11px; color: var(--text-dim);" data-i18n="demo_sentences_count">Smart Word Wrapping</span>
             </div>
             <div class="demo-word-buttons">
               <button class="demo-word-btn btn-sentence" data-word="Hello Mohamed" onclick="triggerDemo('Hello Mohamed')">✨ Hello Mohamed</button>
@@ -1324,7 +1682,7 @@ canvas#previewCanvas {
         <!-- LIVE WAVEFORM CANVAS -->
         <div class="waveform-canvas-box">
           <div class="waveform-title">
-            <span>Gesture Inertial Trace (X, Y, Z)</span>
+            <span data-i18n="demo_trace_title">Gesture Inertial Trace (X, Y, Z)</span>
             <span id="demoConfidence" style="color: var(--emerald);">Confidence: 98%</span>
           </div>
           <canvas id="previewCanvas"></canvas>
@@ -1340,45 +1698,45 @@ canvas#previewCanvas {
 </section>
 
 <!-- SECTION: PIPELINE ARCHITECTURE -->
-<section class="section" id="architecture">
+<section class="section scroll-3d" id="architecture">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">System Pipeline</span>
-      <h2 class="section-title">How SignSpeaker Works</h2>
-      <p class="section-desc">
+      <span class="section-tag" data-i18n="arch_tag">System Pipeline</span>
+      <h2 class="section-title" data-i18n="arch_title">How SignSpeaker Works</h2>
+      <p class="section-desc" data-i18n="arch_desc">
         From subtle inertial finger-wrist movements to spoken words in four seamless stages.
       </p>
     </div>
 
     <div class="pipeline-track">
-      <div class="pipeline-step">
+      <div class="pipeline-step card-3d">
         <div class="step-num">01</div>
-        <h4 class="step-title">Inertial Capture</h4>
-        <p class="step-desc">
+        <h4 class="step-title" data-i18n="step1_title">Inertial Capture</h4>
+        <p class="step-desc" data-i18n="step1_desc">
           MPU6050 IMU samples 3D angular velocities at 25 Hz. Packets are streamed via Wi-Fi MQTT or ESP-NOW radio directly to the edge host.
         </p>
       </div>
 
-      <div class="pipeline-step">
+      <div class="pipeline-step card-3d">
         <div class="step-num">02</div>
-        <h4 class="step-title">Event Segmentation</h4>
-        <p class="step-desc">
+        <h4 class="step-title" data-i18n="step2_title">Event Segmentation</h4>
+        <p class="step-desc" data-i18n="step2_desc">
           Continuous EWMA filters out stationary bias. When motion exceeds 0.20 rad/s, trajectory buffers active samples until quietude is sustained.
         </p>
       </div>
 
-      <div class="pipeline-step">
+      <div class="pipeline-step card-3d">
         <div class="step-num">03</div>
-        <h4 class="step-title">Feature Extraction &amp; k-NN</h4>
-        <p class="step-desc">
+        <h4 class="step-title" data-i18n="step3_title">Feature Extraction &amp; k-NN</h4>
+        <p class="step-desc" data-i18n="step3_desc">
           66 normalized features are extracted across 16 resampled points. Weighted k-NN (k=3) computes closest neighbors with statistical outlier rejection.
         </p>
       </div>
 
-      <div class="pipeline-step">
+      <div class="pipeline-step card-3d">
         <div class="step-num">04</div>
-        <h4 class="step-title">Multimodal Output</h4>
-        <p class="step-desc">
+        <h4 class="step-title" data-i18n="step4_title">Multimodal Output</h4>
+        <p class="step-desc" data-i18n="step4_desc">
           Recognized text is vocalized simultaneously via persistent TTS audio, wrapped onto the 16×2 LCD screen, and broadcasted to the web dashboard.
         </p>
       </div>
@@ -1387,24 +1745,24 @@ canvas#previewCanvas {
 </section>
 
 <!-- SECTION: HARDWARE SPECIFICATIONS -->
-<section class="section" id="specs">
+<section class="section scroll-3d" id="specs">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Engineering Specifications</span>
-      <h2 class="section-title">Hardware &amp; System Pinouts</h2>
-      <p class="section-desc">
+      <span class="section-tag" data-i18n="specs_tag">Engineering Specifications</span>
+      <h2 class="section-title" data-i18n="specs_title">Hardware &amp; System Pinouts</h2>
+      <p class="section-desc" data-i18n="specs_desc">
         Industrial wiring specifications and communication parameters for reliable operation.
       </p>
     </div>
 
-    <div class="specs-table-wrapper">
+    <div class="specs-table-wrapper card-3d">
       <table class="specs-table">
         <thead>
           <tr>
-            <th>Subsystem</th>
-            <th>Component</th>
-            <th>Interface &amp; Wiring</th>
-            <th>Operating Specs</th>
+            <th data-i18n="th_subsystem">Subsystem</th>
+            <th data-i18n="th_component">Component</th>
+            <th data-i18n="th_wiring">Interface &amp; Wiring</th>
+            <th data-i18n="th_specs">Operating Specs</th>
           </tr>
         </thead>
         <tbody>
@@ -1445,20 +1803,20 @@ canvas#previewCanvas {
 </section>
 
 <!-- CALL TO ACTION BANNER -->
-<section class="section" style="padding-top: 20px;">
+<section class="section scroll-3d" style="padding-top: 20px;">
   <div class="container">
-    <div class="cta-banner">
-      <h2>Ready to Explore the Live Cockpit?</h2>
-      <p>
+    <div class="cta-banner card-3d">
+      <h2 data-i18n="cta_title">Ready to Explore the Live Cockpit?</h2>
+      <p data-i18n="cta_desc">
         Step inside the live operational dashboard to monitor 60 FPS real-time gyroscope feeds, train customized gesture models, manage dataset snapshots, and test hardware connections.
       </p>
       <div class="cta-buttons">
         <a href="/glove/dashboard" class="btn btn-primary btn-glow" style="padding: 14px 34px; font-size: 16px;">
-          <span>Launch SignSpeaker Dashboard</span>
+          <span data-i18n="cta_btn">Launch SignSpeaker Dashboard</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
         <a href="#about" class="btn btn-secondary" style="padding: 14px 28px; font-size: 16px;">
-          <span>Review STA × AIO Partnership</span>
+          <span data-i18n="cta_partner_btn">Review STA × AIO Partnership</span>
         </a>
       </div>
     </div>
@@ -1481,11 +1839,11 @@ canvas#previewCanvas {
         </div>
         <div class="project-brand">
           <div class="project-title" style="font-size: 16px;">SignSpeaker</div>
-          <div class="project-sub">Joint Applied Engineering Project</div>
+          <div class="project-sub" data-i18n="footer_sub">Joint Applied Engineering Project</div>
         </div>
       </div>
 
-      <div class="footer-copy">
+      <div class="footer-copy" data-i18n="footer_copy">
         Developed with pride by <strong>Elsewedy Technical Academy (STA)</strong> &amp; <strong>Arab International Optronics (AIO)</strong>.
       </div>
 
@@ -1498,8 +1856,382 @@ canvas#previewCanvas {
   </div>
 </footer>
 
+<!-- FLOATING SCROLL UP BUTTON -->
+<button id="scrollUpBtn" class="scroll-up-btn" aria-label="Scroll to top" title="Scroll to top">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
 <!-- SCRIPT: INTERACTIVE DEMO PREVIEW -->
 <script>
+// ==========================================================================
+// 1. MULTI-LANGUAGE TRANSLATION DICTIONARY (EN & AR)
+// ==========================================================================
+const translations = {
+  en: {
+    nav_who: "Who We Are",
+    nav_features: "What We Provide",
+    nav_demo: "Live Demo",
+    nav_arch: "Architecture",
+    nav_specs: "Specifications",
+    nav_launch: "Launch Dashboard",
+    hero_eyebrow: "STA × AIO Joint Applied Engineering Project",
+    hero_title: `Translating Silent Gestures <br><span class="gradient-text">Into Spoken Voice &amp; Text</span>`,
+    hero_lead: `<strong>SignSpeaker</strong> is an assistive wearable smart glove system engineered through a high-impact collaboration between <strong>Elsewedy Technical Academy (STA)</strong> and <strong>Arab International Optronics (AIO)</strong>. It translates dynamic Egyptian Sign Language motions into real-time spoken audio, dual-line LCD text, and interactive web telemetry.`,
+    hero_launch_cockpit: "Launch Operational Cockpit",
+    hero_explore_demo: "Explore Live Demo",
+    hero_stat_sample_label: "Inertial Gyro Sampling",
+    hero_stat_feature_label: "Trajectory Feature Vector",
+    hero_stat_latency_label: "Audio Speech Latency",
+    hero_active_edge: "Active Edge Recognition",
+    hero_voice_synth: "Instant Voice Synthesis",
+    hero_csl_label: "Continuous Egyptian Sign Language",
+    hero_open_btn: "Open ➔",
+    about_tag: "Partnership &amp; Mission",
+    about_title: "Who Is Behind SignSpeaker?",
+    about_desc: "A strategic applied engineering alliance between Egypt's leading technical education academy and premier national optronics industrial institution.",
+    sta_type: "Technical Education",
+    sta_name: "Elsewedy Technical Academy (STA)",
+    sta_sub: "Excellence in Applied Technology &amp; Technical Talent",
+    sta_desc: "Established by the Elsewedy Electric Foundation, STA pioneers international standard technical education in Egypt. Empowering brilliant young engineering minds with hands-on mastery over embedded systems, industrial automation, and social assistive technologies.",
+    sta_h1: "Hands-on applied research &amp; hardware prototyping",
+    sta_h2: "Real-world assistive engineering community projects",
+    sta_h3: "Industry 4.0 embedded IoT &amp; mechatronic integration",
+    aio_type: "High-Tech Industrial",
+    aio_name: "Arab International Optronics (AIO)",
+    aio_sub: "National Leader in Advanced Optronics &amp; Smart Electronics",
+    aio_desc: "A flagship Egyptian enterprise renowned for world-class optoelectronic manufacturing, sensory instrumentation, and state-of-the-art embedded electronics. AIO contributes rigorous precision engineering standards, defense-grade sensor conditioning, and telemetry expertise.",
+    aio_h1: "High-precision inertial measurement &amp; sensor calibration",
+    aio_h2: "Ultra-low latency wireless radio &amp; RF telemetry protocols",
+    aio_h3: "Robust embedded architectures for mission-critical reliability",
+    banner_title: "🤝 Purpose-Driven Applied Engineering",
+    banner_desc: "Combining STA's academic ingenuity and AIO's industrial manufacturing excellence to deliver an accessible Egyptian Sign Language communication bridge.",
+    banner_btn: "Launch Cockpit ➔",
+    features_tag: "Core Capabilities",
+    features_title: "What SignSpeaker Provides",
+    features_desc: "A complete end-to-end wearable stack spanning kinetic sensing, machine learning, telemetry, and multimodal feedback.",
+    f1_title: "6-DoF Kinetic IMU Sensing",
+    f1_desc: "High-frequency polling of 3-axis angular velocity (&omega;x, &omega;y, &omega;z) from an MPU6050 sensor at 25 Hz (~40ms). Captures subtle hand dynamics without restricting fingers.",
+    f2_title: "Dual Untethered Telemetry",
+    f2_desc: "Works 100% untethered. Choose between Wi-Fi MQTT broker integration (cross-network / Mosquitto) or direct low-latency ESP-NOW 2.4 GHz radio (&lt;5ms transmission).",
+    f3_title: "Dynamic Segmentation Engine",
+    f3_desc: "Continuous EWMA resting bias estimation (&alpha;=0.03) actively compensates for sensor drift, while a precision state machine isolates deliberate signs from involuntary resting tremors.",
+    f4_title: "66-D Trajectory Machine Learning",
+    f4_desc: "Extracts 16 equidistant resampled 3D points, temporal duration, and per-axis statistics. Standardized Z-scores are classified via weighted k-NN (k=3) with outlier rejection.",
+    f5_title: "Persistent Zero-Latency TTS",
+    f5_desc: "Keeps Windows SpeechSynthesizer permanently warm via a background daemon. Eliminates the 1.5s cold-start CLI penalty, delivering crystal-clear instant vocal feedback.",
+    f6_title: "Smart 16×2 LCD Word Wrapping",
+    f6_desc: "Autonomous text layout engine formats output onto physical and virtual dual-line displays, dynamically wrapping sentences along whitespace boundaries without breaking words.",
+    demo_tag: "Interactive Preview",
+    demo_title: "Experience Sign Translation Live",
+    demo_desc: "Click a sign button below to preview how SignSpeaker captures gestures, drives the LCD screen, and vocalizes speech.",
+    demo_console_title: "Interactive Simulation Console",
+    demo_console_desc: "Real-time gesture trajectory reproduction with instant speech synthesis",
+    demo_cockpit_btn: "Open Full Cockpit ➔",
+    demo_lcd_title: "Hardware LCD Preview (16×2 Character Display)",
+    demo_single_words: "🔤 Single Words (Inertial Gestures):",
+    demo_single_count: "10 Core Gestures",
+    demo_sentences: "💬 Multi-Word Sentences (Continuous Mode):",
+    demo_sentences_count: "Smart Word Wrapping",
+    demo_trace_title: "Gesture Inertial Trace (X, Y, Z)",
+    arch_tag: "System Pipeline",
+    arch_title: "How SignSpeaker Works",
+    arch_desc: "From subtle inertial finger-wrist movements to spoken words in four seamless stages.",
+    step1_title: "Inertial Capture",
+    step1_desc: "MPU6050 IMU samples 3D angular velocities at 25 Hz. Packets are streamed via Wi-Fi MQTT or ESP-NOW radio directly to the edge host.",
+    step2_title: "Event Segmentation",
+    step2_desc: "Continuous EWMA filters out stationary bias. When motion exceeds 0.20 rad/s, trajectory buffers active samples until quietude is sustained.",
+    step3_title: "Feature Extraction &amp; k-NN",
+    step3_desc: "66 normalized features are extracted across 16 resampled points. Weighted k-NN (k=3) computes closest neighbors with statistical outlier rejection.",
+    step4_title: "Multimodal Output",
+    step4_desc: "Recognized text is vocalized simultaneously via persistent TTS audio, wrapped onto the 16×2 LCD screen, and broadcasted to the web dashboard.",
+    specs_tag: "Engineering Specifications",
+    specs_title: "Hardware &amp; System Pinouts",
+    specs_desc: "Industrial wiring specifications and communication parameters for reliable operation.",
+    th_subsystem: "Subsystem",
+    th_component: "Component",
+    th_wiring: "Interface &amp; Wiring",
+    th_specs: "Operating Specs",
+    cta_title: "Ready to Explore the Live Cockpit?",
+    cta_desc: "Step inside the live operational dashboard to monitor 60 FPS real-time gyroscope feeds, train customized gesture models, manage dataset snapshots, and test hardware connections.",
+    cta_btn: "Launch SignSpeaker Dashboard",
+    cta_partner_btn: "Review STA × AIO Partnership",
+    footer_sub: "Joint Applied Engineering Project",
+    footer_copy: `Developed with pride by <strong>Elsewedy Technical Academy (STA)</strong> &amp; <strong>Arab International Optronics (AIO)</strong>.`
+  },
+  ar: {
+    nav_who: "من نحن",
+    nav_features: "ماذا نقدم",
+    nav_demo: "العرض الحي",
+    nav_arch: "الهندسة المعمارية",
+    nav_specs: "المواصفات الفنية",
+    nav_launch: "فتح لوحة التحكم",
+    hero_eyebrow: "مشروع هندسي تطبيقي مشترك بين STA و AIO",
+    hero_title: `تحويل الإشارات الصامتة <br><span class="gradient-text">إلى صوت منطوق ونص مكتوب</span>`,
+    hero_lead: `<strong>SignSpeaker</strong> هو نظام قفاز ذكي للمساعدة والتأهيل تم تطويره عبر شراكة هندسية متميزة بين <strong>أكاديمية السويدي الفنية (STA)</strong> و<strong>الشركة العربية العالمية للبصريات (AIO)</strong>. يقوم بترجمة إشارات لغة الإشارة المصرية الحركية إلى صوت مسموع فوري، شاشة LCD بسطرين، وبيانات تفاعلية عبر الويب.`,
+    hero_launch_cockpit: "تشغيل قمرة القيادة",
+    hero_explore_demo: "استكشاف العرض الحي",
+    hero_stat_sample_label: "معدل قراءة الجيروسكوب",
+    hero_stat_feature_label: "أبعاد متجه المسار الحركي",
+    hero_stat_latency_label: "زمن استجابة النطق الصوتي",
+    hero_active_edge: "التعرف اللحظي على الحافة",
+    hero_voice_synth: "نطق صوتي فوري",
+    hero_csl_label: "لغة الإشارة المصرية المستمرة",
+    hero_open_btn: "فتح ➔",
+    about_tag: "الشراكة والرسالة",
+    about_title: "من يقف وراء SignSpeaker؟",
+    about_desc: "تحالف هندسي تطبيقي استراتيجي بين الأكاديمية الرائدة في التعليم الفني بمصر والمؤسسة الوطنية الكبرى للصناعات البصرية والإلكترونية.",
+    sta_type: "تعليم وتدريب فني",
+    sta_name: "أكاديمية السويدي الفنية (STA)",
+    sta_sub: "الريادة في التكنولوجيا التطبيقية والكوادر الفنية",
+    sta_desc: "تأسست بواسطة مؤسسة السويدي إليكتريك، وتقود التعليم الفني وفق المعايير الدولية في مصر. تعمل على تمكين العقول الهندسية الشابة بالخبرة العملية في الأنظمة المدمجة، الأتمتة الصناعية، والتقنيات المساعدة المجتمعية.",
+    sta_h1: "أبحاث تطبيقية وبناء نماذج الأجهزة الأولية",
+    sta_h2: "مشاريع هندسية مساعدة لخدمة وتنمية المجتمع",
+    sta_h3: "تكامل إنترنت الأشياء والأنظمة الميكاترونية للثورة الصناعية الرابعة",
+    aio_type: "صناعة تكنولوجية متقدمة",
+    aio_name: "الشركة العربية العالمية للبصريات (AIO)",
+    aio_sub: "الصرح الوطني الرائد في الإلكترونيات الذكية والبصريات",
+    aio_desc: "صرح صناعي مصري رائد مشهود له عالمياً في تصنيع البصريات الإلكترونية وأجهزة الاستشعار والإلكترونيات المدمجة فائقة الدقة. تقدم AIO أعلى معايير الدقة الهندسية، معالجة الإشارات الحساسة، وخبرات التتبع اللاسلكي.",
+    aio_h1: "قياس عالي الدقة للحركة ومعايرة دقيقة للحساسات",
+    aio_h2: "بروتوكولات اتصال لاسلكي RF فائقة السرعة وأقل زمن تأخير",
+    aio_h3: "بنية مدمجة متينة للمهام الحساسة والاعتمادية العالية",
+    banner_title: "🤝 هندسة تطبيقية ذات هدف إنساني",
+    banner_desc: "دمج الابتكار الأكاديمي لأكاديمية السويدي والتميز الصناعي للبصريات لتقديم جسر تواصل متطور بلغة الإشارة المصرية.",
+    banner_btn: "تشغيل قمرة القيادة ➔",
+    features_tag: "القدرات الأساسية",
+    features_title: "ماذا يقدم SignSpeaker",
+    features_desc: "منظومة متكاملة قابلة للارتداء تجمع بين استشعار الحركة والتعلم الآلي والاتصال اللاسلكي والإخراج المتعدد.",
+    f1_title: "استشعار حركي سداسي المحاور 6-DoF",
+    f1_desc: "قراءة عالية التردد للسرعة الزاوية بثلاثة محاور من حساس MPU6050 بمعدل 25 هرتز (~40 مللي ثانية)، لالتقاط حركات اليد الدقيقة بحرية كاملة للأصابع.",
+    f2_title: "اتصال لاسلكي ثنائي المسار",
+    f2_desc: "يعمل لاسلكياً بنسبة 100%. خياران للتواصل: عبر وسيط Wi-Fi MQTT عبر الشبكة، أو اتصال راديو ESP-NOW مباشر بتردد 2.4 جيجاهرتز بسرعة فائقة (<5 مللي ثانية).",
+    f3_title: "محرك التقطيع الزمني الديناميكي",
+    f3_desc: "تقدير مستمر لانحراف السكون عبر مرشح EWMA يعالج انزياح الحساسات تلقائياً، مع آلة حالات دقيقة تعزل الإشارات المقصودة عن الارتجاف العفوي.",
+    f4_title: "تعلم آلي بمتجه مسار 66 بُعداً",
+    f4_desc: "استخراج 16 نقطة مكانية ثلاثية الأبعاد بعد إعادة المعاينة، مع المدة الزمنية وإحصاءات المحاور، وتصنيف الدرجات المعيارية عبر خوارزمية k-NN الموزونة.",
+    f5_title: "نطق صوتي فوري دائم",
+    f5_desc: "إبقاء محرك النطق جاهزاً في الخلفية بشكل دائم، مما يلغي تأخير البداية الباردة (1.5 ثانية) لتقديم استجابة صوتية فورية ونقية.",
+    f6_title: "تنسيق ذكي لشاشة LCD 16×2",
+    f6_desc: "محرك ذكي لتنسيق النصوص على الشاشات السطرية الفيزيائية والافتراضية، يلتف حول المسافات تلقائياً ليحافظ على تكامل الكلمات.",
+    demo_tag: "معاينة تفاعلية",
+    demo_title: "جرّب ترجمة الإشارات مباشرة",
+    demo_desc: "انقر على أي إشارة أدناه لمعاينة كيفية التقاط الحركة وتحديث شاشة LCD ونطق الصوت فوراً.",
+    demo_console_title: "لوحة المحاكاة التفاعلية",
+    demo_console_desc: "إعادة إنتاج مسار الإشارة لحظياً مع نطق صوتي فوري",
+    demo_cockpit_btn: "فتح لوحة التحكم الكاملة ➔",
+    demo_lcd_title: "معاينة شاشة العرض LCD (16×2 حرف)",
+    demo_single_words: "🔤 كلمات مفردة (حركات جيروسكوبية):",
+    demo_single_count: "10 إشارات أساسية",
+    demo_sentences: "💬 جمل متعددة الكلمات (النمط المستمر):",
+    demo_sentences_count: "التفاف تلقائي ذكي",
+    demo_trace_title: "مسار الحركة ثلاثي الأبعاد (X, Y, Z)",
+    arch_tag: "مسار معالجة النظام",
+    arch_title: "كيف يعمل SignSpeaker",
+    arch_desc: "من حركات اليد والمعصم الدقيقة إلى كلمات منطوقة عبر أربع مراحل متتابعة.",
+    step1_title: "التقاط الحركة",
+    step1_desc: "حساس MPU6050 يقيس السرعات الزاوية ثلاثية الأبعاد بمعدل 25 هرتز، وتُبث الحزم عبر Wi-Fi MQTT أو راديو ESP-NOW إلى جهاز المعالجة مباشرة.",
+    step2_title: "تقطيع الأحداث الحركية",
+    step2_desc: "مرشح EWMA يعزل انحراف السكون. وعند تجاوز الحركة 0.20 راديان/ثانية، يتم تخزين العينات الحركية حتى يستقر السكون مجدداً.",
+    step3_title: "استخراج الميزات وتصنيف k-NN",
+    step3_desc: "استخراج 66 ميزة معيارية عبر 16 نقطة زمنية متساوية، ثم تحسب خوارزمية k-NN الموزونة أقرب الجيران مع استبعاد القيم الشاذة.",
+    step4_title: "الإخراج متعدد الوسائط",
+    step4_desc: "يتم نطق النص المكتشف فوراً عبر الصوت، وعرضه على شاشة LCD مع الالتفاف الذكي، وبثه مباشرة إلى لوحة تحكم الويب.",
+    specs_tag: "المواصفات الهندسية",
+    specs_title: "توصيلات العتاد ومخطط النظام",
+    specs_desc: "المواصفات الفنية للأسلاك وبروتوكولات الاتصال لضمان أعلى مستوى من الاعتمادية والتشغيل المستقر.",
+    th_subsystem: "النظام الفرعي",
+    th_component: "المكون",
+    th_wiring: "الواجهة والتوصيل",
+    th_specs: "مواصفات التشغيل",
+    cta_title: "جاهز لاستكشاف قمرة القيادة المباشرة؟",
+    cta_desc: "انتقل إلى لوحة التحكم الحية لمتابعة حركة الجيروسكوب بسرعة 60 إطاراً بالثانية، وتدريب نماذج إشارات مخصصة، وإدارة عينات البيانات، واختبار الاتصال.",
+    cta_btn: "فتح لوحة تحكم SignSpeaker",
+    cta_partner_btn: "استعراض شراكة STA و AIO",
+    footer_sub: "مشروع هندسي تطبيقي مشترك",
+    footer_copy: `تم التطوير بكل فخر بواسطة <strong>أكاديمية السويدي الفنية (STA)</strong> و<strong>الشركة العربية العالمية للبصريات (AIO)</strong>.`
+  }
+};
+
+// Demo buttons bilingual labels & spoken representations
+const demoWordData = {
+  en: {
+    'Hello': { label: '👋 Hello', spoken: 'Hello' },
+    'Mohamed': { label: '👦 Mohamed', spoken: 'Mohamed' },
+    'I am': { label: '🙋 I am', spoken: 'I am' },
+    'Reem': { label: '👩 Reem', spoken: 'Reem' },
+    'Thanks': { label: '🙏 Thanks', spoken: 'Thanks' },
+    'Thank you': { label: '💙 Thank you', spoken: 'Thank you' },
+    'Doctor': { label: '🩺 Doctor', spoken: 'Doctor' },
+    'Help': { label: '🆘 Help', spoken: 'Help' },
+    'Yes': { label: '👍 Yes', spoken: 'Yes' },
+    'Please': { label: '✋ Please', spoken: 'Please' },
+    'Hello Mohamed': { label: '✨ Hello Mohamed', spoken: 'Hello Mohamed' },
+    'I am Mohamed': { label: '🌟 I am Mohamed', spoken: 'I am Mohamed' },
+    'Hello Reem': { label: '💫 Hello Reem', spoken: 'Hello Reem' },
+    'I am Reem': { label: '🌸 I am Reem', spoken: 'I am Reem' },
+    'Nice to meet you': { label: '🤝 Nice to meet you', spoken: 'Nice to meet you' },
+    'I need help': { label: '🚨 I need help', spoken: 'I need help' },
+    'Good morning': { label: '☀️ Good morning', spoken: 'Good morning' }
+  },
+  ar: {
+    'Hello': { label: '👋 مرحباً', spoken: 'مرحبا' },
+    'Mohamed': { label: '👦 محمد', spoken: 'محمد' },
+    'I am': { label: '🙋 أنا', spoken: 'أنا' },
+    'Reem': { label: '👩 ريم', spoken: 'ريم' },
+    'Thanks': { label: '🙏 شكراً', spoken: 'شكرا' },
+    'Thank you': { label: '💙 شكراً جزيلاً', spoken: 'شكرا جزيلا' },
+    'Doctor': { label: '🩺 طبيب', spoken: 'طبيب' },
+    'Help': { label: '🆘 مساعدة', spoken: 'مساعدة' },
+    'Yes': { label: '👍 نعم', spoken: 'نعم' },
+    'Please': { label: '✋ من فضلك', spoken: 'من فضلك' },
+    'Hello Mohamed': { label: '✨ أهلاً محمد', spoken: 'أهلا محمد' },
+    'I am Mohamed': { label: '🌟 أنا محمد', spoken: 'أنا محمد' },
+    'Hello Reem': { label: '💫 أهلاً ريم', spoken: 'أهلا ريم' },
+    'I am Reem': { label: '🌸 أنا ريم', spoken: 'أنا ريم' },
+    'Nice to meet you': { label: '🤝 تشرفت بلقائك', spoken: 'تشرفت بلقائك' },
+    'I need help': { label: '🚨 أحتاج للمساعدة', spoken: 'أحتاج للمساعدة' },
+    'Good morning': { label: '☀️ صباح الخير', spoken: 'صباح الخير' }
+  }
+};
+
+let currentLang = localStorage.getItem('signspeaker_lang') || 'en';
+let currentTheme = localStorage.getItem('signspeaker_theme') || 'dark';
+
+// ==========================================================================
+// 2. THEME CONTROLLER (LIGHT & DARK)
+// ==========================================================================
+function setTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('signspeaker_theme', theme);
+}
+
+document.getElementById('themeToggleBtn').addEventListener('click', () => {
+  const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+  setTheme(nextTheme);
+});
+
+// Apply initial theme
+setTheme(currentTheme);
+
+// ==========================================================================
+// 3. LANGUAGE CONTROLLER (EN & AR)
+// ==========================================================================
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  localStorage.setItem('signspeaker_lang', lang);
+
+  // Update Language Button Text
+  const langBtnText = document.getElementById('langBtnText');
+  if (langBtnText) {
+    langBtnText.textContent = (lang === 'en') ? 'العربية' : 'English';
+  }
+
+  // Update All Translatable Elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Update Demo Word Buttons
+  document.querySelectorAll('.demo-word-btn').forEach(btn => {
+    const key = btn.getAttribute('data-word');
+    if (demoWordData[lang] && demoWordData[lang][key]) {
+      btn.innerHTML = demoWordData[lang][key].label;
+    }
+  });
+
+  // Update LCD placeholder if not actively playing
+  if (!animationId) {
+    if (lang === 'ar') {
+      lcdL1.textContent = 'SignSpeaker';
+      lcdL2.textContent = 'STA x AIO جاهز';
+    } else {
+      lcdL1.textContent = 'SignSpeaker';
+      lcdL2.textContent = 'STA x AIO Ready';
+    }
+  }
+}
+
+document.getElementById('langToggleBtn').addEventListener('click', () => {
+  const nextLang = currentLang === 'en' ? 'ar' : 'en';
+  setLanguage(nextLang);
+});
+
+// Apply initial language
+setLanguage(currentLang);
+
+// ==========================================================================
+// 4. 3D SCROLL REVEAL (IntersectionObserver)
+// ==========================================================================
+function init3DScrollReveal() {
+  const scrollElements = document.querySelectorAll('.scroll-3d');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  scrollElements.forEach(el => observer.observe(el));
+}
+init3DScrollReveal();
+
+// ==========================================================================
+// 5. 3D MOUSE PARALLAX HOVER EFFECT ON CARDS
+// ==========================================================================
+function init3DHoverEffect() {
+  const cards = document.querySelectorAll('.card-3d');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((centerY - y) / centerY) * 7.5;
+      const rotateY = ((x - centerX) / centerX) * 7.5;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px) scale(1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+init3DHoverEffect();
+
+// ==========================================================================
+// 6. FLOATING SCROLL-UP BUTTON
+// ==========================================================================
+const scrollUpBtn = document.getElementById('scrollUpBtn');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 320) {
+    scrollUpBtn.classList.add('visible');
+  } else {
+    scrollUpBtn.classList.remove('visible');
+  }
+});
+
+scrollUpBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+// ==========================================================================
+// 7. INTERACTIVE DEMO PREVIEW (CANVAS & LCD & TTS)
+// ==========================================================================
 const canvas = document.getElementById('previewCanvas');
 const ctx = canvas.getContext('2d');
 const lcdL1 = document.getElementById('lcdL1');
@@ -1588,57 +2320,68 @@ function drawWaveform(progress) {
   ctx.stroke();
 }
 
-function triggerDemo(word) {
+function triggerDemo(wordKey) {
   // Update buttons
   document.querySelectorAll('.demo-word-btn').forEach(btn => {
-    const target = btn.getAttribute('data-word') || btn.innerText;
-    btn.classList.toggle('active', target.trim() === word.trim() || target.includes(word));
+    const target = btn.getAttribute('data-word');
+    btn.classList.toggle('active', target === wordKey);
   });
 
+  const langData = demoWordData[currentLang] && demoWordData[currentLang][wordKey]
+    ? demoWordData[currentLang][wordKey]
+    : { spoken: wordKey };
+
+  const displayText = langData.spoken;
+
   // Smart LCD text wrapping (16x2 Character Display)
-  if (word.length <= 16) {
-    lcdL1.textContent = word;
-    lcdL2.textContent = 'Confidence: 98%';
+  if (displayText.length <= 16) {
+    lcdL1.textContent = displayText;
+    lcdL2.textContent = currentLang === 'ar' ? 'الدقة: 98%' : 'Confidence: 98%';
   } else {
     let splitIdx = 16;
-    const spaceIdx = word.lastIndexOf(' ', 16);
+    const spaceIdx = displayText.lastIndexOf(' ', 16);
     if (spaceIdx > 0) splitIdx = spaceIdx;
-    lcdL1.textContent = word.substring(0, splitIdx).trim();
-    lcdL2.textContent = word.substring(splitIdx).trim().substring(0, 16);
+    lcdL1.textContent = displayText.substring(0, splitIdx).trim();
+    lcdL2.textContent = displayText.substring(splitIdx).trim().substring(0, 16);
   }
 
-  demoConfidence.textContent = 'Confidence: ' + (95 + Math.floor(Math.random() * 4)) + '%';
+  demoConfidence.textContent = (currentLang === 'ar' ? 'الدقة: ' : 'Confidence: ') + (95 + Math.floor(Math.random() * 4)) + '%';
 
-  // Speak word using Web Speech API if supported
+  // Speak word using Web Speech API
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
+    const utterance = new SpeechSynthesisUtterance(langData.spoken);
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
+    if (currentLang === 'ar') {
+      utterance.lang = 'ar-SA';
+    } else {
+      utterance.lang = 'en-US';
+    }
     window.speechSynthesis.speak(utterance);
   }
 
   // Animate Waveform
-  const isMultiWord = word.includes(' ');
+  const isMultiWord = wordKey.includes(' ');
   let seed = 1.0;
-  if (word === 'Hello') seed = 1.0;
-  else if (word === 'Mohamed') seed = 2.9;
-  else if (word === 'I am') seed = 2.2;
-  else if (word === 'Reem') seed = 1.6;
-  else if (word === 'Thanks') seed = 3.1;
-  else if (word === 'Thank you') seed = 3.4;
-  else if (word === 'Doctor') seed = 1.8;
-  else if (word === 'Help') seed = 4.2;
-  else if (word === 'Yes') seed = 1.3;
-  else if (word === 'Please') seed = 2.5;
-  else if (word === 'Hello Mohamed') seed = 3.8;
-  else if (word === 'I am Mohamed') seed = 4.1;
-  else if (word === 'Hello Reem') seed = 2.7;
-  else if (word === 'I am Reem') seed = 3.2;
-  else if (word === 'Nice to meet you') seed = 4.5;
-  else if (word === 'I need help') seed = 4.8;
-  else if (word === 'Good morning') seed = 3.5;
-  else seed = (word.length % 5) + 1.2;
+  if (wordKey === 'Hello') seed = 1.0;
+  else if (wordKey === 'Mohamed') seed = 2.9;
+  else if (wordKey === 'I am') seed = 2.2;
+  else if (wordKey === 'Reem') seed = 1.6;
+  else if (wordKey === 'Thanks') seed = 3.1;
+  else if (wordKey === 'Thank you') seed = 3.4;
+  else if (wordKey === 'Doctor') seed = 1.8;
+  else if (wordKey === 'Help') seed = 4.2;
+  else if (wordKey === 'Yes') seed = 1.3;
+  else if (wordKey === 'Please') seed = 2.5;
+  else if (wordKey === 'Hello Mohamed') seed = 3.8;
+  else if (wordKey === 'I am Mohamed') seed = 4.1;
+  else if (wordKey === 'Hello Reem') seed = 2.7;
+  else if (wordKey === 'I am Reem') seed = 3.2;
+  else if (wordKey === 'Nice to meet you') seed = 4.5;
+  else if (wordKey === 'I need help') seed = 4.8;
+  else if (wordKey === 'Good morning') seed = 3.5;
+  else seed = (wordKey.length % 5) + 1.2;
 
   currentPoints = generatePoints(seed, isMultiWord);
   let start = performance.now();
