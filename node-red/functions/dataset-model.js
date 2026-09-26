@@ -11,7 +11,7 @@
 const DATA = path.join(env.get('GLOVE_DIR'), 'data');
 const DATASET_FILE = path.join(DATA, 'dataset.json');
 const MODEL_FILE = path.join(DATA, 'model.json');
-const DEFAULT_LABELS = ['Hello', 'I am', 'Reem', 'Thanks', 'Hello Reem', 'I am Reem', 'Thank you'];
+const DEFAULT_LABELS = ['Hello', 'Mohamed', 'I am', 'Reem', 'Thanks', 'Thank you', 'Doctor', 'Help', 'Hello Mohamed', 'I am Mohamed', 'Hello Reem', 'I am Reem', 'I need help', 'Nice to meet you'];
 const TRAJ_POINTS = 16;
 const K = 3;
 
@@ -131,6 +131,7 @@ function classifyRules(samples) {
     const { x, y, z } = ranges(samples);
     let label = 'Unknown';
     if (x > 0.70 && y > 0.40 && z > 0.50) label = 'Hello';
+    else if (x > 0.45 && y > 0.60 && z < 0.60) label = 'Mohamed';
     else if (y > 0.65 && y > x * 1.15 && y > z * 1.15) label = 'I am';
     else if (x < 0.30 && y < 0.30 && z < 0.30) label = 'Reem';
     else if (z > 0.70 && x > 0.25 && z > y) label = 'Thanks';

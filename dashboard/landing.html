@@ -746,26 +746,50 @@ a {
 .demo-word-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .demo-word-btn {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
-  padding: 8px 16px;
+  padding: 6px 13px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .demo-word-btn:hover, .demo-word-btn.active {
   background: var(--primary);
   border-color: var(--cyan-bright);
   box-shadow: 0 0 14px var(--primary-glow);
+  transform: translateY(-1px);
+}
+
+.demo-word-btn.highlight-mohamed {
+  border-color: rgba(59, 130, 246, 0.65);
+  background: rgba(37, 99, 235, 0.16);
+  color: #bfdbfe;
+}
+
+.demo-word-btn.btn-sentence {
+  border-color: rgba(168, 85, 247, 0.35);
+  background: rgba(168, 85, 247, 0.08);
+  color: #e9d5ff;
+}
+
+.demo-word-btn.btn-sentence:hover, .demo-word-btn.btn-sentence.active {
+  background: #7c3aed;
+  border-color: #c084fc;
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.5);
+  color: #ffffff;
 }
 
 .waveform-canvas-box {
@@ -1260,16 +1284,39 @@ canvas#previewCanvas {
           </div>
 
           <div style="margin-top: 10px;">
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
-              Select a Sign Language Gesture to Trigger:
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11.5px; color: var(--cyan-bright); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                🔤 Single Words (Inertial Gestures):
+              </span>
+              <span style="font-size: 11px; color: var(--text-dim);">10 Core Gestures</span>
+            </div>
+            <div class="demo-word-buttons" style="margin-bottom: 14px;">
+              <button class="demo-word-btn" data-word="Hello" onclick="triggerDemo('Hello')">👋 Hello</button>
+              <button class="demo-word-btn highlight-mohamed" data-word="Mohamed" onclick="triggerDemo('Mohamed')">👦 Mohamed</button>
+              <button class="demo-word-btn" data-word="I am" onclick="triggerDemo('I am')">🙋 I am</button>
+              <button class="demo-word-btn" data-word="Reem" onclick="triggerDemo('Reem')">👩 Reem</button>
+              <button class="demo-word-btn" data-word="Thanks" onclick="triggerDemo('Thanks')">🙏 Thanks</button>
+              <button class="demo-word-btn" data-word="Thank you" onclick="triggerDemo('Thank you')">💙 Thank you</button>
+              <button class="demo-word-btn" data-word="Doctor" onclick="triggerDemo('Doctor')">🩺 Doctor</button>
+              <button class="demo-word-btn" data-word="Help" onclick="triggerDemo('Help')">🆘 Help</button>
+              <button class="demo-word-btn" data-word="Yes" onclick="triggerDemo('Yes')">👍 Yes</button>
+              <button class="demo-word-btn" data-word="Please" onclick="triggerDemo('Please')">✋ Please</button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11.5px; color: #c084fc; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                💬 Multi-Word Sentences (Continuous Mode):
+              </span>
+              <span style="font-size: 11px; color: var(--text-dim);">Smart Word Wrapping</span>
             </div>
             <div class="demo-word-buttons">
-              <button class="demo-word-btn" onclick="triggerDemo('Hello')">👋 Hello</button>
-              <button class="demo-word-btn" onclick="triggerDemo('I am')">🙋 I am</button>
-              <button class="demo-word-btn" onclick="triggerDemo('Reem')">👩 Reem</button>
-              <button class="demo-word-btn" onclick="triggerDemo('Thanks')">🙏 Thanks</button>
-              <button class="demo-word-btn" onclick="triggerDemo('Hello Reem')">✨ Hello Reem (Sentence)</button>
-              <button class="demo-word-btn" onclick="triggerDemo('Thank you')">💙 Thank you</button>
+              <button class="demo-word-btn btn-sentence" data-word="Hello Mohamed" onclick="triggerDemo('Hello Mohamed')">✨ Hello Mohamed</button>
+              <button class="demo-word-btn btn-sentence" data-word="I am Mohamed" onclick="triggerDemo('I am Mohamed')">🌟 I am Mohamed</button>
+              <button class="demo-word-btn btn-sentence" data-word="Hello Reem" onclick="triggerDemo('Hello Reem')">💫 Hello Reem</button>
+              <button class="demo-word-btn btn-sentence" data-word="I am Reem" onclick="triggerDemo('I am Reem')">🌸 I am Reem</button>
+              <button class="demo-word-btn btn-sentence" data-word="Nice to meet you" onclick="triggerDemo('Nice to meet you')">🤝 Nice to meet you</button>
+              <button class="demo-word-btn btn-sentence" data-word="I need help" onclick="triggerDemo('I need help')">🚨 I need help</button>
+              <button class="demo-word-btn btn-sentence" data-word="Good morning" onclick="triggerDemo('Good morning')">☀️ Good morning</button>
             </div>
           </div>
         </div>
@@ -1469,14 +1516,22 @@ resizeCanvas();
 let animationId = null;
 let currentPoints = [];
 
-function generatePoints(seed) {
+function generatePoints(seed, isMultiWord = false) {
   const pts = [];
-  const count = 40;
+  const count = isMultiWord ? 64 : 40;
   for (let i = 0; i < count; i++) {
     const t = i / count;
-    const x = Math.sin(t * Math.PI * 2 * seed + 0.5) * Math.exp(-t * 2) * 40;
-    const y = Math.cos(t * Math.PI * 3 * seed) * Math.sin(t * Math.PI) * 35;
-    const z = Math.sin(t * Math.PI * 4 * seed + 1.2) * 30;
+    let x, y, z;
+    if (isMultiWord) {
+      const burst = Math.sin(t * Math.PI) * (1 - 0.45 * Math.sin(t * Math.PI * 2) ** 2);
+      x = Math.sin(t * Math.PI * 4 * seed + 0.5) * burst * 42;
+      y = Math.cos(t * Math.PI * 5 * seed) * burst * 38;
+      z = Math.sin(t * Math.PI * 6 * seed + 1.2) * burst * 32;
+    } else {
+      x = Math.sin(t * Math.PI * 2 * seed + 0.5) * Math.exp(-t * 2) * 40;
+      y = Math.cos(t * Math.PI * 3 * seed) * Math.sin(t * Math.PI) * 35;
+      z = Math.sin(t * Math.PI * 4 * seed + 1.2) * 30;
+    }
     pts.push({ x, y, z });
   }
   return pts;
@@ -1536,20 +1591,23 @@ function drawWaveform(progress) {
 function triggerDemo(word) {
   // Update buttons
   document.querySelectorAll('.demo-word-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.includes(word));
+    const target = btn.getAttribute('data-word') || btn.innerText;
+    btn.classList.toggle('active', target.trim() === word.trim() || target.includes(word));
   });
 
-  // LCD text wrapping
+  // Smart LCD text wrapping (16x2 Character Display)
   if (word.length <= 16) {
     lcdL1.textContent = word;
     lcdL2.textContent = 'Confidence: 98%';
   } else {
-    const words = word.split(' ');
-    lcdL1.textContent = words[0] || '';
-    lcdL2.textContent = words.slice(1).join(' ') || '';
+    let splitIdx = 16;
+    const spaceIdx = word.lastIndexOf(' ', 16);
+    if (spaceIdx > 0) splitIdx = spaceIdx;
+    lcdL1.textContent = word.substring(0, splitIdx).trim();
+    lcdL2.textContent = word.substring(splitIdx).trim().substring(0, 16);
   }
 
-  demoConfidence.textContent = 'Confidence: ' + (94 + Math.floor(Math.random() * 5)) + '%';
+  demoConfidence.textContent = 'Confidence: ' + (95 + Math.floor(Math.random() * 4)) + '%';
 
   // Speak word using Web Speech API if supported
   if ('speechSynthesis' in window) {
@@ -1561,16 +1619,30 @@ function triggerDemo(word) {
   }
 
   // Animate Waveform
-  let seed = 1;
-  if (word === 'I am') seed = 2.2;
-  if (word === 'Reem') seed = 1.6;
-  if (word === 'Thanks') seed = 3.1;
-  if (word === 'Hello Reem') seed = 2.7;
-  if (word === 'Thank you') seed = 3.4;
+  const isMultiWord = word.includes(' ');
+  let seed = 1.0;
+  if (word === 'Hello') seed = 1.0;
+  else if (word === 'Mohamed') seed = 2.9;
+  else if (word === 'I am') seed = 2.2;
+  else if (word === 'Reem') seed = 1.6;
+  else if (word === 'Thanks') seed = 3.1;
+  else if (word === 'Thank you') seed = 3.4;
+  else if (word === 'Doctor') seed = 1.8;
+  else if (word === 'Help') seed = 4.2;
+  else if (word === 'Yes') seed = 1.3;
+  else if (word === 'Please') seed = 2.5;
+  else if (word === 'Hello Mohamed') seed = 3.8;
+  else if (word === 'I am Mohamed') seed = 4.1;
+  else if (word === 'Hello Reem') seed = 2.7;
+  else if (word === 'I am Reem') seed = 3.2;
+  else if (word === 'Nice to meet you') seed = 4.5;
+  else if (word === 'I need help') seed = 4.8;
+  else if (word === 'Good morning') seed = 3.5;
+  else seed = (word.length % 5) + 1.2;
 
-  currentPoints = generatePoints(seed);
+  currentPoints = generatePoints(seed, isMultiWord);
   let start = performance.now();
-  const duration = 700;
+  const duration = isMultiWord ? 1100 : 700;
 
   if (animationId) cancelAnimationFrame(animationId);
 

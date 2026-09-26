@@ -303,7 +303,7 @@ The dashboard at `http://127.0.0.1:1880/glove` was completely re-architected int
 To introduce visitors and stakeholders to the project before entering the live operational cockpit, a dedicated landing page was engineered at `http://127.0.0.1:1880/glove`:
 - **Partner Showcase**: In-depth institutional profiles for **Elsewedy Technical Academy (STA)** and **Arab International Optronics (AIO)** with high-definition brand assets.
 - **Project Identity & Vision**: Highlighting the **SignSpeaker** assistive technology mission for Egyptian Sign Language users.
-- **Interactive Simulation Demo**: An interactive preview console with real-time 3-axis canvas waveforms, simulated 16×2 LCD screen wrapping, and browser speech synthesis.
+- **Interactive Simulation Demo**: An interactive preview console supporting 10 single words (including Mohamed, Hello, Reem, Doctor, Help) and 7 multi-word sentences (Hello Mohamed, I am Mohamed, etc.) with real-time 3-axis canvas waveforms, simulated 16×2 LCD screen wrapping, and browser speech synthesis.
 - **Hardware & Telemetry Matrix**: Comprehensive technical comparison covering 25 Hz sampling, 66-D features, ESP-NOW vs. MQTT, and microcontroller pinouts.
 - **Dual-Route Dispatcher**:
   - `GET /glove` or `GET /` $\to$ [dashboard/landing.html](file:///d:/DATA-1/Projects/SignSpeaker%20Project/dashboard/landing.html) (Front door)
@@ -476,6 +476,7 @@ Start-Process "http://localhost:3000"
 | **13** | **Interactive Flowchart Studio & Architecture Explorer** | Engineered standalone responsive HTML5/CSS/JS website featuring all 9 system flowcharts in dynamic Mermaid vector SVG, interactive zoom & pan, fullscreen modal inspection, live search & category filters, code copy, SVG export, and dedicated port 3000 server with Node-RED `/glove/flowcharts` routing. | `flowcharts/`, `serve-dashboard.js`, `build-flows.js`, `dashboard/index.html`, `dashboard/landing.html` |
 | **14** | **Streamlined UI Navigation** | Removed external Flowcharts Studio navigation buttons from both the landing page navbar and the live operational cockpit header for a focused, distraction-free application experience. | `dashboard/landing.html`, `dashboard/index.html`, `README.md` |
 | **15** | **Phase 2 Engineering Plan (Flex + Gyro Fusion)** | Authored comprehensive 5-page architectural specification and engineering plan (PDF) detailing the hardware circuit, pinout mapping (ADC1 only), extended 9-field telemetry packet, firmware state machine with on-device calibration, 121-dimensional feature vector (66D gyro + 55D flex), k-NN hyperparameter tuning, dashboard articulation visualizers, simulator extensions, and risk matrix. | `Phase2_Flex_Sensor_Integration_Plan.pdf`, `README.md` |
+| **16** | **Expanded Gesture Vocabulary & Mohamed Integration** | Integrated dedicated "Mohamed" gesture and extended vocabulary (10 core single gestures + 7 continuous multi-word sentences) into the Interactive Simulation Console with dual-tier categorization, synthetic multi-burst kinetic trajectory generation, k-NN default labels, rule heuristics, and operational cockpit simulator triggers. | `dashboard/landing.html`, `dashboard/index.html`, `node-red/functions/serial-manager.js`, `node-red/functions/dataset-model.js`, `node-red/flows.json`, `README.md` |
 
 ---
 

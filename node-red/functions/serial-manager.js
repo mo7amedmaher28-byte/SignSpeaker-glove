@@ -219,13 +219,20 @@ function openMqtt(broker, port, topic, lcdTopic) {
 // ---------- Simulator ----------
 
 const PATTERNS = {
-    'Hello':       { d: 900,  f: u => [0.95 * Math.sin(4 * Math.PI * u), 0.55 * Math.sin(2 * Math.PI * u + 1), 0.75 * Math.sin(4 * Math.PI * u + 0.5)] },
-    'I am':        { d: 700,  f: u => [0.10 * Math.sin(2 * Math.PI * u), -0.95 * Math.sin(Math.PI * u), 0.15 * Math.sin(2 * Math.PI * u)] },
-    'Reem':        { d: 500,  f: u => [0.28 * Math.sin(2 * Math.PI * u), 0.12 * Math.sin(2 * Math.PI * u), 0.10 * Math.sin(Math.PI * u)] },
-    'Thanks':      { d: 800,  f: u => [0.45 * Math.sin(Math.PI * u), 0.20 * Math.sin(2 * Math.PI * u), 1.05 * Math.sin(2 * Math.PI * u)] },
-    'Hello Reem':  { d: 2000, f: u => u < 0.45 ? [0.95 * Math.sin(8 * Math.PI * u), 0.55 * Math.sin(4 * Math.PI * u + 1), 0.75 * Math.sin(8 * Math.PI * u + 0.5)] : (u < 0.55 ? [0.05, 0.05, 0.05] : [0.30 * Math.sin(4 * Math.PI * (u - 0.55)), 0.15 * Math.sin(4 * Math.PI * (u - 0.55)), 0.10 * Math.sin(2 * Math.PI * (u - 0.55))]) },
-    'I am Reem':   { d: 1900, f: u => u < 0.45 ? [0.10 * Math.sin(4 * Math.PI * u), -0.95 * Math.sin(2 * Math.PI * u), 0.15 * Math.sin(4 * Math.PI * u)] : (u < 0.55 ? [0.05, -0.05, 0.05] : [0.28 * Math.sin(4 * Math.PI * (u - 0.55)), 0.12 * Math.sin(4 * Math.PI * (u - 0.55)), 0.10 * Math.sin(2 * Math.PI * (u - 0.55))]) },
-    'Thank you':   { d: 1800, f: u => [0.55 * Math.sin(2 * Math.PI * u), 0.25 * Math.sin(4 * Math.PI * u), 1.15 * Math.sin(3 * Math.PI * u)] }
+    'Hello':            { d: 900,  f: u => [0.95 * Math.sin(4 * Math.PI * u), 0.55 * Math.sin(2 * Math.PI * u + 1), 0.75 * Math.sin(4 * Math.PI * u + 0.5)] },
+    'Mohamed':          { d: 850,  f: u => [0.65 * Math.sin(3 * Math.PI * u), 0.85 * Math.sin(2 * Math.PI * u), 0.40 * Math.sin(3 * Math.PI * u + 0.8)] },
+    'I am':             { d: 700,  f: u => [0.10 * Math.sin(2 * Math.PI * u), -0.95 * Math.sin(Math.PI * u), 0.15 * Math.sin(2 * Math.PI * u)] },
+    'Reem':             { d: 500,  f: u => [0.28 * Math.sin(2 * Math.PI * u), 0.12 * Math.sin(2 * Math.PI * u), 0.10 * Math.sin(Math.PI * u)] },
+    'Thanks':           { d: 800,  f: u => [0.45 * Math.sin(Math.PI * u), 0.20 * Math.sin(2 * Math.PI * u), 1.05 * Math.sin(2 * Math.PI * u)] },
+    'Thank you':        { d: 1800, f: u => [0.55 * Math.sin(2 * Math.PI * u), 0.25 * Math.sin(4 * Math.PI * u), 1.15 * Math.sin(3 * Math.PI * u)] },
+    'Doctor':           { d: 900,  f: u => [0.35 * Math.sin(2 * Math.PI * u), 0.75 * Math.sin(3 * Math.PI * u), 0.60 * Math.sin(2 * Math.PI * u)] },
+    'Help':             { d: 800,  f: u => [0.85 * Math.sin(4 * Math.PI * u), 0.80 * Math.sin(4 * Math.PI * u), 0.90 * Math.sin(4 * Math.PI * u)] },
+    'Hello Mohamed':    { d: 2100, f: u => u < 0.45 ? [0.95 * Math.sin(8 * Math.PI * u), 0.55 * Math.sin(4 * Math.PI * u + 1), 0.75 * Math.sin(8 * Math.PI * u + 0.5)] : (u < 0.55 ? [0.05, 0.05, 0.05] : [0.65 * Math.sin(6 * Math.PI * (u - 0.55)), 0.85 * Math.sin(4 * Math.PI * (u - 0.55)), 0.40 * Math.sin(6 * Math.PI * (u - 0.55) + 0.8)]) },
+    'I am Mohamed':     { d: 2000, f: u => u < 0.45 ? [0.10 * Math.sin(4 * Math.PI * u), -0.95 * Math.sin(2 * Math.PI * u), 0.15 * Math.sin(4 * Math.PI * u)] : (u < 0.55 ? [0.05, -0.05, 0.05] : [0.65 * Math.sin(6 * Math.PI * (u - 0.55)), 0.85 * Math.sin(4 * Math.PI * (u - 0.55)), 0.40 * Math.sin(6 * Math.PI * (u - 0.55) + 0.8)]) },
+    'Hello Reem':       { d: 2000, f: u => u < 0.45 ? [0.95 * Math.sin(8 * Math.PI * u), 0.55 * Math.sin(4 * Math.PI * u + 1), 0.75 * Math.sin(8 * Math.PI * u + 0.5)] : (u < 0.55 ? [0.05, 0.05, 0.05] : [0.30 * Math.sin(4 * Math.PI * (u - 0.55)), 0.15 * Math.sin(4 * Math.PI * (u - 0.55)), 0.10 * Math.sin(2 * Math.PI * (u - 0.55))]) },
+    'I am Reem':        { d: 1900, f: u => u < 0.45 ? [0.10 * Math.sin(4 * Math.PI * u), -0.95 * Math.sin(2 * Math.PI * u), 0.15 * Math.sin(4 * Math.PI * u)] : (u < 0.55 ? [0.05, -0.05, 0.05] : [0.28 * Math.sin(4 * Math.PI * (u - 0.55)), 0.12 * Math.sin(4 * Math.PI * (u - 0.55)), 0.10 * Math.sin(2 * Math.PI * (u - 0.55))]) },
+    'I need help':      { d: 2200, f: u => u < 0.45 ? [0.10 * Math.sin(4 * Math.PI * u), -0.95 * Math.sin(2 * Math.PI * u), 0.15 * Math.sin(4 * Math.PI * u)] : (u < 0.55 ? [0.04, 0.04, 0.04] : [0.80 * Math.sin(6 * Math.PI * (u - 0.55)), 0.70 * Math.sin(6 * Math.PI * (u - 0.55)), 0.90 * Math.sin(6 * Math.PI * (u - 0.55))]) },
+    'Nice to meet you': { d: 2200, f: u => [0.60 * Math.sin(4 * Math.PI * u), 0.70 * Math.sin(2 * Math.PI * u + 0.5), 0.50 * Math.sin(3 * Math.PI * u)] }
 };
 
 function startSim() {
