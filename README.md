@@ -474,9 +474,11 @@ Start-Process "http://localhost:3000"
 | **11** | **Header Dimension Stabilization** | Enforced strict 64px header height, uniform 36px control heights, 32px pills, bounded 135px COM dropdown, and `white-space: nowrap;` for zero layout jumping. | `dashboard/index.html` |
 | **12** | **Front-Door Landing Page & Dual-Route Dispatcher** | Engineered modern STA × AIO landing page (`landing.html`) with institutional partner profiles, photorealistic smart glove render (`signspeaker_hero.jpg`), interactive canvas demo, and dual-mode routing (`/glove` vs `/glove/dashboard`). | `landing.html`, `serve-dashboard.js`, `build-flows.js`, `index.html`, `Images/` |
 | **13** | **Interactive Flowchart Studio & Architecture Explorer** | Engineered standalone responsive HTML5/CSS/JS website featuring all 9 system flowcharts in dynamic Mermaid vector SVG, interactive zoom & pan, fullscreen modal inspection, live search & category filters, code copy, SVG export, and dedicated port 3000 server with Node-RED `/glove/flowcharts` routing. | `flowcharts/`, `serve-dashboard.js`, `build-flows.js`, `dashboard/index.html`, `dashboard/landing.html` |
+| **14** | **Streamlined UI Navigation** | Removed external Flowcharts Studio navigation buttons from both the landing page navbar and the live operational cockpit header for a focused, distraction-free application experience. | `dashboard/landing.html`, `dashboard/index.html`, `README.md` |
 
 ---
 
 <p align="center">
   <b>SignSpeaker Project</b> • Developed with pride by <b>STA × AIO</b>
 </p>
+
