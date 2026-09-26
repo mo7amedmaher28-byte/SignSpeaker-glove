@@ -170,15 +170,16 @@ a {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   list-style: none;
 }
 
 .nav-links a {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   color: var(--text-muted);
   transition: color 0.18s ease;
+  white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -964,6 +965,8 @@ canvas#previewCanvas {
   .hero-stats { grid-template-columns: 1fr; }
   .cta-banner { padding: 40px 24px; }
   .cta-banner h2 { font-size: 28px; }
+}
+
 /* ==========================================================================
    THEME: LIGHT MODE
    ========================================================================== */
@@ -1192,55 +1195,85 @@ html[dir="rtl"] .specs-table td {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .nav-pill-btn {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: var(--text-main);
-  height: 38px;
-  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  height: 40px;
+  padding: 0 15px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  user-select: none;
 }
 
 .nav-pill-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
   border-color: var(--cyan-bright);
-  box-shadow: 0 0 14px var(--cyan-glow);
-  transform: translateY(-1px);
+  box-shadow: 0 0 18px var(--cyan-glow);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.nav-pill-btn:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .nav-icon-btn {
-  width: 38px;
+  width: 40px;
+  height: 40px;
   padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Theme Icon Switch */
-:root:not([data-theme="light"]) .theme-icon-moon {
-  display: none;
-}
-:root:not([data-theme="light"]) .theme-icon-sun {
+/* Theme Icon Switch - 100% foolproof */
+.theme-icon-sun {
   display: inline-block;
-  color: #f59e0b;
+  color: #fbbf24;
+}
+
+.theme-icon-moon {
+  display: none;
+  color: #3b82f6;
 }
 
 [data-theme="light"] .theme-icon-sun {
-  display: none;
+  display: none !important;
 }
+
 [data-theme="light"] .theme-icon-moon {
-  display: inline-block;
+  display: inline-block !important;
+}
+
+[data-theme="light"] .nav-pill-btn {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .nav-pill-btn:hover {
+  background: #f8fafc;
+  border-color: #2563eb;
   color: #2563eb;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
 }
 
 /* ==========================================================================
@@ -2093,28 +2126,53 @@ const demoWordData = {
   }
 };
 
+// ==========================================================================
+// 2. DOM ELEMENTS & APPLICATION STATE
+// ==========================================================================
 let currentLang = localStorage.getItem('signspeaker_lang') || 'en';
 let currentTheme = localStorage.getItem('signspeaker_theme') || 'dark';
 
+let animationId = null;
+let currentPoints = [];
+
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const lcdL1 = document.getElementById('lcdL1');
+const lcdL2 = document.getElementById('lcdL2');
+const demoConfidence = document.getElementById('demoConfidence');
+const langToggleBtn = document.getElementById('langToggleBtn');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const scrollUpBtn = document.getElementById('scrollUpBtn');
+
+function resizeCanvas() {
+  if (!canvas || !canvas.parentElement) return;
+  canvas.width = canvas.parentElement.clientWidth - 32;
+  canvas.height = 120;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
 // ==========================================================================
-// 2. THEME CONTROLLER (LIGHT & DARK)
+// 3. THEME CONTROLLER (LIGHT & DARK)
 // ==========================================================================
 function setTheme(theme) {
   currentTheme = theme;
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('signspeaker_theme', theme);
+  if (themeToggleBtn) {
+    themeToggleBtn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+  }
 }
 
-document.getElementById('themeToggleBtn').addEventListener('click', () => {
-  const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
-  setTheme(nextTheme);
-});
-
-// Apply initial theme
-setTheme(currentTheme);
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  });
+}
 
 // ==========================================================================
-// 3. LANGUAGE CONTROLLER (EN & AR)
+// 4. LANGUAGE CONTROLLER (EN & AR)
 // ==========================================================================
 function setLanguage(lang) {
   currentLang = lang;
@@ -2144,8 +2202,8 @@ function setLanguage(lang) {
     }
   });
 
-  // Update LCD placeholder if not actively playing
-  if (!animationId) {
+  // Update LCD placeholder safely if idle
+  if (lcdL1 && lcdL2 && !animationId) {
     if (lang === 'ar') {
       lcdL1.textContent = 'SignSpeaker';
       lcdL2.textContent = 'STA x AIO جاهز';
@@ -2156,36 +2214,39 @@ function setLanguage(lang) {
   }
 }
 
-document.getElementById('langToggleBtn').addEventListener('click', () => {
-  const nextLang = currentLang === 'en' ? 'ar' : 'en';
-  setLanguage(nextLang);
-});
-
-// Apply initial language
-setLanguage(currentLang);
+if (langToggleBtn) {
+  langToggleBtn.addEventListener('click', () => {
+    const nextLang = currentLang === 'en' ? 'ar' : 'en';
+    setLanguage(nextLang);
+  });
+}
 
 // ==========================================================================
-// 4. 3D SCROLL REVEAL (IntersectionObserver)
+// 5. 3D SCROLL REVEAL (IntersectionObserver)
 // ==========================================================================
 function init3DScrollReveal() {
   const scrollElements = document.querySelectorAll('.scroll-3d');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-      }
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -30px 0px'
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
-  });
 
-  scrollElements.forEach(el => observer.observe(el));
+    scrollElements.forEach(el => observer.observe(el));
+  } else {
+    scrollElements.forEach(el => el.classList.add('revealed'));
+  }
 }
 init3DScrollReveal();
 
 // ==========================================================================
-// 5. 3D MOUSE PARALLAX HOVER EFFECT ON CARDS
+// 6. 3D MOUSE PARALLAX HOVER EFFECT ON CARDS
 // ==========================================================================
 function init3DHoverEffect() {
   const cards = document.querySelectorAll('.card-3d');
@@ -2211,42 +2272,28 @@ function init3DHoverEffect() {
 init3DHoverEffect();
 
 // ==========================================================================
-// 6. FLOATING SCROLL-UP BUTTON
+// 7. FLOATING SCROLL-UP BUTTON
 // ==========================================================================
-const scrollUpBtn = document.getElementById('scrollUpBtn');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 320) {
-    scrollUpBtn.classList.add('visible');
-  } else {
-    scrollUpBtn.classList.remove('visible');
-  }
-});
-
-scrollUpBtn.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
+if (scrollUpBtn) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollUpBtn.classList.add('visible');
+    } else {
+      scrollUpBtn.classList.remove('visible');
+    }
   });
-});
 
-// ==========================================================================
-// 7. INTERACTIVE DEMO PREVIEW (CANVAS & LCD & TTS)
-// ==========================================================================
-const canvas = document.getElementById('previewCanvas');
-const ctx = canvas.getContext('2d');
-const lcdL1 = document.getElementById('lcdL1');
-const lcdL2 = document.getElementById('lcdL2');
-const demoConfidence = document.getElementById('demoConfidence');
-
-function resizeCanvas() {
-  canvas.width = canvas.parentElement.clientWidth - 32;
-  canvas.height = 120;
+  scrollUpBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
 
-let animationId = null;
-let currentPoints = [];
+// ==========================================================================
+// 8. INTERACTIVE DEMO PREVIEW (CANVAS & LCD & TTS)
+// ==========================================================================
 
 function generatePoints(seed, isMultiWord = false) {
   const pts = [];
@@ -2400,7 +2447,9 @@ function triggerDemo(wordKey) {
   animationId = requestAnimationFrame(animate);
 }
 
-// Initial draw
+// Initial initialization of theme, language, and waveform preview
+setTheme(currentTheme);
+setLanguage(currentLang);
 currentPoints = generatePoints(1);
 drawWaveform(1);
 </script>
